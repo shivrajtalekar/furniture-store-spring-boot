@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Products | FurnitureStore</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f7f5;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            height: 74px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #111827;
+        }
+
+        .logo span {
+            color: #b88746;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .nav-links a:hover {
+            color: #b88746;
+        }
+
+        .wishlist-link {
+            color: #dc2626 !important;
+        }
+
+        .cart-link {
+            background: #111827;
+            color: #ffffff !important;
+            padding: 11px 17px;
+            border-radius: 8px;
+        }
+
+        .cart-link:hover {
+            background: #000000;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            padding: 75px 6% 65px;
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f4ed,
+                    #ffffff
+                );
+        }
+
+        .hero-label {
+            color: #b88746;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.1;
+            color: #111827;
+            margin-bottom: 17px;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: auto;
+            color: #6b7280;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+            width: 88%;
+            max-width: 1350px;
+            margin: 45px auto 80px;
+        }
+
+        /* =====================================================
+           ALERTS
+        ===================================================== */
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .results {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .results strong {
+            color: #111827;
+        }
+
+        /* =====================================================
+           FILTER PANEL
+        ===================================================== */
+
+        .filter-panel {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+
+            padding: 24px;
+
+            margin-bottom: 35px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, .04);
+        }
+
+        .filter-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns:
+                2fr 1fr 1fr auto;
+
+            gap: 13px;
+            align-items: end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4b5563;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 45px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            padding: 0 13px;
+
+            font-size: 14px;
+            background: #ffffff;
+            color: #111827;
+
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #b88746;
+            box-shadow:
+                0 0 0 3px rgba(184, 135, 70, .10);
+        }
+
+        .filter-btn {
+            height: 45px;
+            border: none;
+
+            padding: 0 22px;
+
+            border-radius: 8px;
+
+            background: #111827;
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .filter-btn:hover {
+            background: #000000;
+        }
+
+        .clear-btn {
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 18px;
+
+            border-radius: 8px;
+
+            background: #f3f4f6;
+            color: #374151;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .clear-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* =====================================================
+           PRODUCT GRID
+        ===================================================== */
+
+        .products-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 25px;
+        }
+
+        /* =====================================================
+           PRODUCT CARD
+        ===================================================== */
+
+        .product-card {
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease;
+
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, .09);
+        }
+
+        /* =====================================================
+           IMAGE
+        ===================================================== */
+
+        .image-wrapper {
+            height: 285px;
+
+            background: #f1f2f3;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform .35s ease;
+        }
+
+        .product-card:hover
+        .image-wrapper img {
+            transform: scale(1.045);
+        }
+
+        /* =====================================================
+           STOCK BADGE
+        ===================================================== */
+
+        .stock-badge {
+            position: absolute;
+
+            top: 14px;
+            left: 14px;
+
+            padding: 7px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            backdrop-filter: blur(8px);
+        }
+
+        .available {
+            background: rgba(236, 253, 245, .95);
+            color: #047857;
+        }
+
+        .low-stock {
+            background: rgba(255, 247, 237, .95);
+            color: #c2410c;
+        }
+
+        .sold-out {
+            background: rgba(254, 242, 242, .95);
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           WISHLIST BUTTON
+        ===================================================== */
+
+        .wishlist-form {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            z-index: 5;
+        }
+
+        .wishlist-btn {
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .95);
+
+            color: #dc2626;
+
+            font-size: 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, .10);
+
+            transition: .2s;
+        }
+
+        .wishlist-btn:hover {
+            transform: scale(1.08);
+            background: #ffffff;
+        }
+
+        /* =====================================================
+           PRODUCT INFO
+        ===================================================== */
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .category {
+            color: #b88746;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            margin-top: 8px;
+
+            color: #111827;
+
+            font-size: 18px;
+
+            line-height: 1.35;
+        }
+
+        .product-description {
+            margin-top: 9px;
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            line-height: 1.55;
+
+            min-height: 40px;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+        /* =====================================================
+           PRICE
+        ===================================================== */
+
+        .price-row {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 17px;
+        }
+
+        .price {
+            color: #111827;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+        .stock-text {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .stock-green {
+            color: #059669;
+        }
+
+        .stock-orange {
+            color: #ea580c;
+        }
+
+        .stock-red {
+            color: #dc2626;
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            gap: 9px;
+
+            margin-top: 18px;
+        }
+
+        .action-btn {
+            flex: 1;
+
+            min-height: 43px;
+
+            border-radius: 8px;
+
+            border: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            transition: .2s;
+        }
+
+        .details-btn {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .details-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .cart-btn {
+            background: #111827;
+            color: #ffffff;
+        }
+
+        .cart-btn:hover {
+            background: #000000;
+        }
+
+        .disabled-btn {
+            background: #f3f4f6;
+            color: #9ca3af;
+
+            cursor: not-allowed;
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            padding: 80px 25px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 82px;
+            height: 82px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            background: #f3f4f6;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 35px;
+        }
+
+        .empty-state h2 {
+            margin-top: 22px;
+
+            font-size: 26px;
+
+            color: #111827;
+        }
+
+        .empty-state p {
+            max-width: 530px;
+
+            margin: 12px auto 25px;
+
+            color: #6b7280;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+        .empty-button {
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: #111827;
+            color: #ffffff;
+
+            padding: 13px 24px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PAGINATION
+        ===================================================== */
+
+        .pagination-wrapper {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 45px;
+
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            min-width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 12px;
+
+            border: 1px solid #e5e7eb;
+
+            background: #ffffff;
+
+            color: #374151;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .page-btn:hover {
+            border-color: #b88746;
+            color: #b88746;
+        }
+
+        .page-active {
+            background: #111827;
+            color: #ffffff;
+            border-color: #111827;
+        }
+
+        .page-disabled {
+            opacity: .45;
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            background: #111827;
+
+            color: #9ca3af;
+
+            text-align: center;
+
+            padding: 32px 20px;
+
+            font-size: 13px;
+        }
+
+        footer span {
+            color: #b88746;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width: 1150px) {
+
+            .products-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+            .filter-form {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+        }
+
+        @media(max-width: 800px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a:not(.cart-link) {
+                display: none;
+            }
+
+            .hero {
+                padding: 55px 20px;
+            }
+
+            .hero h1 {
+                font-size: 37px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .products-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 550px) {
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .image-wrapper {
+                height: 310px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <a th:href="@{/}"
+       class="logo">
+
+        Furniture<span>Store</span>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a th:href="@{/}">
+            Home
+        </a>
+
+        <a th:href="@{/products}">
+            Products
+        </a>
+
+        <a th:href="@{/wishlist}"
+           class="wishlist-link">
+
+            ♥ Wishlist
+
+        </a>
+
+        <a th:href="@{/orders}">
+            My Orders
+        </a>
+
+        <a th:href="@{/cart}"
+           class="cart-link">
+
+            🛒 Cart
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-label">
+        Premium Collection
+    </div>
+
+    <h1>
+        Discover Your Perfect Furniture
+    </h1>
+
+    <p>
+        Explore our curated collection of elegant,
+        comfortable and timeless furniture designed
+        to transform your home.
+    </p>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+    ====================================================== -->
+
+    <div th:if="${successMessage}"
+         class="alert alert-success"
+         th:text="${successMessage}">
+
+        Success message
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+    ====================================================== -->
+
+    <div th:if="${errorMessage}"
+         class="alert alert-error"
+         th:text="${errorMessage}">
+
+        Error message
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTER PANEL
+    ====================================================== -->
+
+    <section class="filter-panel">
+
+        <div class="filter-title">
+            Find Your Furniture
+        </div>
+
+
+        <form th:action="@{/products}"
+              method="get"
+              class="filter-form">
+
+
+            <!-- SEARCH -->
+
+            <div class="field">
+
+                <label for="keyword">
+                    Search
+                </label>
+
+                <input
+                    type="text"
+                    id="keyword"
+                    name="keyword"
+                    th:value="${keyword}"
+                    placeholder="Search furniture, sofa, chair...">
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="field">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select id="category"
+                        name="category">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    <option
+                        th:each="cat : ${categories}"
+                        th:value="${cat}"
+                        th:text="${cat}"
+                        th:selected="${cat == selectedCategory}">
+
+                        Category
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SORT -->
+
+            <div class="field">
+
+                <label for="sort">
+                    Sort By
+                </label>
+
+                <select id="sort"
+                        name="sort">
+
+                    <option value="latest"
+                            th:selected="${selectedSort == 'latest'}">
+
+                        Latest
+
+                    </option>
+
+                    <option value="priceLow"
+                            th:selected="${selectedSort == 'priceLow'}">
+
+                        Price: Low to High
+
+                    </option>
+
+                    <option value="priceHigh"
+                            th:selected="${selectedSort == 'priceHigh'}">
+
+                        Price: High to Low
+
+                    </option>
+
+                    <option value="nameAsc"
+                            th:selected="${selectedSort == 'nameAsc'}">
+
+                        Name: A to Z
+
+                    </option>
+
+                    <option value="nameDesc"
+                            th:selected="${selectedSort == 'nameDesc'}">
+
+                        Name: Z to A
+
+                    </option>
+
+                    <option value="stock"
+                            th:selected="${selectedSort == 'stock'}">
+
+                        Stock Available
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div style="
+                display:flex;
+                gap:8px;
+                align-items:end;
+            ">
+
+                <button type="submit"
+                        class="filter-btn">
+
+                    Search
+
+                </button>
+
+                <a th:href="@{/products}"
+                   class="clear-btn">
+
+                    Clear
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESULTS TOOLBAR
+    ====================================================== -->
+
+    <div class="toolbar">
+
+        <div class="results">
+
+            Showing
+
+            <strong th:text="${totalItems}">
+                0
+            </strong>
+
+            products
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCT GRID
+    ====================================================== -->
+
+    <div th:if="${products != null && !products.isEmpty()}"
+         class="products-grid">
+
+
+        <article class="product-card"
+                 th:each="product : ${products}">
+
+
+            <!-- =================================================
+                 PRODUCT IMAGE
+            ================================================== -->
+
+            <div class="image-wrapper">
+
+
+                <!-- PRODUCT IMAGE -->
+
+                <img
+                    th:if="${product.imageUrl != null
+                            && !product.imageUrl.isEmpty()}"
+                    th:src="${product.imageUrl}"
+                    th:alt="${product.name}">
+
+
+                <!-- PLACEHOLDER -->
+
+                <img
+                    th:unless="${product.imageUrl != null
+                                && !product.imageUrl.isEmpty()}"
+                    th:src="@{/images/product-placeholder.jpg}"
+                    alt="Furniture">
+
+
+                <!-- =================================================
+                     STOCK BADGE
+                ================================================== -->
+
+                <div th:if="${product.stock > 5}"
+                     class="stock-badge available">
+
+                    ✓ In Stock
+
+                </div>
+
+
+                <div th:if="${product.stock > 0
+                            && product.stock <= 5}"
+                     class="stock-badge low-stock">
+
+                    Only
+                    <span th:text="${product.stock}">
+                        0
+                    </span>
+                    left
+
+                </div>
+
+
+                <div th:if="${product.stock <= 0}"
+                     class="stock-badge sold-out">
+
+                    Sold Out
+
+                </div>
+
+
+                <!-- =================================================
+                     WISHLIST
+                ================================================== -->
+
+                <form th:if="${product.stock >= 0}"
+                      th:action="@{/wishlist/add}"
+                      method="post"
+                      class="wishlist-form">
+
+                    <input type="hidden"
+                           name="productId"
+                           th:value="${product.id}">
+
+                    <button
+                        type="submit"
+                        class="wishlist-btn"
+                        title="Add to Wishlist">
+
+                        ♥
+                        
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 PRODUCT INFO
+            ================================================== -->
+
+            <div class="product-info">
+
+
+                <!-- CATEGORY -->
+
+                <div class="category"
+                     th:text="${product.category}">
+
+                    Category
+
+                </div>
+
+
+                <!-- NAME -->
+
+                <h2 class="product-name"
+                    th:text="${product.name}">
+
+                    Product Name
+
+                </h2>
+
+
+                <!-- DESCRIPTION -->
+
+                <p class="product-description"
+                   th:text="${product.description}">
+
+                    Beautiful premium furniture
+                    designed for your home.
+
+                </p>
+
+
+                <!-- PRICE + STOCK -->
+
+                <div class="price-row">
+
+                    <div class="price">
+
+                        ₹<span
+                            th:text="${#numbers.formatDecimal(product.price, 1, 2)}">
+
+                            0.00
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- STOCK TEXT -->
+
+                    <div th:if="${product.stock > 5}"
+                         class="stock-text stock-green">
+
+                        In Stock
+
+                    </div>
+
+
+                    <div th:if="${product.stock > 0
+                                && product.stock <= 5}"
+                         class="stock-text stock-orange">
+
+                        Low Stock
+
+                    </div>
+
+
+                    <div th:if="${product.stock <= 0}"
+                         class="stock-text stock-red">
+
+                        Out of Stock
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTION BUTTONS
+                ================================================== -->
+
+                <div class="actions">
+
+
+                    <!-- DETAILS -->
+
+                    <a th:href="@{/products/{id}(id=${product.id})}"
+                       class="action-btn details-btn">
+
+                        View Details
+
+                    </a>
+
+
+                    <!-- ADD TO CART -->
+
+                    <form th:if="${product.stock > 0}"
+                          th:action="@{/cart/add}"
+                          method="post"
+                          style="flex:1;">
+
+                        <input type="hidden"
+                               name="productId"
+                               th:value="${product.id}">
+
+                        <input type="hidden"
+                               name="quantity"
+                               value="1">
+
+                        <button
+                            type="submit"
+                            class="action-btn cart-btn"
+                            style="width:100%;">
+
+                            🛒 Add
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- OUT OF STOCK -->
+
+                    <button
+                        th:if="${product.stock <= 0}"
+                        type="button"
+                        class="action-btn disabled-btn">
+
+                        Sold Out
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- =========================================================
+         EMPTY STATE
+    ========================================================== -->
+
+    <div th:if="${products == null || products.isEmpty()}"
+         class="empty-state">
+
+        <div class="empty-icon">
+            🔍
+        </div>
+
+        <h2>
+            No Products Found
+        </h2>
+
+        <p>
+            We couldn't find any furniture matching your
+            search or filter. Try another keyword or
+            browse our complete collection.
+        </p>
+
+        <a th:href="@{/products}"
+           class="empty-button">
+
+            View All Products
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================================================
+         PAGINATION
+    ========================================================== -->
+
+    <div th:if="${totalPages > 1}"
+         class="pagination-wrapper">
+
+
+        <!-- PREVIOUS -->
+
+        <a th:href="@{/products(
+                    keyword=${keyword},
+                    category=${selectedCategory},
+                    sort=${selectedSort},
+                    page=${currentPage - 1},
+                    size=${pageSize}
+                )}"
+           th:classappend="${currentPage == 0
+                            ? ' page-disabled'
+                            : ''}"
+           class="page-btn">
+
+            ←
+
+        </a>
+
+
+        <!-- PAGE NUMBERS -->
+
+        <a th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}"
+
+           th:href="@{/products(
+                    keyword=${keyword},
+                    category=${selectedCategory},
+                    sort=${selectedSort},
+                    page=${pageNumber},
+                    size=${pageSize}
+                )}"
+
+           th:text="${pageNumber + 1}"
+
+           th:classappend="${pageNumber == currentPage
+                            ? ' page-active'
+                            : ''}"
+
+           class="page-btn">
+
+            1
+
+        </a>
+
+
+        <!-- NEXT -->
+
+        <a th:href="@{/products(
+                    keyword=${keyword},
+                    category=${selectedCategory},
+                    sort=${selectedSort},
+                    page=${currentPage + 1},
+                    size=${pageSize}
+                )}"
+
+           th:classappend="${currentPage >= totalPages - 1
+                            ? ' page-disabled'
+                            : ''}"
+
+           class="page-btn">
+
+            →
+
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    © 2026
+    <span>FurnitureStore</span>.
+
+    Premium furniture for modern living.
+
+</footer>
+
+
+</body>
+
+</html>

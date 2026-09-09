@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product | FurnitureStore Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #1f2937;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 16px;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .logo span {
+            color: #f59e0b;
+        }
+
+        .menu-title {
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0 14px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 9px;
+            transition: 0.25s;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #f59e0b;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .page-title h1 {
+            font-size: 29px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: white;
+            color: #374151;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #f9fafb;
+        }
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .form-box {
+            max-width: 950px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .form-header {
+            padding: 22px 26px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-header h2 {
+            font-size: 19px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .form-header p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        form {
+            padding: 28px 26px;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+            color: #111827;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.10);
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 6px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        /* =========================
+           IMAGE PREVIEW
+        ========================= */
+
+        .image-preview-box {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .image-preview-box img {
+            width: 150px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* =========================
+           FORM ACTIONS
+        ========================= */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .save-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #d97706;
+        }
+
+        .cancel-btn {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                padding: 20px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-box {
+                width: 100%;
+            }
+
+            form {
+                padding: 22px 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Furniture<span>Store</span>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <nav class="menu">
+
+            <a href="/admin">
+                🏠
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/admin/products" class="active">
+                🛋️
+                <span>Products</span>
+            </a>
+
+            <a href="/admin/orders">
+                📦
+                <span>Orders</span>
+            </a>
+
+            <a href="/admin/customers">
+                👥
+                <span>Customers</span>
+            </a>
+
+            <a href="/">
+                🌐
+                <span>View Website</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="page-title">
+
+                <h1>Add New Product</h1>
+
+                <p>
+                    Add a new furniture product to your store inventory
+                </p>
+
+            </div>
+
+            <a
+                href="/admin/products"
+                class="back-btn">
+
+                ← Back to Products
+
+            </a>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+
+        <div class="form-box">
+
+            <div class="form-header">
+
+                <h2>Product Information</h2>
+
+                <p>
+                    Enter the product details carefully before saving.
+                </p>
+
+            </div>
+
+
+            <form
+                th:action="@{/admin/products/save}"
+                th:object="${product}"
+                method="post">
+
+
+                <!-- PRODUCT NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Product Name
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="name"
+                        type="text"
+                        th:field="*{name}"
+                        placeholder="Example: Modern 3-Seater Sofa"
+                        maxlength="100"
+                        required>
+
+                    <small class="help-text">
+                        Enter a clear and customer-friendly product name.
+                    </small>
+
+                </div>
+
+
+                <!-- CATEGORY + PRICE -->
+
+                <div class="row">
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="category"
+                            th:field="*{category}"
+                            required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Sofa">
+                                Sofa
+                            </option>
+
+                            <option value="Chair">
+                                Chair
+                            </option>
+
+                            <option value="Table">
+                                Table
+                            </option>
+
+                            <option value="Bed">
+                                Bed
+                            </option>
+
+                            <option value="Wardrobe">
+                                Wardrobe
+                            </option>
+
+                            <option value="Dining">
+                                Dining
+                            </option>
+
+                            <option value="Office">
+                                Office Furniture
+                            </option>
+
+                            <option value="Storage">
+                                Storage
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="price">
+                            Price (₹)
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="price"
+                            type="number"
+                            th:field="*{price}"
+                            placeholder="Example: 24999"
+                            min="0"
+                            step="0.01"
+                            required>
+
+                        <small class="help-text">
+                            Enter the selling price in Indian Rupees.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY + STOCK -->
+
+                <div class="row">
+
+                    <div class="form-group">
+
+                        <label for="quantity">
+                            Quantity
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="quantity"
+                            type="number"
+                            th:field="*{quantity}"
+                            placeholder="Example: 10"
+                            min="0"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="stock">
+                            Available Stock
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            id="stock"
+                            type="number"
+                            th:field="*{stock}"
+                            placeholder="Example: 10"
+                            min="0"
+                            required>
+
+                        <small class="help-text">
+                            Number of units currently available.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGE URL -->
+
+                <div class="form-group">
+
+                    <label for="imageUrl">
+                        Product Image URL
+                    </label>
+
+                    <input
+                        id="imageUrl"
+                        type="url"
+                        th:field="*{imageUrl}"
+                        placeholder="https://example.com/product-image.jpg">
+
+                    <small class="help-text">
+                        Paste a publicly accessible image URL.
+                    </small>
+
+                    <div
+                        id="imagePreviewBox"
+                        class="image-preview-box">
+
+                        <img
+                            id="imagePreview"
+                            src=""
+                            alt="Product Preview">
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Product Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        th:field="*{description}"
+                        placeholder="Describe the material, design, dimensions, comfort, features, etc."
+                        maxlength="1000"></textarea>
+
+                    <small class="help-text">
+                        Provide useful information that helps customers understand the product.
+                    </small>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="save-btn">
+
+                        💾 Save Product
+
+                    </button>
+
+                    <a
+                        href="/admin/products"
+                        class="cancel-btn">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         IMAGE PREVIEW SCRIPT
+    ========================= -->
+
+    <script>
+
+        const imageUrl = document.getElementById("imageUrl");
+        const imagePreviewBox =
+            document.getElementById("imagePreviewBox");
+        const imagePreview =
+            document.getElementById("imagePreview");
+
+        imageUrl.addEventListener("input", function () {
+
+            const url = this.value.trim();
+
+            if (url !== "") {
+
+                imagePreview.src = url;
+                imagePreviewBox.style.display = "block";
+
+            } else {
+
+                imagePreviewBox.style.display = "none";
+                imagePreview.src = "";
+
+            }
+
+        });
+
+        imagePreview.addEventListener("error", function () {
+
+            imagePreviewBox.style.display = "none";
+
+        });
+
+    </script>
+
+</body>
+
+</html>

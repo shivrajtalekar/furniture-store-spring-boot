@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Details | FurnitureStore Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6fa;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            padding: 0 15px 25px;
+            border-bottom: 1px solid #374151;
+            margin-bottom: 25px;
+        }
+
+        .logo span {
+            color: #f59e0b;
+        }
+
+        .menu-title {
+            color: #9ca3af;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 15px;
+            margin-bottom: 10px;
+        }
+
+        .menu a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #f59e0b;
+            color: #111827;
+            font-weight: bold;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .topbar h1 {
+            font-size: 21px;
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #f59e0b;
+            color: #111827;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #6b7280;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .order-header {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .order-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .order-date {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .amount {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-form select {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+        }
+
+        .status-form button {
+            border: none;
+            padding: 10px 16px;
+            background: #111827;
+            color: white;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .status-form button:hover {
+            background: #374151;
+        }
+
+        /* ================= GRID ================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .value {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        /* ================= BADGES ================= */
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .placed {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .confirmed {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .shipped {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .delivered {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .cancelled {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+            padding: 13px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 13px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .product-id {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        /* ================= TOTAL ================= */
+
+        .total-box {
+            max-width: 400px;
+            margin-left: auto;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #6b7280;
+        }
+
+        .total-row.final {
+            border-top: 2px solid #111827;
+            margin-top: 8px;
+            padding-top: 16px;
+            color: #111827;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .admin-user {
+                display: none;
+            }
+
+            .status-form {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Furniture<span>Store</span>
+    </div>
+
+    <div class="menu-title">
+        Admin Panel
+    </div>
+
+    <nav class="menu">
+
+        <a th:href="@{/admin/dashboard}">
+            📊 Dashboard
+        </a>
+
+        <a th:href="@{/admin/products}">
+            🛋️ Products
+        </a>
+
+        <a th:href="@{/admin/orders}"
+           class="active">
+            📦 Orders
+        </a>
+
+        <a th:href="@{/admin/customers}">
+            👥 Customers
+        </a>
+
+        <a th:href="@{/}">
+            🌐 View Website
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <h1>
+            Order Details
+        </h1>
+
+        <div class="admin-user">
+
+            <div class="avatar">
+                A
+            </div>
+
+            <span>
+                Administrator
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <section class="content">
+
+
+        <a th:href="@{/admin/orders}"
+           class="back">
+
+            ← Back to Orders
+
+        </a>
+
+
+        <!-- ================= ORDER HEADER ================= -->
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-title">
+
+                    Order #
+
+                    <span th:text="${order.id}">
+                        1
+                    </span>
+
+                </div>
+
+                <div class="order-date">
+
+                    <span th:if="${order.orderDate != null}"
+                          th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+
+                        Date
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <div class="amount">
+
+                    ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">
+
+                        0.00
+
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS UPDATE -->
+
+                <form class="status-form"
+                      th:action="@{/admin/orders/update-status/{id}(id=${order.id})}"
+                      method="post">
+
+                    <select name="status">
+
+                        <option value="PLACED"
+                                th:selected="${order.status == 'PLACED'}">
+
+                            PLACED
+
+                        </option>
+
+                        <option value="CONFIRMED"
+                                th:selected="${order.status == 'CONFIRMED'}">
+
+                            CONFIRMED
+
+                        </option>
+
+                        <option value="SHIPPED"
+                                th:selected="${order.status == 'SHIPPED'}">
+
+                            SHIPPED
+
+                        </option>
+
+                        <option value="DELIVERED"
+                                th:selected="${order.status == 'DELIVERED'}">
+
+                            DELIVERED
+
+                        </option>
+
+                        <option value="CANCELLED"
+                                th:selected="${order.status == 'CANCELLED'}">
+
+                            CANCELLED
+
+                        </option>
+
+                    </select>
+
+
+                    <button type="submit">
+                        Update
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= GRID ================= -->
+
+        <div class="grid">
+
+
+            <!-- CUSTOMER -->
+
+            <div class="card">
+
+                <h2>
+                    👤 Customer Information
+                </h2>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Customer Name
+                    </span>
+
+                    <span class="value"
+                          th:text="${order.customerName}">
+
+                        Customer
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Phone
+                    </span>
+
+                    <span class="value"
+                          th:text="${order.phone}">
+
+                        Phone
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Address
+                    </span>
+
+                    <span class="value"
+                          th:text="${order.address}">
+
+                        Address
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER SUMMARY -->
+
+            <div class="card">
+
+                <h2>
+                    📋 Order Summary
+                </h2>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Order ID
+                    </span>
+
+                    <span class="value">
+
+                        #<span th:text="${order.id}">
+                            1
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Items
+                    </span>
+
+                    <span class="value"
+                          th:text="${order.items != null
+                              ? #lists.size(order.items)
+                              : 0}">
+
+                        0
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Status
+                    </span>
+
+                    <span class="value">
+
+
+                        <span class="badge placed"
+                              th:if="${order.status == 'PLACED'}">
+
+                            PLACED
+
+                        </span>
+
+
+                        <span class="badge confirmed"
+                              th:if="${order.status == 'CONFIRMED'}">
+
+                            CONFIRMED
+
+                        </span>
+
+
+                        <span class="badge shipped"
+                              th:if="${order.status == 'SHIPPED'}">
+
+                            SHIPPED
+
+                        </span>
+
+
+                        <span class="badge delivered"
+                              th:if="${order.status == 'DELIVERED'}">
+
+                            DELIVERED
+
+                        </span>
+
+
+                        <span class="badge cancelled"
+                              th:if="${order.status == 'CANCELLED'}">
+
+                            CANCELLED
+
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="label">
+                        Payment
+                    </span>
+
+                    <span class="value">
+                        Razorpay
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER ITEMS -->
+
+            <div class="card full">
+
+                <h2>
+                    🛋️ Order Items
+                </h2>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Product ID
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th class="right">
+                                Total
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        <tr th:each="item : ${order.items}">
+
+
+                            <td>
+
+                                <div class="product-name"
+                                     th:text="${item.productName}">
+
+                                    Product
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="product-id"
+                                     th:text="${item.productId}">
+
+                                    -
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                ₹<span th:text="${#numbers.formatDecimal(item.price, 1, 2)}">
+
+                                    0.00
+
+                                </span>
+
+                            </td>
+
+
+                            <td th:text="${item.quantity}">
+
+                                1
+
+                            </td>
+
+
+                            <td class="right">
+
+                                ₹<span th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2)}">
+
+                                    0.00
+
+                                </span>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        <tr th:if="${order.items == null or order.items.isEmpty()}">
+
+                            <td colspan="5"
+                                style="text-align:center; color:#777;">
+
+                                No items found for this order.
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- TOTAL -->
+
+                <div class="total-box">
+
+                    <div class="total-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <span>
+
+                            ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">
+                                0.00
+                            </span>
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="total-row">
+
+                        <span>
+                            Shipping
+                        </span>
+
+                        <span>
+                            FREE
+                        </span>
+
+                    </div>
+
+
+                    <div class="total-row final">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+                        <span>
+
+                            ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">
+                                0.00
+                            </span>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

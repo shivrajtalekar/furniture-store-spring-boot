@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${product.name} + ' | FurnitureStore'">
+        Product | FurnitureStore
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark: #211914;
+            --brown: #9b6747;
+            --brown-light: #b6815e;
+            --cream: #f6f2ed;
+            --white: #ffffff;
+            --text: #29221e;
+            --muted: #756d67;
+            --border: #e4dbd3;
+            --green: #4e7958;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 82px;
+            padding: 0 7%;
+            background: rgba(255,255,255,0.97);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--border);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--brown);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 600;
+            color: #413832;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: var(--brown);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+        }
+
+        .nav-icon {
+            font-size: 21px;
+            transition: 0.25s;
+        }
+
+        .nav-icon:hover {
+            color: var(--brown);
+        }
+
+        .shop-button {
+            background: var(--dark);
+            color: white;
+
+            padding: 12px 19px;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: 0.3s;
+        }
+
+        .shop-button:hover {
+            background: var(--brown);
+        }
+
+
+        /* =========================
+           BREADCRUMB
+        ========================= */
+
+        .breadcrumb {
+            max-width: 1250px;
+            margin: auto;
+
+            padding: 28px 30px 15px;
+
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--brown);
+        }
+
+
+        /* =========================
+           PRODUCT AREA
+        ========================= */
+
+        .product-container {
+
+            max-width: 1250px;
+            margin: auto;
+
+            padding: 25px 30px 90px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.05fr)
+                minmax(0, 0.95fr);
+
+            gap: 70px;
+        }
+
+
+        /* =========================
+           IMAGE
+        ========================= */
+
+        .image-section {
+            position: relative;
+        }
+
+        .image-box {
+
+            width: 100%;
+            height: 620px;
+
+            background: #e9e1d9;
+
+            overflow: hidden;
+
+            position: relative;
+        }
+
+        .image-box img {
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition:
+                transform 0.7s ease;
+        }
+
+        .image-box:hover img {
+            transform: scale(1.035);
+        }
+
+        .premium-badge {
+
+            position: absolute;
+
+            top: 20px;
+            left: 20px;
+
+            background: white;
+
+            padding: 9px 14px;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            z-index: 5;
+        }
+
+        .image-note {
+
+            margin-top: 12px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           PRODUCT INFORMATION
+        ========================= */
+
+        .product-info {
+            padding-top: 18px;
+        }
+
+        .category {
+
+            color: var(--brown);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 14px;
+        }
+
+        .product-title {
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 52px;
+
+            line-height: 1.08;
+
+            font-weight: 600;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           RATING
+        ========================= */
+
+        .rating {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+        .stars {
+
+            color: #b77a4f;
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+        }
+
+        .rating-text {
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           PRICE
+        ========================= */
+
+        .price {
+
+            font-size: 29px;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+        }
+
+        .price-symbol {
+            font-size: 23px;
+        }
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .description {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.9;
+
+            padding-bottom: 27px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        /* =========================
+           STOCK
+        ========================= */
+
+        .availability {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 20px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .in-stock {
+
+            color: var(--green);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+        }
+
+        .out-stock {
+
+            color: #a34e47;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+        }
+
+        .stock-number {
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           PURCHASE
+        ========================= */
+
+        .purchase-area {
+            padding-top: 28px;
+        }
+
+        .quantity-label {
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            margin-bottom: 10px;
+        }
+
+        .quantity-box {
+
+            width: 140px;
+
+            height: 50px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            margin-bottom: 16px;
+        }
+
+        .quantity-box button {
+
+            width: 43px;
+
+            height: 48px;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 19px;
+
+            cursor: pointer;
+
+            color: var(--text);
+
+            transition: 0.2s;
+        }
+
+        .quantity-box button:hover {
+            color: var(--brown);
+        }
+
+        .quantity-box input {
+
+            width: 54px;
+
+            height: 48px;
+
+            border: none;
+
+            outline: none;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background: transparent;
+        }
+
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .action-row {
+
+            display: grid;
+
+            grid-template-columns: 1fr 58px;
+
+            gap: 10px;
+        }
+
+        .add-cart {
+
+            height: 58px;
+
+            border: none;
+
+            background: var(--dark);
+
+            color: white;
+
+            cursor: pointer;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: 0.3s;
+        }
+
+        .add-cart:hover {
+            background: var(--brown);
+        }
+
+        .add-cart:active {
+            transform: scale(0.99);
+        }
+
+        .wishlist {
+
+            height: 58px;
+
+            border:
+                1px solid var(--dark);
+
+            background: transparent;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .wishlist:hover {
+
+            background: var(--dark);
+
+            color: white;
+        }
+
+
+        /* =========================
+           BENEFITS
+        ========================= */
+
+        .benefits {
+
+            margin-top: 31px;
+
+            border-top:
+                1px solid var(--border);
+        }
+
+        .benefit {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 17px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .benefit-icon {
+
+            width: 31px;
+
+            height: 31px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 15px;
+        }
+
+        .benefit-text strong {
+
+            display: block;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+        }
+
+        .benefit-text span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           DETAILS SECTION
+        ========================= */
+
+        .details-section {
+
+            background: white;
+
+            border-top:
+                1px solid var(--border);
+
+            padding: 80px 7%;
+        }
+
+        .details-inner {
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+        .details-label {
+
+            color: var(--brown);
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 12px;
+        }
+
+        .details-title {
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 38px;
+
+            font-weight: 600;
+
+            margin-bottom: 18px;
+        }
+
+        .details-text {
+
+            max-width: 760px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            background: #17110e;
+
+            color: white;
+
+            padding: 55px 7% 25px;
+
+            text-align: center;
+        }
+
+        .footer-logo {
+
+            font-family:
+                "Playfair Display",
+                serif;
+
+            font-size: 27px;
+
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            color: #b47d59;
+        }
+
+        footer p {
+
+            color: #817872;
+
+            font-size: 10px;
+
+            margin-top: 9px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .product-container {
+
+                grid-template-columns: 1fr;
+
+                gap: 35px;
+            }
+
+            .image-box {
+                height: 550px;
+            }
+
+            .product-title {
+                font-size: 45px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 70px;
+
+                padding:
+                    0 5%;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .shop-button {
+                display: none;
+            }
+
+            .breadcrumb {
+                padding:
+                    22px 18px 10px;
+            }
+
+            .product-container {
+
+                padding:
+                    20px 18px 60px;
+            }
+
+            .image-box {
+                height: 430px;
+            }
+
+            .product-title {
+                font-size: 38px;
+            }
+
+            .price {
+                font-size: 25px;
+            }
+
+            .details-section {
+                padding:
+                    60px 7%;
+            }
+
+            .details-title {
+                font-size: 31px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVBAR
+========================================== -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        Furniture<span>Store</span>
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Shop
+        </a>
+
+        <a href="/products">
+            Collections
+        </a>
+
+        <a href="/cart">
+            Cart
+        </a>
+
+    </div>
+
+
+    <div class="nav-actions">
+
+        <a href="/products"
+           class="nav-icon"
+           title="Search">
+
+            ⌕
+
+        </a>
+
+
+        <a href="/cart"
+           class="nav-icon"
+           title="Cart">
+
+            🛒
+
+        </a>
+
+
+        <a href="/cart"
+           class="shop-button">
+
+            CART
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ==========================================
+     BREADCRUMB
+========================================== -->
+
+<div class="breadcrumb">
+
+    <a href="/">
+        Home
+    </a>
+
+    &nbsp; / &nbsp;
+
+    <a href="/products">
+        Shop
+    </a>
+
+    &nbsp; / &nbsp;
+
+    <span th:text="${product.category}">
+        Category
+    </span>
+
+    &nbsp; / &nbsp;
+
+    <span th:text="${product.name}">
+        Product
+    </span>
+
+</div>
+
+
+
+<!-- ==========================================
+     PRODUCT
+========================================== -->
+
+<main class="product-container">
+
+
+    <!-- IMAGE -->
+
+    <section class="image-section">
+
+        <div class="image-box">
+
+
+            <span class="premium-badge">
+
+                PREMIUM COLLECTION
+
+            </span>
+
+
+            <img
+                th:src="${product.imageUrl}"
+                th:alt="${product.name}"
+
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=90';"
+            >
+
+        </div>
+
+
+        <div class="image-note">
+
+            <span>
+                Premium Furniture
+            </span>
+
+            <span>
+                FurnitureStore
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- INFORMATION -->
+
+    <section class="product-info">
+
+
+        <!-- CATEGORY -->
+
+        <div class="category"
+             th:text="${product.category}">
+
+            CATEGORY
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <h1 class="product-title"
+            th:text="${product.name}">
+
+            Product Name
+
+        </h1>
+
+
+        <!-- RATING -->
+
+        <div class="rating">
+
+            <div class="stars">
+
+                ★★★★★
+
+            </div>
+
+            <div class="rating-text">
+
+                4.9 · 128 reviews
+
+            </div>
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="price">
+
+            <span class="price-symbol">
+                ₹
+            </span>
+
+            <span th:text="${product.price}">
+                0
+            </span>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="description"
+           th:text="${product.description}">
+
+            Beautifully designed furniture created
+            for modern homes and everyday comfort.
+
+        </p>
+
+
+
+        <!-- STOCK -->
+
+        <div class="availability">
+
+
+            <span
+                class="in-stock"
+                th:if="${product.stock > 0}">
+
+                ✓ IN STOCK
+
+            </span>
+
+
+            <span
+                class="out-stock"
+                th:if="${product.stock <= 0}">
+
+                ✕ OUT OF STOCK
+
+            </span>
+
+
+            <span class="stock-number">
+
+                <span th:text="${product.stock}">
+                    0
+                </span>
+
+                units available
+
+            </span>
+
+        </div>
+
+
+
+        <!-- PURCHASE -->
+
+        <div class="purchase-area">
+
+
+            <div class="quantity-label">
+
+                QUANTITY
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="quantity-box">
+
+
+                <button
+                    type="button"
+                    onclick="decreaseQuantity()">
+
+                    −
+
+                </button>
+
+
+                <input
+                    type="number"
+                    id="quantity"
+                    value="1"
+                    min="1"
+                    th:max="${product.stock}"
+                    oninput="validateQuantity()"
+                >
+
+
+                <button
+                    type="button"
+                    onclick="increaseQuantity()">
+
+                    +
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- REAL ADD TO CART -->
+
+            <form
+                th:action="@{/cart/add}"
+                method="post"
+                id="cartForm">
+
+
+                <input
+                    type="hidden"
+                    name="productId"
+                    th:value="${product.id}"
+                >
+
+
+                <input
+                    type="hidden"
+                    name="quantity"
+                    id="cartQuantity"
+                    value="1"
+                >
+
+
+                <div class="action-row">
+
+
+                    <button
+                        type="submit"
+                        class="add-cart"
+                        th:if="${product.stock > 0}"
+                        onclick="setCartQuantity()">
+
+                        ADD TO CART
+                        &nbsp; →
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="add-cart"
+                        disabled
+                        th:if="${product.stock <= 0}"
+                        style="opacity:0.45;cursor:not-allowed;">
+
+                        OUT OF STOCK
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="wishlist"
+                        onclick="toggleWishlist(this)">
+
+                        ♡
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- BENEFITS -->
+
+        <div class="benefits">
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+
+                    🚚
+
+                </div>
+
+
+                <div class="benefit-text">
+
+                    <strong>
+                        Free Delivery
+                    </strong>
+
+                    <span>
+                        Complimentary delivery on orders above ₹999
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+
+                    ↩
+
+                </div>
+
+
+                <div class="benefit-text">
+
+                    <strong>
+                        Easy Returns
+                    </strong>
+
+                    <span>
+                        Hassle-free returns on eligible products
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+
+                    ✓
+
+                </div>
+
+
+                <div class="benefit-text">
+
+                    <strong>
+                        Secure Shopping
+                    </strong>
+
+                    <span>
+                        Safe and secure shopping experience
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+
+<!-- ==========================================
+     DETAILS
+========================================== -->
+
+<section class="details-section">
+
+    <div class="details-inner">
+
+
+        <div class="details-label">
+
+            PRODUCT STORY
+
+        </div>
+
+
+        <h2 class="details-title">
+
+            Designed for your space.
+
+        </h2>
+
+
+        <p class="details-text"
+           th:text="${product.description}">
+
+            Thoughtfully designed furniture made
+            for beautiful modern living.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+
+<footer>
+
+    <div class="footer-logo">
+
+        Furniture<span>Store</span>
+
+    </div>
+
+
+    <p>
+
+        Beautiful furniture for modern living.
+        © 2026 FurnitureStore.
+
+    </p>
+
+</footer>
+
+
+
+<!-- ==========================================
+     JAVASCRIPT
+========================================== -->
+
+<script>
+
+
+    function increaseQuantity() {
+
+        const input =
+            document.getElementById("quantity");
+
+        let value =
+            parseInt(input.value) || 1;
+
+        const max =
+            parseInt(input.max);
+
+
+        if (!max || value < max) {
+
+            input.value = value + 1;
+
+        }
+
+    }
+
+
+
+    function decreaseQuantity() {
+
+        const input =
+            document.getElementById("quantity");
+
+        let value =
+            parseInt(input.value) || 1;
+
+
+        if (value > 1) {
+
+            input.value = value - 1;
+
+        }
+
+    }
+
+
+
+    function validateQuantity() {
+
+        const input =
+            document.getElementById("quantity");
+
+        let value =
+            parseInt(input.value) || 1;
+
+        const max =
+            parseInt(input.max);
+
+
+        if (value < 1) {
+
+            value = 1;
+
+        }
+
+
+        if (max && value > max) {
+
+            value = max;
+
+        }
+
+
+        input.value = value;
+
+    }
+
+
+
+    function setCartQuantity() {
+
+        validateQuantity();
+
+
+        const quantity =
+            document.getElementById("quantity").value;
+
+
+        document.getElementById("cartQuantity").value =
+            quantity;
+
+    }
+
+
+
+    function toggleWishlist(button) {
+
+        if (button.innerHTML.includes("♡")) {
+
+            button.innerHTML = "♥";
+
+        } else {
+
+            button.innerHTML = "♡";
+
+        }
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

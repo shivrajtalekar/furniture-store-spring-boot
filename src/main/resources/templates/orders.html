@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | Furniture Store</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f6f8;
+            color: #1f2937;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #d6a85f;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #d6a85f;
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 45px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+        /* ================= ORDER CARD ================= */
+
+        .orders-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-number {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .order-date {
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .placed {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .confirmed {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .shipped {
+            background: #f5f3ff;
+            color: #6d28d9;
+        }
+
+        .delivered {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .cancelled {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        /* ================= ORDER INFO ================= */
+
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 22px 0;
+        }
+
+        .info-box {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .order-bottom {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 5px;
+        }
+
+        .view-btn {
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .view-btn:hover {
+            background: #374151;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            background: white;
+            border-radius: 15px;
+            padding: 70px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 60px;
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .order-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .order-bottom {
+                justify-content: stretch;
+            }
+
+            .view-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Furniture<span>Store</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a th:href="@{/}">
+            Home
+        </a>
+
+        <a th:href="@{/products}">
+            Products
+        </a>
+
+        <a th:href="@{/cart}">
+            Cart
+        </a>
+
+        <a th:href="@{/wishlist}">
+            Wishlist
+        </a>
+
+        <a th:href="@{/orders}">
+            My Orders
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="container">
+
+    <div class="page-header">
+
+        <h1>
+            My Orders
+        </h1>
+
+        <p>
+            Track and manage all your furniture orders.
+        </p>
+
+    </div>
+
+
+    <!-- ================= EMPTY ORDERS ================= -->
+
+    <div th:if="${orders == null || #lists.isEmpty(orders)}"
+         class="empty">
+
+        <div class="empty-icon">
+            📦
+        </div>
+
+        <h2>
+            No Orders Yet
+        </h2>
+
+        <p>
+            You haven't placed any orders yet.
+        </p>
+
+        <a th:href="@{/products}"
+           class="shop-btn">
+
+            Start Shopping
+
+        </a>
+
+    </div>
+
+
+    <!-- ================= ORDERS ================= -->
+
+    <div th:if="${orders != null && !#lists.isEmpty(orders)}"
+         class="orders-container">
+
+
+        <div class="order-card"
+             th:each="order : ${orders}"
+             th:if="${order != null}">
+
+
+            <!-- ORDER HEADER -->
+
+            <div class="order-top">
+
+                <div>
+
+                    <div class="order-number">
+
+                        Order #
+
+                        <span th:text="${order.id}">
+                            1
+                        </span>
+
+                    </div>
+
+                    <div class="order-date">
+
+                        <span th:if="${order.orderDate != null}"
+                              th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+
+                            Date
+
+                        </span>
+
+                        <span th:if="${order.orderDate == null}">
+                            Date unavailable
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <span class="status"
+
+                      th:classappend="${order.status != null
+                                      ? #strings.toLowerCase(order.status)
+                                      : 'placed'}"
+
+                      th:text="${order.status != null
+                               ? order.status
+                               : 'PLACED'}">
+
+                    PLACED
+
+                </span>
+
+            </div>
+
+
+            <!-- ORDER INFORMATION -->
+
+            <div class="order-info">
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Customer
+                    </div>
+
+                    <div class="info-value"
+                         th:text="${order.customerName != null
+                                  ? order.customerName
+                                  : 'N/A'}">
+
+                        Customer
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Items
+                    </div>
+
+                    <div class="info-value">
+
+                        <span th:text="${order.items != null
+                                        ? #lists.size(order.items)
+                                        : 0}">
+
+                            0
+
+                        </span>
+
+                        item(s)
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Total Amount
+                    </div>
+
+                    <div class="info-value">
+
+                        ₹<span th:text="${order.totalAmount}">
+                            0.00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- VIEW ORDER -->
+
+            <div class="order-bottom">
+
+                <a th:href="@{/orders/{id}(id=${order.id})}"
+                   class="view-btn">
+
+                    View Order →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 FurnitureStore.
+    All rights reserved.
+
+</footer>
+
+
+</body>
+
+</html>

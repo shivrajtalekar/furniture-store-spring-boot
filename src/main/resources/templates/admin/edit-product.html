@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Product - FurnitureStore Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6fa;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #1f2937;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #f59e0b;
+        }
+
+        .menu a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #f59e0b;
+            color: white;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topbar-left h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .topbar-left p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        /* ================= FORM CARD ================= */
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            max-width: 1000px;
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-help {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* ================= IMAGE PREVIEW ================= */
+
+        .image-preview-box {
+            margin-top: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 12px;
+            background: #f9fafb;
+            display: none;
+        }
+
+        .image-preview-box p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .image-preview {
+            width: 180px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* ================= PRODUCT ID ================= */
+
+        .product-id {
+            background: #f3f4f6;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .button-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-btn {
+            background: #ef4444;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background: #dc2626;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .topbar h1 {
+                font-size: 25px;
+            }
+
+            .form-box {
+                padding: 20px;
+            }
+
+            .button-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .save-btn,
+            .cancel-btn {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            Furniture<span>Store</span>
+        </div>
+
+        <div class="menu">
+
+            <a href="/admin">
+                🏠 Dashboard
+            </a>
+
+            <a href="/admin/products" class="active">
+                🛋️ Products
+            </a>
+
+            <a href="/admin/orders">
+                📦 Orders
+            </a>
+
+            <a href="/admin/customers">
+                👥 Customers
+            </a>
+
+            <a href="/">
+                🌐 View Website
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="topbar-left">
+
+                <h1>Edit Product</h1>
+
+                <p>
+                    Update product information and inventory details.
+                </p>
+
+            </div>
+
+            <a href="/admin/products" class="back-btn">
+                ← Back to Products
+            </a>
+
+        </div>
+
+
+        <!-- ================= FORM ================= -->
+
+        <div class="form-box">
+
+            <div class="form-title">
+                Product Information
+            </div>
+
+            <div class="form-subtitle">
+                Modify the details below and save your changes.
+            </div>
+
+
+            <form
+                th:action="@{/admin/products/update}"
+                th:object="${product}"
+                method="post">
+
+
+                <!-- PRODUCT ID -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product ID
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{id}"
+                        class="product-id"
+                        readonly>
+
+                    <span class="input-help">
+                        Product ID cannot be changed.
+                    </span>
+
+                </div>
+
+
+                <!-- PRODUCT NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{name}"
+                        placeholder="Example: Modern Luxury Sofa"
+                        maxlength="100"
+                        required>
+
+                    <span class="input-help">
+                        Enter a clear and professional product name.
+                    </span>
+
+                </div>
+
+
+                <!-- CATEGORY + PRICE -->
+
+                <div class="row">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Category <span class="required">*</span>
+                        </label>
+
+                        <select
+                            th:field="*{category}"
+                            required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Sofa">
+                                Sofa
+                            </option>
+
+                            <option value="Chair">
+                                Chair
+                            </option>
+
+                            <option value="Table">
+                                Table
+                            </option>
+
+                            <option value="Bed">
+                                Bed
+                            </option>
+
+                            <option value="Wardrobe">
+                                Wardrobe
+                            </option>
+
+                            <option value="Dining">
+                                Dining
+                            </option>
+
+                            <option value="Office">
+                                Office
+                            </option>
+
+                            <option value="Storage">
+                                Storage
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Price (₹) <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            th:field="*{price}"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter product price"
+                            required>
+
+                        <span class="input-help">
+                            Enter the selling price in Indian Rupees.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY + STOCK -->
+
+                <div class="row">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            th:field="*{quantity}"
+                            min="0"
+                            required>
+
+                        <span class="input-help">
+                            Product quantity information.
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Available Stock <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            th:field="*{stock}"
+                            min="0"
+                            required>
+
+                        <span class="input-help">
+                            Current number of products available.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGE URL -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product Image URL
+                    </label>
+
+                    <input
+                        type="url"
+                        id="imageUrl"
+                        th:field="*{imageUrl}"
+                        placeholder="https://example.com/product-image.jpg">
+
+                    <span class="input-help">
+                        Enter a valid image URL. The preview will appear below.
+                    </span>
+
+
+                    <!-- IMAGE PREVIEW -->
+
+                    <div
+                        class="image-preview-box"
+                        id="previewBox">
+
+                        <p>
+                            Image Preview
+                        </p>
+
+                        <img
+                            id="imagePreview"
+                            class="image-preview"
+                            alt="Product Preview">
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product Description
+                    </label>
+
+                    <textarea
+                        th:field="*{description}"
+                        maxlength="1000"
+                        placeholder="Describe the product, material, design, dimensions, features, etc."></textarea>
+
+                    <span class="input-help">
+                        Maximum 1000 characters.
+                    </span>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="button-area">
+
+                    <button
+                        type="submit"
+                        class="save-btn">
+
+                        💾 Update Product
+
+                    </button>
+
+
+                    <a
+                        href="/admin/products"
+                        class="cancel-btn">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= IMAGE PREVIEW SCRIPT ================= -->
+
+    <script>
+
+        const imageUrl = document.getElementById("imageUrl");
+        const previewBox = document.getElementById("previewBox");
+        const imagePreview = document.getElementById("imagePreview");
+
+
+        function showImagePreview() {
+
+            const url = imageUrl.value.trim();
+
+            if (url === "") {
+
+                previewBox.style.display = "none";
+                imagePreview.src = "";
+
+                return;
+            }
+
+            imagePreview.src = url;
+
+            previewBox.style.display = "block";
+
+        }
+
+
+        imageUrl.addEventListener("input", showImagePreview);
+
+
+        imagePreview.addEventListener("error", function () {
+
+            previewBox.style.display = "none";
+
+        });
+
+
+        window.addEventListener("load", function () {
+
+            showImagePreview();
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

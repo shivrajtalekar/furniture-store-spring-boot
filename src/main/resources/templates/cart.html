@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart | FurnitureStore</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark: #1d1815;
+            --dark-2: #2b211c;
+            --brown: #9b6747;
+            --brown-light: #b7835f;
+            --cream: #f6f2ed;
+            --cream-2: #eee7df;
+            --white: #ffffff;
+            --text: #29231f;
+            --muted: #77706a;
+            --border: #e4ddd6;
+            --green: #52765a;
+            --red: #b34f49;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .navbar {
+            height: 82px;
+            padding: 0 7%;
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--brown);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #413933;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover,
+        .nav-links .active {
+            color: var(--brown);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+            background: white;
+
+            font-size: 17px;
+
+            transition: 0.25s;
+        }
+
+        .nav-icon:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        .cart-button {
+            background: var(--dark);
+            color: white;
+
+            padding: 12px 19px;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+
+            transition: 0.25s;
+        }
+
+        .cart-button:hover {
+            background: var(--brown);
+        }
+
+        /* ==============================
+           PAGE
+        ============================== */
+
+        .page {
+            width: 88%;
+            max-width: 1280px;
+            margin: auto;
+            padding: 52px 0 90px;
+        }
+
+        .page-header {
+            margin-bottom: 38px;
+        }
+
+        .eyebrow {
+            color: var(--brown);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2.4px;
+            margin-bottom: 11px;
+        }
+
+        .page-header h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 50px;
+            font-weight: 600;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 11px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* ==============================
+           CART LAYOUT
+        ============================== */
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 370px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ==============================
+           CART BOX
+        ============================== */
+
+        .cart-box {
+            background: var(--white);
+            border: 1px solid var(--border);
+            padding: 28px 30px;
+        }
+
+        .cart-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-title h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .cart-count {
+            background: var(--cream);
+            color: var(--muted);
+
+            padding: 7px 12px;
+
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* ==============================
+           CART ITEM
+        ============================== */
+
+        .cart-item {
+            display: grid;
+
+            grid-template-columns:
+                110px
+                minmax(160px, 1fr)
+                auto
+                auto;
+
+            gap: 21px;
+
+            align-items: center;
+
+            padding: 25px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-image {
+            width: 110px;
+            height: 110px;
+
+            background: var(--cream-2);
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform 0.5s ease;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.06);
+        }
+
+        /* ==============================
+           PRODUCT INFO
+        ============================== */
+
+        .product-info h3 {
+            font-family: "Playfair Display", serif;
+            font-size: 20px;
+            font-weight: 600;
+
+            line-height: 1.25;
+
+            margin-bottom: 7px;
+        }
+
+        .category {
+            color: var(--muted);
+
+            font-size: 9px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+
+            margin-bottom: 13px;
+        }
+
+        .unit-price {
+            color: var(--brown);
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .unit-label {
+            color: #999;
+
+            font-size: 8px;
+            font-weight: 600;
+
+            letter-spacing: 0.8px;
+            margin-left: 3px;
+        }
+
+        /* ==============================
+           QUANTITY
+        ============================== */
+
+        .quantity-label {
+            color: var(--muted);
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 1.4px;
+
+            text-align: center;
+
+            margin-bottom: 8px;
+        }
+
+        .quantity-form {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .qty-control {
+            width: 32px;
+            height: 34px;
+
+            border: 1px solid var(--border);
+            background: white;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            transition: 0.2s;
+        }
+
+        .qty-control:hover {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+
+        .qty-input {
+            width: 45px;
+            height: 34px;
+
+            border: 1px solid var(--border);
+
+            text-align: center;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            outline: none;
+        }
+
+        .qty-input:focus {
+            border-color: var(--brown);
+        }
+
+        .update-btn {
+            height: 34px;
+
+            padding: 0 10px;
+
+            border: 1px solid var(--dark);
+            background: var(--dark);
+            color: white;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .update-btn:hover {
+            background: var(--brown);
+            border-color: var(--brown);
+        }
+
+        /* ==============================
+           ITEM TOTAL
+        ============================== */
+
+        .item-total {
+            min-width: 90px;
+
+            text-align: right;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .remove-form {
+            grid-column: 4;
+            text-align: right;
+            margin-top: -8px;
+        }
+
+        .remove-form button {
+            border: none;
+            background: none;
+
+            color: var(--red);
+
+            cursor: pointer;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            transition: 0.2s;
+        }
+
+        .remove-form button:hover {
+            text-decoration: underline;
+        }
+
+        /* ==============================
+           CART FOOTER
+        ============================== */
+
+        .cart-footer {
+            padding-top: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .continue-shopping {
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.6px;
+
+            transition: 0.25s;
+        }
+
+        .continue-shopping:hover {
+            color: var(--brown);
+        }
+
+        .clear-form button {
+            border: 1px solid var(--border);
+            background: white;
+
+            padding: 10px 15px;
+
+            cursor: pointer;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.7px;
+
+            transition: 0.25s;
+        }
+
+        .clear-form button:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        /* ==============================
+           SUMMARY
+        ============================== */
+
+        .summary-box {
+            background: white;
+            border: 1px solid var(--border);
+
+            padding: 30px;
+
+            position: sticky;
+            top: 105px;
+        }
+
+        .summary-label {
+            color: var(--brown);
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 7px;
+        }
+
+        .summary-box h2 {
+            font-family: "Playfair Display", serif;
+
+            font-size: 28px;
+            font-weight: 600;
+
+            margin-bottom: 27px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 16px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .summary-row strong {
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .free {
+            color: var(--green) !important;
+
+            font-size: 9px !important;
+
+            letter-spacing: 0.8px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+
+            margin: 23px 0;
+        }
+
+        .grand-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+        .grand-total span:first-child {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .grand-total span:last-child {
+            color: var(--brown);
+
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        /* ==============================
+           CHECKOUT
+        ============================== */
+
+        .checkout-btn {
+            width: 100%;
+
+            display: block;
+
+            padding: 17px;
+
+            background: var(--dark);
+            color: white;
+
+            text-align: center;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1.1px;
+
+            transition: 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: var(--brown);
+        }
+
+        .secure-text {
+            color: var(--muted);
+
+            text-align: center;
+
+            font-size: 8px;
+
+            margin-top: 13px;
+        }
+
+        /* ==============================
+           BENEFITS
+        ============================== */
+
+        .summary-benefits {
+            margin-top: 27px;
+            border-top: 1px solid var(--border);
+        }
+
+        .summary-benefit {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .benefit-icon {
+            width: 30px;
+            height: 30px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--cream);
+
+            border-radius: 50%;
+
+            font-size: 13px;
+        }
+
+        .benefit-text strong {
+            display: block;
+
+            font-size: 9px;
+
+            margin-bottom: 2px;
+        }
+
+        .benefit-text span {
+            color: var(--muted);
+
+            display: block;
+
+            font-size: 8px;
+        }
+
+        /* ==============================
+           EMPTY CART
+        ============================== */
+
+        .empty-cart {
+            background: white;
+            border: 1px solid var(--border);
+
+            padding: 105px 25px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--cream);
+
+            border-radius: 50%;
+
+            font-size: 28px;
+        }
+
+        .empty-cart h2 {
+            font-family: "Playfair Display", serif;
+
+            font-size: 32px;
+            font-weight: 600;
+
+            margin-bottom: 10px;
+        }
+
+        .empty-cart p {
+            max-width: 480px;
+            margin: 0 auto 28px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .shop-btn {
+            display: inline-block;
+
+            background: var(--dark);
+            color: white;
+
+            padding: 14px 25px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: 0.3s;
+        }
+
+        .shop-btn:hover {
+            background: var(--brown);
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        footer {
+            background: #17110e;
+            color: white;
+
+            padding: 55px 7% 27px;
+
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: "Playfair Display", serif;
+
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            color: var(--brown-light);
+        }
+
+        footer p {
+            color: #817872;
+
+            font-size: 9px;
+
+            margin-top: 9px;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1100px) {
+
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-box {
+                position: static;
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .cart-item {
+                grid-template-columns: 95px 1fr;
+                gap: 16px;
+            }
+
+            .product-image {
+                width: 95px;
+                height: 95px;
+            }
+
+            .quantity,
+            .item-total,
+            .remove-form {
+                grid-column: 2;
+            }
+
+            .item-total {
+                text-align: left;
+            }
+
+            .remove-form {
+                text-align: left;
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: 70px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-actions .nav-icon {
+                display: none;
+            }
+
+            .cart-button {
+                display: none;
+            }
+
+            .page {
+                width: 92%;
+                padding-top: 35px;
+            }
+
+            .page-header h1 {
+                font-size: 38px;
+            }
+
+            .cart-box {
+                padding: 20px;
+            }
+
+            .cart-title h2 {
+                font-size: 21px;
+            }
+
+            .cart-item {
+                grid-template-columns: 75px 1fr;
+                gap: 13px;
+            }
+
+            .product-image {
+                width: 75px;
+                height: 75px;
+            }
+
+            .product-info h3 {
+                font-size: 17px;
+            }
+
+            .quantity-form {
+                flex-wrap: wrap;
+            }
+
+            .quantity,
+            .item-total,
+            .remove-form {
+                grid-column: 1 / -1;
+            }
+
+            .item-total {
+                text-align: left;
+            }
+
+            .remove-form {
+                text-align: left;
+            }
+
+            .cart-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+            }
+
+            .summary-box {
+                padding: 24px 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ==============================
+     NAVBAR
+============================== -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        Furniture<span>Store</span>
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Shop
+        </a>
+
+        <a href="/products">
+            Collections
+        </a>
+
+        <a href="/cart" class="active">
+            Cart
+        </a>
+
+    </div>
+
+    <div class="nav-actions">
+
+        <a href="/products" class="nav-icon">
+            ⌕
+        </a>
+
+        <a href="/cart" class="nav-icon">
+            🛒
+        </a>
+
+        <a href="/cart" class="cart-button">
+            CART
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ==============================
+     MAIN
+============================== -->
+
+<main class="page">
+
+    <header class="page-header">
+
+        <div class="eyebrow">
+            YOUR SELECTION
+        </div>
+
+        <h1>
+            Shopping Cart
+        </h1>
+
+        <p>
+            Review your selected pieces before continuing to checkout.
+        </p>
+
+    </header>
+
+
+    <!-- ==============================
+         EMPTY CART
+    ============================== -->
+
+    <section class="empty-cart"
+             th:if="${cart == null or cart.empty}">
+
+        <div class="empty-icon">
+            🛒
+        </div>
+
+        <h2>
+            Your cart is waiting
+        </h2>
+
+        <p>
+            Discover beautiful furniture pieces designed
+            to make your space feel like home.
+        </p>
+
+        <a href="/products" class="shop-btn">
+            EXPLORE COLLECTION
+        </a>
+
+    </section>
+
+
+    <!-- ==============================
+         CART WITH PRODUCTS
+    ============================== -->
+
+    <div class="cart-layout"
+         th:if="${cart != null and !cart.empty}">
+
+
+        <!-- ==========================
+             ITEMS
+        =========================== -->
+
+        <section class="cart-box">
+
+            <div class="cart-title">
+
+                <h2>
+                    Selected Items
+                </h2>
+
+                <span class="cart-count">
+
+                    <span th:text="${cart.totalItems}">
+                        0
+                    </span>
+
+                    item(s)
+
+                </span>
+
+            </div>
+
+
+            <!-- ==========================
+                 CART ITEM
+            =========================== -->
+
+            <article class="cart-item"
+                     th:each="item : ${cart.items}">
+
+
+                <!-- IMAGE -->
+
+                <div class="product-image">
+
+                    <img th:src="${item.product.imageUrl}"
+                         th:alt="${item.product.name}"
+                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80';">
+
+                </div>
+
+
+                <!-- PRODUCT INFO -->
+
+                <div class="product-info">
+
+                    <h3 th:text="${item.product.name}">
+                        Product Name
+                    </h3>
+
+                    <div class="category">
+
+                        <span th:text="${item.product.category}">
+                            Furniture
+                        </span>
+
+                    </div>
+
+                    <div class="unit-price">
+
+                        ₹<span th:text="${item.product.price}">
+                            0
+                        </span>
+
+                        <span class="unit-label">
+                            / UNIT
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="quantity">
+
+                    <div class="quantity-label">
+                        QUANTITY
+                    </div>
+
+                    <form action="/cart/update"
+                          method="post"
+                          class="quantity-form">
+
+                        <input type="hidden"
+                               name="productId"
+                               th:value="${item.product.id}">
+
+                        <button type="button"
+                                class="qty-control"
+                                onclick="decreaseQuantity(this)">
+                            −
+                        </button>
+
+                        <input type="number"
+                               name="quantity"
+                               th:value="${item.quantity}"
+                               min="1"
+                               th:max="${item.product.stock}"
+                               class="qty-input">
+
+                        <button type="button"
+                                class="qty-control"
+                                onclick="increaseQuantity(this)">
+                            +
+                        </button>
+
+                        <button type="submit"
+                                class="update-btn">
+                            UPDATE
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- ITEM TOTAL -->
+
+                <div class="item-total">
+
+                    ₹<span th:text="${item.totalPrice}">
+                        0
+                    </span>
+
+                </div>
+
+
+                <!-- REMOVE -->
+
+                <form action="/cart/remove"
+                      method="post"
+                      class="remove-form">
+
+                    <input type="hidden"
+                           name="productId"
+                           th:value="${item.product.id}">
+
+                    <button type="submit">
+                        Remove item
+                    </button>
+
+                </form>
+
+            </article>
+
+
+            <!-- ==========================
+                 CART FOOTER
+            =========================== -->
+
+            <div class="cart-footer">
+
+                <a href="/products"
+                   class="continue-shopping">
+
+                    ← Continue Shopping
+
+                </a>
+
+                <form action="/cart/clear"
+                      method="post"
+                      class="clear-form">
+
+                    <button type="submit">
+                        CLEAR CART
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================
+             ORDER SUMMARY
+        =========================== -->
+
+        <aside class="summary-box">
+
+            <div class="summary-label">
+                ORDER DETAILS
+            </div>
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Items
+                </span>
+
+                <strong th:text="${cart.totalItems}">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ₹<span th:text="${cart.total}">
+                        0
+                    </span>
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <strong class="free">
+                    FREE
+                </strong>
+
+            </div>
+
+
+            <div class="divider"></div>
+
+
+            <div class="grand-total">
+
+                <span>
+                    Total
+                </span>
+
+                <span>
+                    ₹<span th:text="${cart.total}">
+                        0
+                    </span>
+                </span>
+
+            </div>
+
+
+            <a href="/checkout"
+               class="checkout-btn">
+
+                PROCEED TO CHECKOUT
+                &nbsp; →
+
+            </a>
+
+
+            <div class="secure-text">
+                🔒 Secure checkout · Your information is protected
+            </div>
+
+
+            <!-- BENEFITS -->
+
+            <div class="summary-benefits">
+
+                <div class="summary-benefit">
+
+                    <div class="benefit-icon">
+                        🚚
+                    </div>
+
+                    <div class="benefit-text">
+
+                        <strong>
+                            Free Delivery
+                        </strong>
+
+                        <span>
+                            On eligible orders
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-benefit">
+
+                    <div class="benefit-icon">
+                        ↩
+                    </div>
+
+                    <div class="benefit-text">
+
+                        <strong>
+                            Easy Returns
+                        </strong>
+
+                        <span>
+                            Simple return experience
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-benefit">
+
+                    <div class="benefit-icon">
+                        ✓
+                    </div>
+
+                    <div class="benefit-text">
+
+                        <strong>
+                            Quality Assured
+                        </strong>
+
+                        <span>
+                            Carefully selected furniture
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<!-- ==============================
+     FOOTER
+============================== -->
+
+<footer>
+
+    <div class="footer-logo">
+        Furniture<span>Store</span>
+    </div>
+
+    <p>
+        Beautiful furniture for modern living.
+        © 2026 FurnitureStore. All rights reserved.
+    </p>
+
+</footer>
+
+
+<!-- ==============================
+     JAVASCRIPT
+============================== -->
+
+<script>
+
+    function increaseQuantity(button) {
+
+        const form = button.parentElement;
+
+        const input = form.querySelector(".qty-input");
+
+        let quantity = parseInt(input.value) || 1;
+
+        const max = parseInt(input.getAttribute("max"));
+
+        if (!isNaN(max) && quantity >= max) {
+            input.value = max;
+            return;
+        }
+
+        input.value = quantity + 1;
+    }
+
+
+    function decreaseQuantity(button) {
+
+        const form = button.parentElement;
+
+        const input = form.querySelector(".qty-input");
+
+        let quantity = parseInt(input.value) || 1;
+
+        if (quantity > 1) {
+            input.value = quantity - 1;
+        } else {
+            input.value = 1;
+        }
+    }
+
+
+    document.querySelectorAll(".qty-input").forEach(function(input) {
+
+        input.addEventListener("input", function() {
+
+            let value = parseInt(this.value) || 1;
+
+            const max = parseInt(this.getAttribute("max"));
+
+            if (value < 1) {
+                value = 1;
+            }
+
+            if (!isNaN(max) && value > max) {
+                value = max;
+            }
+
+            this.value = value;
+
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>

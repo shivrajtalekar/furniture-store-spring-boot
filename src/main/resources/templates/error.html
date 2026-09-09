@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Error | Furniture Store</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 55px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.08);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #fee2e2;
+            color: #dc2626;
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 30px;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .message {
+            color: #6b7280;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .primary {
+            background: #111827;
+            color: white;
+        }
+
+        .secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .brand {
+            margin-top: 25px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .brand span {
+            color: #b88746;
+            font-weight: 700;
+        }
+
+        @media(max-width: 500px) {
+
+            .card {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="icon">
+            !
+        </div>
+
+        <h1 th:text="${errorTitle}">
+            Something Went Wrong
+        </h1>
+
+        <p class="message"
+           th:text="${errorMessage}">
+            We could not process your request.
+        </p>
+
+        <div class="buttons">
+
+            <a th:href="@{/}"
+               class="btn primary">
+
+                ← Back to Store
+
+            </a>
+
+            <a th:href="@{/products}"
+               class="btn secondary">
+
+                Browse Products
+
+            </a>
+
+        </div>
+
+        <div class="brand">
+
+            <span>FurnitureStore</span>
+            · Customer Support
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmed | Furniture Store</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: #f7f6f3;
+            color: #1d1d1b;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* TOP BAR */
+
+        .top-bar {
+            background: #1d1d1b;
+            color: white;
+            text-align: center;
+            padding: 9px;
+            font-size: 12px;
+            letter-spacing: .5px;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e8e5df;
+            padding: 20px 5%;
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 27px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            display: block;
+            font-family: "DM Sans", sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #8b877f;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            color: #55524c;
+        }
+
+        .nav-links a:hover {
+            color: #000;
+        }
+
+        .cart-btn {
+            background: #1d1d1b;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* SUCCESS */
+
+        .success-wrapper {
+            max-width: 1000px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .success-card {
+            background: white;
+            border: 1px solid #e5e1da;
+            border-radius: 20px;
+            padding: 55px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,.05);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #edf7ed;
+            color: #2f7d32;
+
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .success-card h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 48px;
+            margin-top: 25px;
+        }
+
+        .success-card > p {
+            color: #77736c;
+            margin-top: 12px;
+            font-size: 15px;
+        }
+
+        .order-number {
+            display: inline-block;
+            margin-top: 22px;
+
+            padding: 11px 18px;
+
+            background: #f6f4ef;
+            border-radius: 7px;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* ORDER INFO */
+
+        .order-info {
+            margin-top: 40px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            border-top: 1px solid #e8e5df;
+            border-bottom: 1px solid #e8e5df;
+        }
+
+        .info-box {
+            padding: 22px;
+            border-right: 1px solid #e8e5df;
+        }
+
+        .info-box:last-child {
+            border-right: none;
+        }
+
+        .info-label {
+            color: #89857d;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .info-value {
+            margin-top: 6px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        /* ITEMS */
+
+        .items-section {
+            text-align: left;
+            margin-top: 40px;
+        }
+
+        .items-section h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: grid;
+            grid-template-columns: 65px 1fr auto;
+            gap: 15px;
+            align-items: center;
+
+            padding: 15px 0;
+            border-bottom: 1px solid #ece9e3;
+        }
+
+        .item-image {
+            width: 65px;
+            height: 65px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f1efeb;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .item-details {
+            color: #89857d;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .item-total {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* TOTAL */
+
+        .grand-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-top: 25px;
+            padding: 20px;
+
+            background: #1d1d1b;
+            color: white;
+
+            border-radius: 10px;
+        }
+
+        .grand-total span:first-child {
+            font-family: "Playfair Display", serif;
+            font-size: 21px;
+        }
+
+        .grand-total span:last-child {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 22px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .25s;
+        }
+
+        .btn-primary {
+            background: #1d1d1b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #393835;
+        }
+
+        .btn-secondary {
+            border: 1px solid #d8d4cc;
+            background: white;
+        }
+
+        .btn-secondary:hover {
+            background: #f4f2ed;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: white;
+            border-top: 1px solid #e8e5df;
+            padding: 35px 5%;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: "Playfair Display", serif;
+            font-size: 20px;
+        }
+
+        .footer-text {
+            color: #88847c;
+            font-size: 12px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .success-wrapper {
+                margin: 35px auto;
+            }
+
+            .success-card {
+                padding: 30px 20px;
+            }
+
+            .success-card h1 {
+                font-size: 36px;
+            }
+
+            .order-info {
+                grid-template-columns: 1fr;
+            }
+
+            .info-box {
+                border-right: none;
+                border-bottom: 1px solid #e8e5df;
+            }
+
+            .info-box:last-child {
+                border-bottom: none;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+    THANK YOU FOR SHOPPING WITH FURNITURE STORE
+</div>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="nav-inner">
+
+        <a href="/" class="logo">
+
+            FURNITURE STORE
+
+            <span>MODERN LIVING</span>
+
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/products">Shop</a>
+
+            <a href="/orders">My Orders</a>
+
+        </div>
+
+        <a href="/products" class="cart-btn">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- SUCCESS -->
+
+<main class="success-wrapper">
+
+    <div class="success-card">
+
+
+        <!-- ICON -->
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+
+        <h1>
+            Order Confirmed!
+        </h1>
+
+
+        <p>
+            Thank you for your purchase.
+            Your furniture is now on its way to becoming part of your home.
+        </p>
+
+
+        <!-- ORDER NUMBER -->
+
+        <div class="order-number">
+
+            ORDER #
+            <span th:text="${order.id}">
+                1001
+            </span>
+
+        </div>
+
+
+        <!-- ORDER INFO -->
+
+        <div class="order-info">
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Customer
+                </div>
+
+                <div class="info-value"
+                     th:text="${order.customerName}">
+                    Customer Name
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Order Date
+                </div>
+
+                <div class="info-value"
+                     th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy, hh:mm a')}">
+                    05 Sep 2026
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Status
+                </div>
+
+                <div class="info-value"
+                     th:text="${order.status}">
+                    PLACED
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ITEMS -->
+
+        <section class="items-section">
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            <div class="order-item"
+                 th:each="item : ${order.items}">
+
+
+                <div class="item-image">
+
+                    <img th:src="${item.productId != null
+                                  ? '/images/product-placeholder.jpg'
+                                  : '/images/product-placeholder.jpg'}"
+                         alt="Product">
+
+                </div>
+
+
+                <div>
+
+                    <div class="item-name"
+                         th:text="${item.productName}">
+                        Product Name
+                    </div>
+
+                    <div class="item-details">
+
+                        Qty:
+                        <span th:text="${item.quantity}">
+                            1
+                        </span>
+
+                        &nbsp; × &nbsp;
+
+                        ₹<span th:text="${#numbers.formatDecimal(item.price, 1, 2)}">
+                            0.00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="item-total">
+
+                    ₹<span th:text="${#numbers.formatDecimal(item.totalPrice, 1, 2)}">
+                        0.00
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="grand-total">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <span>
+
+                    ₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">
+                        0.00
+                    </span>
+
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <a th:href="@{/orders/{id}(id=${order.id})}"
+               class="btn btn-primary">
+
+                VIEW ORDER DETAILS
+
+            </a>
+
+            <a href="/products"
+               class="btn btn-secondary">
+
+                CONTINUE SHOPPING
+
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-logo">
+            FURNITURE STORE
+        </div>
+
+        <div class="footer-text">
+            © 2026 Furniture Store. Crafted for modern living.
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

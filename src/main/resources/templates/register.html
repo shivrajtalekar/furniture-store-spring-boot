@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | FurniLux</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f2ed;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT */
+
+        .visual {
+            background:
+                linear-gradient(
+                    rgba(20,20,20,0.38),
+                    rgba(20,20,20,0.38)
+                ),
+                url("https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=85")
+                center/cover;
+
+            display: flex;
+            align-items: flex-end;
+            padding: 70px;
+            color: white;
+        }
+
+        .visual-content {
+            max-width: 450px;
+        }
+
+        .visual-content span {
+            font-size: 11px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .visual-content h1 {
+            font-size: 50px;
+            line-height: 1.05;
+            font-weight: 500;
+            margin: 15px 0;
+        }
+
+        .visual-content p {
+            line-height: 1.7;
+            color: #eee;
+        }
+
+        /* RIGHT */
+
+        .form-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px;
+            background: #fff;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading h2 {
+            font-size: 30px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ALERT */
+
+        .alert {
+            padding: 13px 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .field {
+            margin-bottom: 3px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.4px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 14px;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #9b7653;
+        }
+
+        .password-note {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        .register-btn {
+            width: 100%;
+            margin-top: 23px;
+            border: none;
+            padding: 15px;
+            background: #222;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .register-btn:hover {
+            background: #9b7653;
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .login-text a {
+            color: #222;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            color: #9b7653;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #888;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            color: #222;
+        }
+
+        @media (max-width: 850px) {
+
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .visual {
+                display: none;
+            }
+
+            .form-section {
+                min-height: 100vh;
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .form-section {
+                padding: 25px 18px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- LEFT IMAGE -->
+
+    <section class="visual">
+
+        <div class="visual-content">
+
+            <span>WELCOME TO FURNILUX</span>
+
+            <h1>
+                Furniture<br>
+                with feeling.
+            </h1>
+
+            <p>
+                Create a home that reflects your personality.
+                Discover timeless furniture designed for
+                modern living.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- REGISTER -->
+
+    <section class="form-section">
+
+        <div class="form-container">
+
+            <div class="brand">
+                FURNILUX
+            </div>
+
+            <div class="heading">
+
+                <h2>Create Account</h2>
+
+                <p>
+                    Join FurniLux and start your furniture journey.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div class="alert error"
+                 th:if="${errorMessage}"
+                 th:text="${errorMessage}">
+                Registration error
+            </div>
+
+
+            <form th:action="@{/register}"
+                  th:object="${customer}"
+                  method="post">
+
+                <div class="form-grid">
+
+                    <!-- NAME -->
+
+                    <div class="field full">
+
+                        <label for="name">
+                            FULL NAME
+                        </label>
+
+                        <input
+                                type="text"
+                                id="name"
+                                th:field="*{name}"
+                                placeholder="Enter your full name"
+                                required
+                                maxlength="100">
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="field full">
+
+                        <label for="email">
+                            EMAIL ADDRESS
+                        </label>
+
+                        <input
+                                type="email"
+                                id="email"
+                                th:field="*{email}"
+                                placeholder="you@example.com"
+                                required
+                                maxlength="100">
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="field full">
+
+                        <label for="password">
+                            PASSWORD
+                        </label>
+
+                        <input
+                                type="password"
+                                id="password"
+                                th:field="*{password}"
+                                placeholder="Create a password"
+                                required
+                                minlength="6"
+                                maxlength="100">
+
+                        <div class="password-note">
+                            Password must contain at least 6 characters.
+                        </div>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="field">
+
+                        <label for="phone">
+                            PHONE
+                        </label>
+
+                        <input
+                                type="tel"
+                                id="phone"
+                                th:field="*{phone}"
+                                placeholder="9876543210"
+                                maxlength="20">
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="field">
+
+                        <label for="address">
+                            ADDRESS
+                        </label>
+
+                        <input
+                                type="text"
+                                id="address"
+                                th:field="*{address}"
+                                placeholder="Your address"
+                                maxlength="255">
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit"
+                        class="register-btn">
+
+                    CREATE ACCOUNT
+
+                </button>
+
+            </form>
+
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
+
+            <a href="/" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+
+</html>

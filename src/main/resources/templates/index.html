@@ -1,0 +1,2801 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FurnitureStore | Premium Furniture for Modern Living</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        /* =========================================================
+           ROOT
+        ========================================================= */
+
+        :root {
+            --ink: #171411;
+            --ink-soft: #29231f;
+            --espresso: #34251d;
+            --accent: #a66d48;
+            --accent-dark: #855238;
+            --accent-light: #c79874;
+
+            --cream: #f7f3ee;
+            --cream-2: #eee7df;
+            --cream-3: #e5dbd1;
+
+            --white: #ffffff;
+            --text: #28221e;
+            --muted: #776e67;
+            --muted-light: #a09891;
+
+            --border: rgba(35, 27, 22, 0.10);
+
+            --shadow-sm: 0 8px 25px rgba(35, 25, 19, .06);
+            --shadow-md: 0 20px 55px rgba(35, 25, 19, .12);
+            --shadow-lg: 0 30px 80px rgba(35, 25, 19, .18);
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           ANNOUNCEMENT BAR
+        ========================================================= */
+
+        .announcement {
+            min-height: 36px;
+            background: var(--ink);
+            color: #eee5dc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 8px 20px;
+
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+
+            text-align: center;
+        }
+
+        .announcement span {
+            color: var(--accent-light);
+        }
+
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            height: 82px;
+            padding: 0 6.5%;
+
+            background: rgba(255,255,255,.94);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+
+            border-bottom: 1px solid rgba(0,0,0,.06);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 29px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 31px;
+        }
+
+        .nav-links a {
+            position: relative;
+
+            font-size: 12px;
+            font-weight: 600;
+            color: #403934;
+
+            transition: .25s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+
+            position: absolute;
+            left: 0;
+            bottom: -9px;
+
+            width: 0;
+            height: 2px;
+
+            background: var(--accent);
+
+            transition: .25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            transition: .25s ease;
+        }
+
+        .nav-icon:hover {
+            background: var(--cream);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+
+            right: 0;
+            top: -2px;
+
+            width: 17px;
+            height: 17px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--accent);
+            color: white;
+
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .shop-btn {
+            background: var(--ink);
+            color: white !important;
+
+            padding: 11px 20px;
+
+            border-radius: 4px;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+
+            transition: .25s ease;
+        }
+
+        .shop-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            min-height: 690px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            padding: 90px 7%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(247,243,238,.98) 0%,
+                    rgba(247,243,238,.94) 28%,
+                    rgba(247,243,238,.65) 49%,
+                    rgba(247,243,238,.15) 78%,
+                    rgba(247,243,238,.02) 100%
+                ),
+                url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2400&q=92");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 15% 45%,
+                    rgba(255,255,255,.30),
+                    transparent 35%
+                );
+
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 650px;
+
+            animation: heroReveal .9s ease forwards;
+        }
+
+        @keyframes heroReveal {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 22px;
+
+            color: var(--accent);
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.8px;
+            text-transform: uppercase;
+        }
+
+        .hero-label::before {
+            content: "";
+
+            width: 35px;
+            height: 1px;
+
+            background: var(--accent);
+        }
+
+        .hero h1 {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(54px, 7vw, 88px);
+
+            line-height: .98;
+
+            font-weight: 600;
+
+            letter-spacing: -3.5px;
+
+            color: var(--ink);
+
+            margin-bottom: 27px;
+        }
+
+        .hero h1 span {
+            display: block;
+
+            color: var(--accent);
+
+            font-style: italic;
+
+            margin-left: 48px;
+        }
+
+        .hero-description {
+            max-width: 500px;
+
+            color: #665d56;
+
+            font-size: 15px;
+            line-height: 1.9;
+
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .btn {
+            min-height: 52px;
+
+            padding: 0 25px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 4px;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+
+            transition: .3s ease;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: white;
+
+            box-shadow: 0 12px 30px rgba(23,20,17,.15);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(166,109,72,.25);
+        }
+
+        .btn-secondary {
+            border: 1px solid #4b4038;
+
+            color: var(--ink);
+
+            background: rgba(255,255,255,.35);
+        }
+
+        .btn-secondary:hover {
+            background: var(--ink);
+            border-color: var(--ink);
+            color: white;
+        }
+
+
+        /* =========================================================
+           TRUST STRIP
+        ========================================================= */
+
+        .trust {
+            background: white;
+
+            padding: 24px 7%;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 13px;
+
+            border-right: 1px solid var(--border);
+        }
+
+        .trust-item:last-child {
+            border-right: none;
+        }
+
+        .trust-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: var(--cream);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+
+            color: var(--accent);
+        }
+
+        .trust-item strong {
+            display: block;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .trust-item small {
+            display: block;
+
+            color: var(--muted-light);
+
+            font-size: 9px;
+        }
+
+
+        /* =========================================================
+           GENERAL SECTIONS
+        ========================================================= */
+
+        .section {
+            padding: 100px 7%;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            margin-bottom: 42px;
+        }
+
+        .section-eyebrow {
+            margin-bottom: 9px;
+
+            color: var(--accent);
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 2.8px;
+
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(34px, 4vw, 47px);
+
+            line-height: 1.08;
+
+            font-weight: 600;
+
+            letter-spacing: -1.4px;
+        }
+
+        .view-all {
+            color: var(--accent);
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: .8px;
+
+            border-bottom: 1px solid var(--accent);
+
+            padding-bottom: 5px;
+
+            transition: .2s;
+        }
+
+        .view-all:hover {
+            color: var(--accent-dark);
+            border-color: var(--accent-dark);
+        }
+
+
+        /* =========================================================
+           CATEGORIES
+        ========================================================= */
+
+        .categories {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 17px;
+        }
+
+        .category-card {
+            height: 365px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 5px;
+
+            box-shadow: var(--shadow-sm);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform .8s cubic-bezier(.2,.8,.2,1);
+        }
+
+        .category-card:hover img {
+            transform: scale(1.09);
+        }
+
+        .category-card::after {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(
+                to top,
+                rgba(20,15,12,.82),
+                rgba(20,15,12,.03) 65%
+            );
+
+            transition: .3s;
+        }
+
+        .category-card:hover::after {
+            background: linear-gradient(
+                to top,
+                rgba(20,15,12,.9),
+                rgba(20,15,12,.08) 70%
+            );
+        }
+
+        .category-overlay {
+            position: absolute;
+
+            z-index: 2;
+
+            inset: 0;
+
+            padding: 27px;
+
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .category-overlay h3 {
+            font-family: "Playfair Display", serif;
+
+            color: white;
+
+            font-size: 27px;
+            font-weight: 500;
+        }
+
+        .category-overlay span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #dcd2ca;
+
+            font-size: 9px;
+            font-weight: 600;
+
+            letter-spacing: 1.4px;
+        }
+
+
+        /* =========================================================
+           PRODUCTS
+        ========================================================= */
+
+        .products-section {
+            background: white;
+        }
+
+        .product-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 23px;
+        }
+
+        .product-card {
+            position: relative;
+
+            background: white;
+
+            transition: transform .35s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .product-image {
+            height: 325px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: #eee8e1;
+
+            border-radius: 4px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform .7s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.06);
+        }
+
+        .product-badge {
+            position: absolute;
+
+            z-index: 3;
+
+            left: 13px;
+            top: 13px;
+
+            background: white;
+
+            padding: 7px 10px;
+
+            color: var(--ink);
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,.08);
+        }
+
+        .wishlist {
+            position: absolute;
+
+            z-index: 4;
+
+            right: 13px;
+            top: 13px;
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.95);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            transition: .25s;
+        }
+
+        .wishlist:hover {
+            color: var(--accent);
+
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 18px 2px 7px;
+        }
+
+        .product-category {
+            color: var(--accent);
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            margin: 6px 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 20px;
+            font-weight: 600;
+
+            line-height: 1.2;
+        }
+
+        .product-description {
+            height: 39px;
+
+            overflow: hidden;
+
+            color: #8b827b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .product-footer {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 15px;
+        }
+
+        .product-price {
+            color: var(--ink);
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .stock {
+            color: #5c8162;
+
+            font-size: 8px;
+            font-weight: 800;
+
+            letter-spacing: .9px;
+        }
+
+        .stock.out {
+            color: #a25c55;
+        }
+
+        .product-button {
+            display: block;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 3px;
+
+            background: var(--ink);
+            color: white;
+
+            text-align: center;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: .8px;
+
+            transition: .25s;
+        }
+
+        .product-button:hover {
+            background: var(--accent);
+        }
+
+
+        /* =========================================================
+           FEATURE BANNER
+        ========================================================= */
+
+        .feature-banner {
+            min-height: 450px;
+
+            margin: 0 7% 100px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 70px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(30,22,17,.95),
+                    rgba(30,22,17,.50),
+                    rgba(30,22,17,.12)
+                ),
+                url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=2200&q=92");
+
+            background-size: cover;
+            background-position: center;
+
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-banner-content {
+            max-width: 560px;
+
+            color: white;
+        }
+
+        .feature-banner-content small {
+            color: #d1a17d;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 2.7px;
+        }
+
+        .feature-banner-content h2 {
+            margin: 13px 0 18px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(38px, 5vw, 57px);
+
+            font-weight: 500;
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .feature-banner-content p {
+            max-width: 510px;
+
+            margin-bottom: 27px;
+
+            color: #ddd4cd;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+
+        /* =========================================================
+           WHY US
+        ========================================================= */
+
+        .why {
+            background: var(--ink);
+
+            color: white;
+        }
+
+        .why .section-title {
+            color: white;
+        }
+
+        .why .section-eyebrow {
+            color: #bd8c68;
+        }
+
+        .features {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 1px;
+
+            background: rgba(255,255,255,.10);
+        }
+
+        .feature {
+            min-height: 260px;
+
+            padding: 36px 29px;
+
+            background: var(--ink);
+
+            transition: .3s;
+        }
+
+        .feature:hover {
+            background: #211b17;
+        }
+
+        .feature-number {
+            margin-bottom: 27px;
+
+            color: #8f725e;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+        }
+
+        .feature-icon {
+            margin-bottom: 16px;
+
+            color: #c18d69;
+
+            font-size: 25px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 21px;
+            font-weight: 500;
+        }
+
+        .feature p {
+            color: #9e968f;
+
+            font-size: 11px;
+            line-height: 1.9;
+        }
+
+
+        /* =========================================================
+           INSPIRATION
+        ========================================================= */
+
+        .inspiration-grid {
+            display: grid;
+
+            grid-template-columns: 1.45fr .8fr;
+
+            gap: 18px;
+        }
+
+        .inspiration-card {
+            height: 500px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 4px;
+        }
+
+        .inspiration-card.small {
+            height: 500px;
+        }
+
+        .inspiration-card img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform .8s ease;
+        }
+
+        .inspiration-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .inspiration-overlay {
+            position: absolute;
+
+            inset: 0;
+
+            padding: 33px;
+
+            display: flex;
+            align-items: flex-end;
+
+            background: linear-gradient(
+                transparent 42%,
+                rgba(0,0,0,.75)
+            );
+        }
+
+        .inspiration-overlay h3 {
+            margin-bottom: 6px;
+
+            color: white;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 33px;
+            font-weight: 500;
+        }
+
+        .inspiration-overlay a {
+            color: #e8ddd5;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: .2s;
+        }
+
+        .inspiration-overlay a:hover {
+            color: white;
+        }
+
+
+        /* =========================================================
+           REVIEWS
+        ========================================================= */
+
+        .reviews-section {
+            background: white;
+        }
+
+        .reviews {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .review {
+            padding: 35px;
+
+            background: var(--cream);
+
+            border: 1px solid var(--border);
+
+            transition: .3s;
+        }
+
+        .review:hover {
+            transform: translateY(-5px);
+
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stars {
+            margin-bottom: 19px;
+
+            color: #b77c51;
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+        }
+
+        .review p {
+            min-height: 100px;
+
+            margin-bottom: 22px;
+
+            color: #403731;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 17px;
+
+            line-height: 1.75;
+        }
+
+        .review strong {
+            color: var(--ink);
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================================================
+           NEWSLETTER
+        ========================================================= */
+
+        .newsletter {
+            padding: 90px 7%;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(255,255,255,.65),
+                    transparent 60%
+                ),
+                var(--cream-2);
+
+            text-align: center;
+        }
+
+        .newsletter-label {
+            color: var(--accent);
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 2.7px;
+        }
+
+        .newsletter h2 {
+            margin: 10px 0 9px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(34px, 4vw, 47px);
+
+            line-height: 1.1;
+        }
+
+        .newsletter p {
+            margin-bottom: 27px;
+
+            color: #776d65;
+
+            font-size: 12px;
+        }
+
+        .subscribe {
+            max-width: 540px;
+
+            margin: auto;
+
+            display: flex;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            box-shadow: var(--shadow-sm);
+        }
+
+        .subscribe input {
+            flex: 1;
+
+            min-width: 0;
+
+            border: none;
+            outline: none;
+
+            padding: 17px;
+
+            color: var(--text);
+
+            font-size: 11px;
+        }
+
+        .subscribe input::placeholder {
+            color: #aaa29c;
+        }
+
+        .subscribe button {
+            border: none;
+
+            padding: 0 26px;
+
+            background: var(--ink);
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition: .25s;
+        }
+
+        .subscribe button:hover {
+            background: var(--accent);
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            padding: 75px 7% 25px;
+
+            background: #120e0b;
+
+            color: white;
+        }
+
+        .footer-grid {
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+
+            gap: 55px;
+
+            margin-bottom: 58px;
+        }
+
+        .footer-logo {
+            margin-bottom: 16px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 29px;
+        }
+
+        .footer-logo span {
+            color: #b9805c;
+        }
+
+        .footer-description {
+            max-width: 350px;
+
+            color: #817a74;
+
+            font-size: 11px;
+
+            line-height: 1.9;
+        }
+
+        footer h3 {
+            margin-bottom: 19px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        footer a {
+            display: block;
+
+            margin-bottom: 11px;
+
+            color: #817a74;
+
+            font-size: 11px;
+
+            transition: .2s;
+        }
+
+        footer a:hover {
+            color: white;
+
+            transform: translateX(3px);
+        }
+
+        .copyright {
+            padding-top: 23px;
+
+            border-top: 1px solid rgba(255,255,255,.08);
+
+            color: #5f5954;
+
+            text-align: center;
+
+            font-size: 8px;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =========================================================
+           EMPTY PRODUCTS
+        ========================================================= */
+
+        .empty-products {
+            margin-top: 20px;
+
+            padding: 75px 20px;
+
+            border: 1px dashed var(--cream-3);
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .empty-products h3 {
+            margin-bottom: 8px;
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 25px;
+        }
+
+        .empty-products p {
+            font-size: 11px;
+        }
+
+
+        /* =========================================================
+           SCROLLBAR
+        ========================================================= */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #b89b84;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE - TABLET
+        ========================================================= */
+
+        @media(max-width:1100px) {
+
+            .nav-links {
+                gap: 17px;
+            }
+
+            .categories,
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trust {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trust-item {
+                min-height: 65px;
+
+                padding: 12px;
+
+                border-bottom: 1px solid var(--border);
+            }
+
+            .hero {
+                background-position: 62% center;
+            }
+        }
+
+
+        /* =========================================================
+           RESPONSIVE - MOBILE
+        ========================================================= */
+
+        @media(max-width:700px) {
+
+            .announcement {
+                min-height: 34px;
+
+                padding: 7px 12px;
+
+                font-size: 7px;
+                letter-spacing: .9px;
+            }
+
+            .navbar {
+                height: 68px;
+
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-actions {
+                gap: 4px;
+            }
+
+            .nav-icon {
+                width: 34px;
+                height: 34px;
+
+                font-size: 17px;
+            }
+
+            .shop-btn {
+                display: none;
+            }
+
+
+            /* HERO */
+
+            .hero {
+                min-height: 650px;
+
+                padding: 65px 6%;
+
+                align-items: flex-end;
+
+                background:
+                    linear-gradient(
+                        180deg,
+                        rgba(247,243,238,.35),
+                        rgba(247,243,238,.96) 72%
+                    ),
+                    url("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=90");
+
+                background-position: 65% center;
+            }
+
+            .hero h1 {
+                font-size: 52px;
+
+                letter-spacing: -2px;
+            }
+
+            .hero h1 span {
+                margin-left: 25px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+
+            /* TRUST */
+
+            .trust {
+                grid-template-columns: 1fr;
+
+                padding: 8px 6%;
+            }
+
+            .trust-item {
+                justify-content: flex-start;
+
+                border-right: none;
+            }
+
+
+            /* SECTION */
+
+            .section {
+                padding: 68px 6%;
+            }
+
+            .section-header {
+                display: block;
+
+                margin-bottom: 30px;
+            }
+
+            .section-title {
+                font-size: 34px;
+            }
+
+            .view-all {
+                display: inline-block;
+
+                margin-top: 15px;
+            }
+
+
+            /* CATEGORIES */
+
+            .categories,
+            .product-grid,
+            .features,
+            .reviews,
+            .inspiration-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-card {
+                height: 320px;
+            }
+
+
+            /* PRODUCTS */
+
+            .product-image {
+                height: 340px;
+            }
+
+
+            /* BANNER */
+
+            .feature-banner {
+                min-height: 420px;
+
+                margin: 0 5% 68px;
+
+                padding: 42px 27px;
+
+                align-items: flex-end;
+            }
+
+            .feature-banner-content h2 {
+                font-size: 38px;
+            }
+
+
+            /* FEATURES */
+
+            .feature {
+                min-height: auto;
+
+                padding: 32px 25px;
+            }
+
+
+            /* INSPIRATION */
+
+            .inspiration-card,
+            .inspiration-card.small {
+                height: 370px;
+            }
+
+            .inspiration-overlay h3 {
+                font-size: 28px;
+            }
+
+
+            /* REVIEWS */
+
+            .review p {
+                min-height: auto;
+            }
+
+
+            /* NEWSLETTER */
+
+            .newsletter {
+                padding: 70px 6%;
+            }
+
+            .newsletter h2 {
+                font-size: 34px;
+            }
+
+            .subscribe {
+                flex-direction: column;
+
+                gap: 8px;
+
+                background: transparent;
+
+                border: none;
+
+                box-shadow: none;
+            }
+
+            .subscribe input,
+            .subscribe button {
+                width: 100%;
+
+                min-height: 50px;
+            }
+
+
+            /* FOOTER */
+
+            footer {
+                padding: 60px 6% 22px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+
+                gap: 38px 25px;
+            }
+
+            .footer-description {
+                max-width: 100%;
+            }
+        }
+
+
+        /* =========================================================
+           VERY SMALL DEVICES
+        ========================================================= */
+
+        @media(max-width:400px) {
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .section-title {
+                font-size: 31px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     ANNOUNCEMENT BAR
+========================================================= -->
+
+<div class="announcement">
+
+    Free shipping on orders above ₹999
+    &nbsp; • &nbsp;
+    <span>Easy returns</span>
+    &nbsp; • &nbsp;
+    Premium furniture for modern living
+
+</div>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        Furniture<span>Store</span>
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/products">
+            Shop
+        </a>
+
+        <a href="#categories">
+            Collections
+        </a>
+
+        <a href="#inspiration">
+            Inspiration
+        </a>
+
+        <a href="#about">
+            Our Story
+        </a>
+
+    </div>
+
+
+    <div class="nav-actions">
+
+        <a href="/products"
+           class="nav-icon"
+           title="Search">
+
+            ⌕
+
+        </a>
+
+
+        <a href="/wishlist"
+           class="nav-icon"
+           title="Wishlist">
+
+            ♡
+
+        </a>
+
+
+        <a href="/cart"
+           class="nav-icon cart-icon"
+           title="Shopping Cart">
+
+            🛒
+
+            <span class="cart-count">
+                0
+            </span>
+
+        </a>
+
+
+        <a href="/products"
+           class="shop-btn">
+
+            SHOP
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            New Collection 2026
+        </div>
+
+
+        <h1>
+
+            Spaces made
+
+            <span>
+                beautiful.
+            </span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            Discover furniture designed around the way
+            you actually live. Timeless silhouettes,
+            thoughtful details and everyday comfort —
+            made for modern homes.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="/products"
+               class="btn btn-primary">
+
+                SHOP THE COLLECTION
+                &nbsp; →
+                
+            </a>
+
+
+            <a href="#categories"
+               class="btn btn-secondary">
+
+                EXPLORE CATEGORIES
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TRUST STRIP
+========================================================= -->
+
+<section class="trust">
+
+
+    <div class="trust-item">
+
+        <div class="trust-icon">
+            🚚
+        </div>
+
+        <div>
+
+            <strong>
+                Free Delivery
+            </strong>
+
+            <small>
+                Orders above ₹999
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <div class="trust-icon">
+            ✦
+        </div>
+
+        <div>
+
+            <strong>
+                Premium Quality
+            </strong>
+
+            <small>
+                Built for everyday living
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <div class="trust-icon">
+            ↩
+        </div>
+
+        <div>
+
+            <strong>
+                Easy Returns
+            </strong>
+
+            <small>
+                Simple & hassle-free
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <div class="trust-icon">
+            ✓
+        </div>
+
+        <div>
+
+            <strong>
+                Secure Checkout
+            </strong>
+
+            <small>
+                Safe & protected payments
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<section class="section"
+         id="categories">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-eyebrow">
+                Curated collections
+            </div>
+
+            <h2 class="section-title">
+                Shop by category
+            </h2>
+
+        </div>
+
+
+        <a href="/products"
+           class="view-all">
+
+            VIEW ALL PRODUCTS →
+
+        </a>
+
+    </div>
+
+
+    <div class="categories">
+
+
+        <a href="/products"
+           class="category-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=90"
+                alt="Sofas">
+
+            <div class="category-overlay">
+
+                <div>
+
+                    <h3>
+                        Sofas
+                    </h3>
+
+                    <span>
+                        COMFORT & STYLE
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a href="/products"
+           class="category-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1000&q=90"
+                alt="Bedroom Furniture">
+
+            <div class="category-overlay">
+
+                <div>
+
+                    <h3>
+                        Bedroom
+                    </h3>
+
+                    <span>
+                        REST & RELAXATION
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a href="/products"
+           class="category-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1617104678098-de229db51175?auto=format&fit=crop&w=1000&q=90"
+                alt="Dining Furniture">
+
+            <div class="category-overlay">
+
+                <div>
+
+                    <h3>
+                        Dining
+                    </h3>
+
+                    <span>
+                        GATHER TOGETHER
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a href="/products"
+           class="category-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=1000&q=90"
+                alt="Chairs">
+
+            <div class="category-overlay">
+
+                <div>
+
+                    <h3>
+                        Chairs
+                    </h3>
+
+                    <span>
+                        DESIGNED TO SIT
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FEATURED PRODUCTS
+========================================================= -->
+
+<section class="section products-section">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-eyebrow">
+                The edit
+            </div>
+
+            <h2 class="section-title">
+                Featured pieces
+            </h2>
+
+        </div>
+
+
+        <a href="/products"
+           class="view-all">
+
+            SHOP EVERYTHING →
+
+        </a>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        <div class="product-card"
+             th:each="product : ${products}">
+
+
+            <div class="product-image">
+
+
+                <span class="product-badge">
+                    FEATURED
+                </span>
+
+
+                <img
+                    th:src="${product.imageUrl}"
+                    th:alt="${product.name}"
+                    onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1000&q=85'">
+
+
+                <a href="/wishlist"
+                   class="wishlist"
+                   title="Add to wishlist">
+
+                    ♡
+
+                </a>
+
+
+            </div>
+
+
+            <div class="product-info">
+
+
+                <div class="product-category"
+                     th:text="${product.category}">
+
+                    CATEGORY
+
+                </div>
+
+
+                <h3 class="product-name"
+                    th:text="${product.name}">
+
+                    Product Name
+
+                </h3>
+
+
+                <p class="product-description"
+                   th:text="${product.description}">
+
+                    Beautifully designed furniture
+                    for modern living.
+
+                </p>
+
+
+                <div class="product-footer">
+
+
+                    <div class="product-price">
+
+                        ₹<span th:text="${product.price}">
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <div class="stock"
+                         th:if="${product.stock > 0}">
+
+                        IN STOCK
+
+                    </div>
+
+
+                    <div class="stock out"
+                         th:if="${product.stock <= 0}">
+
+                        OUT OF STOCK
+
+                    </div>
+
+
+                </div>
+
+
+                <a th:href="@{/products/{id}(id=${product.id})}"
+                   class="product-button">
+
+                    VIEW PRODUCT
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="empty-products"
+         th:if="${#lists.isEmpty(products)}">
+
+        <h3>
+            Your collection is waiting.
+        </h3>
+
+        <p>
+            Add products from your admin panel
+            to display them on the homepage.
+        </p>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     FEATURE BANNER
+========================================================= -->
+
+<section class="feature-banner">
+
+
+    <div class="feature-banner-content">
+
+
+        <small>
+            THE ART OF LIVING
+        </small>
+
+
+        <h2>
+
+            Your home should
+            tell your story.
+
+        </h2>
+
+
+        <p>
+
+            Create a space that feels uniquely yours
+            with furniture made for slow mornings,
+            long dinners and everything in between.
+
+        </p>
+
+
+        <a href="/products"
+           class="btn btn-primary">
+
+            EXPLORE THE COLLECTION
+            &nbsp; →
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WHY FURNITURESTORE
+========================================================= -->
+
+<section class="section why"
+         id="about">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-eyebrow">
+                Why FurnitureStore
+            </div>
+
+            <h2 class="section-title">
+                Designed with purpose.
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="features">
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                01
+            </div>
+
+            <div class="feature-icon">
+                ✦
+            </div>
+
+            <h3>
+                Thoughtful Design
+            </h3>
+
+            <p>
+
+                Clean lines, considered proportions
+                and timeless details made for
+                contemporary homes.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                02
+            </div>
+
+            <div class="feature-icon">
+                ◇
+            </div>
+
+            <h3>
+                Quality Materials
+            </h3>
+
+            <p>
+
+                We focus on dependable materials
+                and craftsmanship that stands up
+                to everyday life.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                03
+            </div>
+
+            <div class="feature-icon">
+                ♡
+            </div>
+
+            <h3>
+                Made for Living
+            </h3>
+
+            <p>
+
+                Beautiful furniture should also be
+                comfortable, practical and genuinely
+                enjoyable to use.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                04
+            </div>
+
+            <div class="feature-icon">
+                ✓
+            </div>
+
+            <h3>
+                Customer First
+            </h3>
+
+            <p>
+
+                From the first click to delivery,
+                we make every part of your shopping
+                journey simple.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INSPIRATION
+========================================================= -->
+
+<section class="section"
+         id="inspiration">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-eyebrow">
+                Get inspired
+            </div>
+
+            <h2 class="section-title">
+                Spaces worth coming home to.
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="inspiration-grid">
+
+
+        <div class="inspiration-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1400&q=90"
+                alt="Modern Living Room">
+
+
+            <div class="inspiration-overlay">
+
+                <div>
+
+                    <h3>
+                        Modern Living
+                    </h3>
+
+                    <a href="/products">
+                        SHOP THE LOOK →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="inspiration-card small">
+
+            <img
+                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=90"
+                alt="Warm Interior">
+
+
+            <div class="inspiration-overlay">
+
+                <div>
+
+                    <h3>
+                        Warm Interiors
+                    </h3>
+
+                    <a href="/products">
+                        DISCOVER →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     REVIEWS
+========================================================= -->
+
+<section class="section reviews-section">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-eyebrow">
+                Customer stories
+            </div>
+
+            <h2 class="section-title">
+                Loved by our customers.
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="reviews">
+
+
+        <div class="review">
+
+            <div class="stars">
+                ★★★★★
+            </div>
+
+            <p>
+
+                “The sofa looks even better in person.
+                Beautiful quality and incredibly
+                comfortable.”
+
+            </p>
+
+            <strong>
+                — RAHUL S.
+            </strong>
+
+        </div>
+
+
+        <div class="review">
+
+            <div class="stars">
+                ★★★★★
+            </div>
+
+            <p>
+
+                “The design completely changed the
+                feeling of our dining room.
+                Absolutely beautiful.”
+
+            </p>
+
+            <strong>
+                — PRIYA M.
+            </strong>
+
+        </div>
+
+
+        <div class="review">
+
+            <div class="stars">
+                ★★★★★
+            </div>
+
+            <p>
+
+                “Simple ordering, great communication
+                and furniture that feels genuinely
+                premium.”
+
+            </p>
+
+            <strong>
+                — AMIT D.
+            </strong>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     NEWSLETTER
+========================================================= -->
+
+<section class="newsletter">
+
+
+    <div class="newsletter-label">
+        STAY IN THE LOOP
+    </div>
+
+
+    <h2>
+        A little inspiration,
+        delivered.
+    </h2>
+
+
+    <p>
+        New collections, styling ideas and exclusive offers.
+    </p>
+
+
+    <form class="subscribe"
+          onsubmit="return subscribeUser(event)">
+
+
+        <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="Your email address"
+            required>
+
+
+        <button type="submit">
+            SUBSCRIBE
+        </button>
+
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+
+    <div class="footer-grid">
+
+
+        <div>
+
+            <div class="footer-logo">
+                Furniture<span>Store</span>
+            </div>
+
+            <p class="footer-description">
+
+                Thoughtfully designed furniture for
+                modern homes. Beautiful pieces made
+                for everyday living.
+
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Shop
+            </h3>
+
+            <a href="/products">
+                All Products
+            </a>
+
+            <a href="#categories">
+                Collections
+            </a>
+
+            <a href="/cart">
+                Shopping Cart
+            </a>
+
+            <a href="/wishlist">
+                Wishlist
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Company
+            </h3>
+
+            <a href="#about">
+                Our Story
+            </a>
+
+            <a href="/">
+                Contact
+            </a>
+
+            <a href="/">
+                Privacy Policy
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Help
+            </h3>
+
+            <a href="/">
+                Help Center
+            </a>
+
+            <a href="/">
+                Delivery
+            </a>
+
+            <a href="/">
+                Returns
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 FurnitureStore.
+        ALL RIGHTS RESERVED.
+
+    </div>
+
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    function subscribeUser(event) {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("newsletterEmail").value.trim();
+
+        if (!email) {
+            return false;
+        }
+
+        alert(
+            "Thank you for subscribing to FurnitureStore!"
+        );
+
+        document.getElementById("newsletterEmail").value = "";
+
+        return false;
+    }
+
+</script>
+
+
+</body>
+</html>

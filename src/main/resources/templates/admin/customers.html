@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customers | Furniture Store Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            padding: 0 12px;
+            margin-bottom: 35px;
+        }
+
+        .brand span {
+            color: #d4a373;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 12px 10px;
+        }
+
+        .menu a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1f2937;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .topbar p {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05);
+            margin-bottom: 22px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-form input:focus {
+            border-color: #9ca3af;
+        }
+
+        .search-btn {
+            border: none;
+            padding: 12px 20px;
+            background: #111827;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .clear-btn {
+            text-decoration: none;
+            padding: 12px 18px;
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05);
+        }
+
+        .stat small {
+            color: #6b7280;
+        }
+
+        .stat h2 {
+            margin-top: 8px;
+            font-size: 28px;
+        }
+
+        /* TABLE */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th,
+        td {
+            padding: 15px 18px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .customer-name {
+            font-weight: 700;
+        }
+
+        .email {
+            color: #6b7280;
+        }
+
+        .view-btn {
+            text-decoration: none;
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-weight: 600;
+        }
+
+        /* PAGINATION */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 22px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 7px;
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .page-btn.active {
+            background: #111827;
+            color: white;
+        }
+
+        .page-info {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 0 8px;
+        }
+
+        .empty {
+            padding: 50px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 800px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
+            }
+
+            .brand {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .brand span {
+                font-size: 20px;
+            }
+
+            .menu a {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media(max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            Furniture<span>Store</span>
+        </div>
+
+        <div class="menu-title">
+            Management
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/admin/dashboard}">
+                Dashboard
+            </a>
+
+            <a th:href="@{/admin/products}">
+                Products
+            </a>
+
+            <a th:href="@{/admin/orders}">
+                Orders
+            </a>
+
+            <a th:href="@{/admin/customers}"
+               class="active">
+                Customers
+            </a>
+
+        </div>
+
+        <div class="menu-title">
+            Store
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/}">
+                View Store
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Customers
+                </h1>
+
+                <p>
+                    Manage registered customers and their orders
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <form
+                th:action="@{/admin/customers}"
+                method="get"
+                class="search-form">
+
+                <input
+                    type="text"
+                    name="keyword"
+                    th:value="${keyword}"
+                    placeholder="Search by name, email or phone...">
+
+                <button
+                    type="submit"
+                    class="search-btn">
+
+                    Search
+
+                </button>
+
+                <a
+                    th:href="@{/admin/customers}"
+                    class="clear-btn">
+
+                    Clear
+
+                </a>
+
+            </form>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <small>
+                    Total Customers
+                </small>
+
+                <h2
+                    th:text="${totalCustomers}">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>
+                    Total Orders
+                </small>
+
+                <h2
+                    th:text="${totalOrders}">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- CUSTOMER TABLE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Customer Directory
+                </h2>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Email</th>
+
+                        <th>Phone</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="customer : ${customers}">
+
+                        <td
+                            th:text="${customer.id}">
+                            1
+                        </td>
+
+                        <td>
+
+                            <div class="customer-name"
+                                 th:text="${customer.name}">
+                                Customer
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="email"
+                                  th:text="${customer.email}">
+                                email@example.com
+                            </span>
+
+                        </td>
+
+                        <td
+                            th:text="${customer.phone != null
+                                      ? customer.phone
+                                      : 'Not provided'}">
+
+                            Not provided
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                th:href="@{/admin/customers/view/{id}(id=${customer.id})}"
+                                class="view-btn">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr
+                        th:if="${#lists.isEmpty(customers)}">
+
+                        <td colspan="5">
+
+                            <div class="empty">
+
+                                <h3>
+                                    No customers found
+                                </h3>
+
+                                <p>
+                                    Try another search keyword.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+            <div
+                class="pagination"
+                th:if="${totalPages > 0}">
+
+                <a
+                    th:if="${currentPage > 0}"
+                    class="page-btn"
+                    th:href="@{/admin/customers(
+                        page=${currentPage - 1},
+                        size=${pageSize},
+                        keyword=${keyword}
+                    )}">
+
+                    ← Previous
+
+                </a>
+
+
+                <span class="page-info">
+
+                    Page
+                    <strong
+                        th:text="${currentPage + 1}">
+                        1
+                    </strong>
+                    of
+                    <strong
+                        th:text="${totalPages}">
+                        1
+                    </strong>
+
+                </span>
+
+
+                <a
+                    th:if="${currentPage + 1 < totalPages}"
+                    class="page-btn"
+                    th:href="@{/admin/customers(
+                        page=${currentPage + 1},
+                        size=${pageSize},
+                        keyword=${keyword}
+                    )}">
+
+                    Next →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

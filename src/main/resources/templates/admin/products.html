@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Products | Furniture Store Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 35px;
+            padding: 0 12px;
+        }
+
+        .brand span {
+            color: #d4a373;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            margin: 20px 12px 10px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: .2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1f2937;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .topbar p {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .add-btn {
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #374151;
+        }
+
+        /* ALERTS */
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05);
+        }
+
+        .stat small {
+            color: #6b7280;
+        }
+
+        .stat h2 {
+            margin-top: 8px;
+            font-size: 28px;
+        }
+
+        /* TABLE */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th,
+        td {
+            padding: 15px 18px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .product-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .product-name {
+            font-weight: 700;
+        }
+
+        .category {
+            color: #6b7280;
+        }
+
+        .price {
+            font-weight: 700;
+        }
+
+        /* STOCK BADGES */
+
+        .stock {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stock-good {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-low {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stock-out {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn {
+            text-decoration: none;
+            padding: 8px 12px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            border: none;
+            padding: 8px 12px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .empty {
+            padding: 50px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
+            }
+
+            .brand {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .brand span {
+                font-size: 20px;
+            }
+
+            .menu a {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            Furniture<span>Store</span>
+        </div>
+
+        <div class="menu-title">
+            Management
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/admin/dashboard}">
+                Dashboard
+            </a>
+
+            <a th:href="@{/admin/products}"
+               class="active">
+                Products
+            </a>
+
+            <a th:href="@{/admin/orders}">
+                Orders
+            </a>
+
+            <a th:href="@{/admin/customers}">
+                Customers
+            </a>
+
+        </div>
+
+        <div class="menu-title">
+            Store
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/}">
+                View Store
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Products</h1>
+
+                <p>
+                    Manage your furniture inventory
+                </p>
+            </div>
+
+            <a th:href="@{/admin/products/add}"
+               class="add-btn">
+
+                + Add Product
+
+            </a>
+
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div th:if="${successMessage}"
+             class="alert success"
+             th:text="${successMessage}">
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div th:if="${errorMessage}"
+             class="alert error"
+             th:text="${errorMessage}">
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <small>Total Products</small>
+
+                <h2 th:text="${#lists.size(products)}">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>In Stock</small>
+
+                <h2
+                    th:text="${#lists.size(products.?[stock > 5])}">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>Low Stock</small>
+
+                <h2
+                    th:text="${#lists.size(products.?[stock > 0 and stock <= 5])}">
+                    0
+                </h2>
+
+            </div>
+
+
+            <div class="stat">
+
+                <small>Out of Stock</small>
+
+                <h2
+                    th:text="${#lists.size(products.?[stock == 0])}">
+                    0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT TABLE -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Inventory
+                </h2>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Image</th>
+
+                        <th>Product</th>
+
+                        <th>Category</th>
+
+                        <th>Price</th>
+
+                        <th>Stock</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="product : ${products}">
+
+                        <!-- IMAGE -->
+
+                        <td>
+
+                            <img
+                                class="product-img"
+                                th:src="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)
+                                         ? product.imageUrl
+                                         : '/images/product-placeholder.jpg'}"
+                                alt="Product"
+                                onerror="this.src='/images/product-placeholder.jpg';">
+
+                        </td>
+
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="product-name"
+                                 th:text="${product.name}">
+                                Product
+                            </div>
+
+                        </td>
+
+
+                        <!-- CATEGORY -->
+
+                        <td>
+
+                            <span class="category"
+                                  th:text="${product.category}">
+                                Category
+                            </span>
+
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+
+                            <span class="price">
+
+                                ₹<span
+                                    th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">
+                                    0.00
+                                </span>
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- STOCK -->
+
+                        <td>
+
+                            <span
+                                th:if="${product.stock == 0}"
+                                class="stock stock-out">
+
+                                Out of Stock
+
+                            </span>
+
+
+                            <span
+                                th:if="${product.stock > 0 and product.stock <= 5}"
+                                class="stock stock-low">
+
+                                Low Stock:
+                                <span th:text="${product.stock}">
+                                    0
+                                </span>
+
+                            </span>
+
+
+                            <span
+                                th:if="${product.stock > 5}"
+                                class="stock stock-good">
+
+                                In Stock:
+                                <span th:text="${product.stock}">
+                                    0
+                                </span>
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <a
+                                    th:href="@{/admin/products/edit/{id}(id=${product.id})}"
+                                    class="edit-btn">
+
+                                    Edit
+
+                                </a>
+
+
+                                <form
+                                    th:action="@{/admin/products/delete/{id}(id=${product.id})}"
+                                    method="post"
+                                    onsubmit="return confirm('Are you sure you want to delete this product?');">
+
+                                    <button
+                                        type="submit"
+                                        class="delete-btn">
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- EMPTY -->
+
+                    <tr th:if="${#lists.isEmpty(products)}">
+
+                        <td colspan="6">
+
+                            <div class="empty">
+
+                                <h3>
+                                    No products found
+                                </h3>
+
+                                <p>
+                                    Start by adding your first furniture product.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
