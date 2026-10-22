@@ -1,23 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title th:text="${product.name} + ' | FurnitureStore'">
         Product | FurnitureStore
     </title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description"
+          th:content="${product.description}">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
           rel="stylesheet">
 
 
     <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
 
         * {
             margin: 0;
@@ -26,231 +40,477 @@
         }
 
         :root {
-            --dark: #211914;
-            --brown: #9b6747;
-            --brown-light: #b6815e;
-            --cream: #f6f2ed;
+            --dark: #171717;
+            --dark-soft: #242424;
+
+            --gold: #b88746;
+            --gold-light: #d5ad76;
+
+            --cream: #f7f3ed;
+            --cream-dark: #eee7dc;
+
             --white: #ffffff;
-            --text: #29221e;
-            --muted: #756d67;
-            --border: #e4dbd3;
-            --green: #4e7958;
+
+            --text: #252525;
+            --muted: #77716b;
+
+            --border: #e7e0d7;
+
+            --green: #138a5b;
+            --orange: #c86b20;
+            --red: #c53030;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: "DM Sans", sans-serif;
-            background: var(--cream);
+            font-family: "DM Sans", Arial, sans-serif;
+
+            background: #faf9f7;
+
             color: var(--text);
+
+            line-height: 1.5;
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
         }
 
 
-        /* =========================
-           NAVBAR
-        ========================= */
+        /* =====================================================
+           ANNOUNCEMENT
+        ===================================================== */
 
-        .navbar {
-            height: 82px;
-            padding: 0 7%;
-            background: rgba(255,255,255,0.97);
+        .announcement {
+            min-height: 38px;
+
+            background: var(--dark);
+
+            color: #f4f4f4;
 
             display: flex;
+
             align-items: center;
-            justify-content: space-between;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 8px 20px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.1px;
+
+            text-transform: uppercase;
+        }
+
+        .announcement span {
+            color: var(--gold-light);
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            height: 78px;
+
+            padding: 0 5.5%;
+
+            background: rgba(255,255,255,.97);
 
             border-bottom: 1px solid var(--border);
 
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
             position: sticky;
+
             top: 0;
+
             z-index: 1000;
+
+            backdrop-filter: blur(14px);
         }
 
         .logo {
             font-family: "Playfair Display", serif;
-            font-size: 29px;
+
+            font-size: 27px;
+
             font-weight: 700;
-            letter-spacing: -0.5px;
+
+            letter-spacing: -.8px;
+
+            white-space: nowrap;
+
+            color: var(--dark);
         }
 
         .logo span {
-            color: var(--brown);
+            color: var(--gold);
         }
 
         .nav-links {
             display: flex;
+
             align-items: center;
-            gap: 34px;
+
+            gap: 30px;
         }
 
         .nav-links a {
+            position: relative;
+
+            color: #555;
+
             font-size: 12px;
+
             font-weight: 600;
-            color: #413832;
-            transition: 0.25s;
+
+            transition: .25s;
+        }
+
+        .nav-links a::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: -8px;
+
+            width: 0;
+
+            height: 1px;
+
+            background: var(--gold);
+
+            transition: .25s;
         }
 
         .nav-links a:hover {
-            color: var(--brown);
+            color: var(--dark);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-actions {
             display: flex;
+
             align-items: center;
-            gap: 17px;
+
+            gap: 8px;
         }
 
         .nav-icon {
-            font-size: 21px;
-            transition: 0.25s;
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #444;
+
+            font-size: 17px;
+
+            transition: .2s;
         }
 
         .nav-icon:hover {
-            color: var(--brown);
+            background: var(--cream);
+
+            color: var(--gold);
         }
 
-        .shop-button {
+        .wishlist-nav {
+            color: #b53b3b;
+        }
+
+        .cart-nav {
+            width: auto;
+
+            padding: 0 15px;
+
+            gap: 7px;
+
+            border-radius: 22px;
+
             background: var(--dark);
+
             color: white;
 
-            padding: 12px 19px;
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .cart-nav:hover {
+            background: var(--gold);
+
+            color: white;
+        }
+
+        .cart-count {
+            min-width: 18px;
+
+            height: 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--gold);
+
+            color: white;
 
             font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 1px;
-
-            transition: 0.3s;
         }
 
-        .shop-button:hover {
-            background: var(--brown);
+        .mobile-menu-btn {
+            display: none;
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--dark);
+
+            font-size: 23px;
+
+            cursor: pointer;
         }
 
 
-        /* =========================
+        /* =====================================================
            BREADCRUMB
-        ========================= */
+        ===================================================== */
 
-        .breadcrumb {
-            max-width: 1250px;
+        .breadcrumb-wrapper {
+            width: 90%;
+
+            max-width: 1320px;
+
             margin: auto;
 
-            padding: 28px 30px 15px;
+            padding: 25px 0 12px;
+        }
+
+        .breadcrumb {
+            display: flex;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            color: #999;
 
             font-size: 11px;
-            color: var(--muted);
+        }
+
+        .breadcrumb a {
+            transition: .2s;
         }
 
         .breadcrumb a:hover {
-            color: var(--brown);
+            color: var(--gold);
+        }
+
+        .breadcrumb-current {
+            color: #555;
+
+            max-width: 300px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .breadcrumb-separator {
+            color: #c8c0b7;
         }
 
 
-        /* =========================
-           PRODUCT AREA
-        ========================= */
+        /* =====================================================
+           PRODUCT LAYOUT
+        ===================================================== */
 
         .product-container {
+            width: 90%;
 
-            max-width: 1250px;
+            max-width: 1320px;
+
             margin: auto;
 
-            padding: 25px 30px 90px;
+            padding: 25px 0 90px;
 
             display: grid;
 
             grid-template-columns:
                 minmax(0, 1.05fr)
-                minmax(0, 0.95fr);
+                minmax(0, .95fr);
 
-            gap: 70px;
+            gap: 72px;
         }
 
 
-        /* =========================
-           IMAGE
-        ========================= */
+        /* =====================================================
+           IMAGE AREA
+        ===================================================== */
 
         .image-section {
             position: relative;
         }
 
         .image-box {
-
-            width: 100%;
-            height: 620px;
-
-            background: #e9e1d9;
+            height: 650px;
 
             overflow: hidden;
 
             position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eee9e2,
+                    #e1dbd2
+                );
+
+            box-shadow:
+                0 20px 60px rgba(35,29,23,.08);
         }
 
         .image-box img {
-
             width: 100%;
+
             height: 100%;
+
+            display: block;
 
             object-fit: cover;
 
             transition:
-                transform 0.7s ease;
+                transform .7s cubic-bezier(.2,.7,.2,1);
         }
 
         .image-box:hover img {
             transform: scale(1.035);
         }
 
-        .premium-badge {
-
+        .image-overlay {
             position: absolute;
 
-            top: 20px;
-            left: 20px;
+            inset: 0;
 
-            background: white;
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,.20),
+                    transparent 35%
+                );
 
-            padding: 9px 14px;
+            pointer-events: none;
+        }
+
+        .premium-badge {
+            position: absolute;
+
+            top: 18px;
+
+            left: 18px;
+
+            z-index: 5;
+
+            padding: 8px 12px;
+
+            background: rgba(255,255,255,.94);
+
+            color: var(--dark);
 
             font-size: 9px;
 
             font-weight: 800;
 
             letter-spacing: 1.5px;
+        }
+
+        .image-bottom-label {
+            position: absolute;
+
+            left: 20px;
+
+            bottom: 20px;
 
             z-index: 5;
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
         }
 
         .image-note {
-
-            margin-top: 12px;
-
             display: flex;
+
+            align-items: center;
 
             justify-content: space-between;
 
-            color: var(--muted);
+            margin-top: 12px;
+
+            color: #999;
 
             font-size: 10px;
         }
 
 
-        /* =========================
-           PRODUCT INFORMATION
-        ========================= */
+        /* =====================================================
+           PRODUCT INFO
+        ===================================================== */
 
         .product-info {
-            padding-top: 18px;
+            padding-top: 12px;
         }
 
         .category {
-
-            color: var(--brown);
+            color: var(--gold);
 
             font-size: 10px;
 
@@ -264,14 +524,13 @@
         }
 
         .product-title {
+            font-family: "Playfair Display", serif;
 
-            font-family:
-                "Playfair Display",
-                serif;
+            color: var(--dark);
 
-            font-size: 52px;
+            font-size: clamp(40px, 4vw, 58px);
 
-            line-height: 1.08;
+            line-height: 1.06;
 
             font-weight: 600;
 
@@ -281,12 +540,11 @@
         }
 
 
-        /* =========================
+        /* =====================================================
            RATING
-        ========================= */
+        ===================================================== */
 
         .rating {
-
             display: flex;
 
             align-items: center;
@@ -297,213 +555,264 @@
         }
 
         .stars {
+            color: var(--gold);
 
-            color: #b77a4f;
-
-            font-size: 14px;
+            font-size: 13px;
 
             letter-spacing: 2px;
         }
 
         .rating-text {
-
-            color: var(--muted);
+            color: #888;
 
             font-size: 11px;
         }
 
 
-        /* =========================
+        /* =====================================================
            PRICE
-        ========================= */
+        ===================================================== */
 
         .price {
+            display: flex;
 
-            font-size: 29px;
+            align-items: baseline;
 
-            font-weight: 700;
+            gap: 2px;
+
+            color: var(--dark);
+
+            font-size: 31px;
+
+            font-weight: 800;
+
+            letter-spacing: -.6px;
 
             margin-bottom: 25px;
         }
 
         .price-symbol {
-            font-size: 23px;
+            color: var(--gold);
+
+            font-size: 21px;
+
+            font-weight: 700;
         }
 
 
-        /* =========================
+        /* =====================================================
            DESCRIPTION
-        ========================= */
+        ===================================================== */
 
         .description {
-
             color: var(--muted);
 
-            font-size: 14px;
+            font-size: 13px;
 
-            line-height: 1.9;
+            line-height: 1.85;
 
-            padding-bottom: 27px;
+            padding-bottom: 26px;
 
-            border-bottom:
-                1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
 
-        /* =========================
-           STOCK
-        ========================= */
+        /* =====================================================
+           AVAILABILITY
+        ===================================================== */
 
         .availability {
-
             display: flex;
 
             align-items: center;
 
             justify-content: space-between;
 
-            padding: 20px 0;
+            gap: 15px;
 
-            border-bottom:
-                1px solid var(--border);
+            padding: 19px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .availability-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .availability-dot {
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 0 4px rgba(19,138,91,.10);
+        }
+
+        .availability-dot.out {
+            background: var(--red);
+
+            box-shadow:
+                0 0 0 4px rgba(197,48,48,.10);
         }
 
         .in-stock {
-
             color: var(--green);
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            letter-spacing: 0.8px;
-        }
-
-        .out-stock {
-
-            color: #a34e47;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            letter-spacing: 0.8px;
-        }
-
-        .stock-number {
-
-            color: var(--muted);
-
-            font-size: 11px;
-        }
-
-
-        /* =========================
-           PURCHASE
-        ========================= */
-
-        .purchase-area {
-            padding-top: 28px;
-        }
-
-        .quantity-label {
 
             font-size: 10px;
 
             font-weight: 800;
 
-            letter-spacing: 1.3px;
+            letter-spacing: .9px;
+        }
 
-            margin-bottom: 10px;
+        .out-stock {
+            color: var(--red);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .9px;
+        }
+
+        .stock-number {
+            color: #999;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           PURCHASE
+        ===================================================== */
+
+        .purchase-area {
+            padding-top: 27px;
+        }
+
+        .quantity-label {
+            color: #555;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 9px;
         }
 
         .quantity-box {
+            width: 145px;
 
-            width: 140px;
-
-            height: 50px;
-
-            background: white;
-
-            border:
-                1px solid var(--border);
+            height: 48px;
 
             display: flex;
 
             align-items: center;
 
-            margin-bottom: 16px;
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            margin-bottom: 15px;
+
+            overflow: hidden;
         }
 
         .quantity-box button {
-
             width: 43px;
 
-            height: 48px;
+            height: 46px;
 
             border: none;
 
             background: transparent;
 
-            font-size: 19px;
+            color: #555;
+
+            font-size: 18px;
 
             cursor: pointer;
 
-            color: var(--text);
-
-            transition: 0.2s;
+            transition: .2s;
         }
 
         .quantity-box button:hover {
-            color: var(--brown);
+            color: var(--gold);
+
+            background: var(--cream);
         }
 
         .quantity-box input {
+            width: 59px;
 
-            width: 54px;
-
-            height: 48px;
+            height: 46px;
 
             border: none;
 
             outline: none;
 
+            background: transparent;
+
             text-align: center;
+
+            color: var(--dark);
 
             font-size: 13px;
 
             font-weight: 700;
+        }
 
-            background: transparent;
+        .quantity-box input::-webkit-inner-spin-button,
+        .quantity-box input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+
+            margin: 0;
+        }
+
+        .quantity-box input[type=number] {
+            appearance: textfield;
+            -moz-appearance: textfield;
         }
 
 
-        /* =========================
-           ACTION BUTTONS
-        ========================= */
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
 
         .action-row {
-
             display: grid;
 
-            grid-template-columns: 1fr 58px;
+            grid-template-columns: 1fr 54px;
 
-            gap: 10px;
+            gap: 9px;
         }
 
         .add-cart {
-
-            height: 58px;
+            height: 56px;
 
             border: none;
+
+            border-radius: 9px;
 
             background: var(--dark);
 
             color: white;
 
             cursor: pointer;
-
-            font-family: "DM Sans", sans-serif;
 
             font-size: 11px;
 
@@ -511,76 +820,92 @@
 
             letter-spacing: 1px;
 
-            transition: 0.3s;
+            transition: .25s;
         }
 
         .add-cart:hover {
-            background: var(--brown);
+            background: var(--gold);
+
+            transform: translateY(-1px);
         }
 
         .add-cart:active {
-            transform: scale(0.99);
+            transform: translateY(0);
         }
 
-        .wishlist {
+        .disabled-cart {
+            opacity: .45;
 
-            height: 58px;
+            cursor: not-allowed;
 
-            border:
-                1px solid var(--dark);
+            background: #777;
+        }
 
-            background: transparent;
+        .wishlist-button {
+            height: 56px;
 
-            font-size: 24px;
+            border: 1px solid var(--dark);
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: var(--dark);
+
+            font-size: 22px;
 
             cursor: pointer;
 
-            transition: 0.3s;
+            transition: .25s;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
         }
 
-        .wishlist:hover {
-
+        .wishlist-button:hover {
             background: var(--dark);
 
             color: white;
         }
 
 
-        /* =========================
-           BENEFITS
-        ========================= */
+        /* =====================================================
+           TRUST BENEFITS
+        ===================================================== */
 
         .benefits {
+            margin-top: 30px;
 
-            margin-top: 31px;
-
-            border-top:
-                1px solid var(--border);
+            border-top: 1px solid var(--border);
         }
 
         .benefit {
-
             display: flex;
 
             align-items: center;
 
-            gap: 15px;
+            gap: 14px;
 
-            padding: 17px 0;
+            padding: 16px 0;
 
-            border-bottom:
-                1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         .benefit-icon {
+            width: 34px;
 
-            width: 31px;
+            height: 34px;
 
-            height: 31px;
+            flex-shrink: 0;
 
             border-radius: 50%;
 
-            background: white;
+            background: var(--cream);
+
+            color: var(--gold);
 
             display: flex;
 
@@ -588,78 +913,76 @@
 
             justify-content: center;
 
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .benefit-text strong {
-
             display: block;
+
+            color: var(--dark);
 
             font-size: 11px;
 
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .benefit-text span {
-
             display: block;
 
-            color: var(--muted);
+            color: #999;
 
             font-size: 10px;
         }
 
 
-        /* =========================
-           DETAILS SECTION
-        ========================= */
+        /* =====================================================
+           PRODUCT DETAILS
+        ===================================================== */
 
         .details-section {
-
             background: white;
 
-            border-top:
-                1px solid var(--border);
+            border-top: 1px solid var(--border);
 
-            padding: 80px 7%;
+            padding: 80px 5%;
         }
 
         .details-inner {
-
             max-width: 1100px;
 
             margin: auto;
         }
 
         .details-label {
+            color: var(--gold);
 
-            color: var(--brown);
-
-            font-size: 9px;
+            font-size: 10px;
 
             font-weight: 800;
 
             letter-spacing: 2px;
 
-            margin-bottom: 12px;
+            text-transform: uppercase;
+
+            margin-bottom: 11px;
         }
 
         .details-title {
+            font-family: "Playfair Display", serif;
 
-            font-family:
-                "Playfair Display",
-                serif;
+            color: var(--dark);
 
-            font-size: 38px;
+            font-size: 40px;
 
             font-weight: 600;
+
+            line-height: 1.15;
 
             margin-bottom: 18px;
         }
 
         .details-text {
-
-            max-width: 760px;
+            max-width: 780px;
 
             color: var(--muted);
 
@@ -669,69 +992,170 @@
         }
 
 
-        /* =========================
+        /* =====================================================
+           PRODUCT INFO CARDS
+        ===================================================== */
+
+        .info-strip {
+            max-width: 1100px;
+
+            margin: 42px auto 0;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .info-card {
+            padding: 22px;
+
+            background: #faf9f7;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+        }
+
+        .info-card-icon {
+            font-size: 18px;
+
+            margin-bottom: 10px;
+        }
+
+        .info-card strong {
+            display: block;
+
+            color: var(--dark);
+
+            font-size: 12px;
+
+            margin-bottom: 4px;
+        }
+
+        .info-card span {
+            color: #999;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
            FOOTER
-        ========================= */
+        ===================================================== */
 
         footer {
-
-            background: #17110e;
+            background: #15110f;
 
             color: white;
 
-            padding: 55px 7% 25px;
+            padding: 55px 7% 28px;
 
             text-align: center;
         }
 
         .footer-logo {
+            font-family: "Playfair Display", serif;
 
-            font-family:
-                "Playfair Display",
-                serif;
-
-            font-size: 27px;
+            font-size: 26px;
 
             font-weight: 700;
         }
 
         .footer-logo span {
-            color: #b47d59;
+            color: var(--gold-light);
         }
 
-        footer p {
+        .footer-description {
+            max-width: 500px;
 
-            color: #817872;
+            margin: 9px auto 0;
+
+            color: #827a74;
 
             font-size: 10px;
 
-            margin-top: 9px;
+            line-height: 1.7;
+        }
+
+        .footer-line {
+            max-width: 750px;
+
+            height: 1px;
+
+            background: #302a26;
+
+            margin: 28px auto 20px;
+        }
+
+        .copyright {
+            color: #67605b;
+
+            font-size: 10px;
+        }
+
+        .copyright span {
+            color: var(--gold);
         }
 
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
-        @media (max-width: 950px) {
+        @media (max-width: 1050px) {
 
             .product-container {
-
-                grid-template-columns: 1fr;
-
-                gap: 35px;
+                gap: 45px;
             }
 
             .image-box {
-                height: 550px;
+                height: 570px;
             }
 
             .product-title {
                 font-size: 45px;
             }
 
+        }
+
+
+        @media (max-width: 850px) {
+
             .nav-links {
                 display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+
+                order: 1;
+            }
+
+            .logo {
+                order: 0;
+            }
+
+            .nav-actions {
+                order: 2;
+            }
+
+            .product-container {
+                grid-template-columns: 1fr;
+
+                gap: 40px;
+            }
+
+            .image-box {
+                height: 600px;
+            }
+
+            .product-info {
+                padding-top: 0;
             }
 
         }
@@ -739,30 +1163,46 @@
 
         @media (max-width: 600px) {
 
+            .announcement {
+                font-size: 8px;
+
+                letter-spacing: .7px;
+            }
+
             .navbar {
                 height: 70px;
 
-                padding:
-                    0 5%;
+                padding: 0 16px;
             }
 
             .logo {
-                font-size: 24px;
+                font-size: 22px;
             }
 
-            .shop-button {
+            .wishlist-nav {
                 display: none;
             }
 
-            .breadcrumb {
-                padding:
-                    22px 18px 10px;
+            .cart-nav {
+                padding: 0 11px;
+            }
+
+            .cart-nav > span:first-of-type {
+                display: none;
+            }
+
+            .breadcrumb-wrapper {
+                width: 92%;
+
+                padding-top: 20px;
             }
 
             .product-container {
+                width: 92%;
 
-                padding:
-                    20px 18px 60px;
+                padding-top: 20px;
+
+                padding-bottom: 60px;
             }
 
             .image-box {
@@ -771,19 +1211,57 @@
 
             .product-title {
                 font-size: 38px;
+
+                letter-spacing: -1px;
             }
 
             .price {
-                font-size: 25px;
+                font-size: 27px;
+            }
+
+            .description {
+                font-size: 12px;
+
+                line-height: 1.8;
+            }
+
+            .availability {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 7px;
             }
 
             .details-section {
-                padding:
-                    60px 7%;
+                padding: 60px 7%;
             }
 
             .details-title {
                 font-size: 31px;
+            }
+
+            .info-strip {
+                grid-template-columns: 1fr;
+
+                margin-top: 30px;
+            }
+
+        }
+
+
+        @media (max-width: 400px) {
+
+            .image-box {
+                height: 370px;
+            }
+
+            .product-title {
+                font-size: 34px;
+            }
+
+            .action-row {
+                grid-template-columns: 1fr 50px;
             }
 
         }
@@ -796,33 +1274,63 @@
 <body>
 
 
-<!-- ==========================================
+<!-- =========================================================
+     ANNOUNCEMENT
+========================================================= -->
+
+<div class="announcement">
+
+    Free delivery on selected orders
+
+    <span>
+        &nbsp; • &nbsp; Premium furniture for modern living
+    </span>
+
+</div>
+
+
+<!-- =========================================================
      NAVBAR
-========================================== -->
+========================================================= -->
 
 <nav class="navbar">
 
-    <a href="/" class="logo">
+
+    <a th:href="@{/}"
+       class="logo">
+
         Furniture<span>Store</span>
+
     </a>
 
 
-    <div class="nav-links">
+    <button type="button"
+            class="mobile-menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open navigation">
 
-        <a href="/">
+        ☰
+
+    </button>
+
+
+    <div class="nav-links"
+         id="mobileNav">
+
+        <a th:href="@{/}">
             Home
         </a>
 
-        <a href="/products">
+        <a th:href="@{/products}">
             Shop
         </a>
 
-        <a href="/products">
-            Collections
+        <a th:href="@{/wishlist}">
+            Wishlist
         </a>
 
-        <a href="/cart">
-            Cart
+        <a th:href="@{/orders}">
+            My Orders
         </a>
 
     </div>
@@ -830,28 +1338,32 @@
 
     <div class="nav-actions">
 
-        <a href="/products"
-           class="nav-icon"
-           title="Search">
 
-            ⌕
+        <a th:href="@{/wishlist}"
+           class="nav-icon wishlist-nav"
+           title="Wishlist">
+
+            ♡
 
         </a>
 
 
-        <a href="/cart"
-           class="nav-icon"
-           title="Cart">
+        <a th:href="@{/cart}"
+           class="nav-icon cart-nav"
+           title="Shopping Cart">
 
             🛒
 
-        </a>
+            <span>
+                Cart
+            </span>
 
+            <span class="cart-count"
+                  th:text="${session.cart != null ? #lists.size(session.cart.items) : 0}">
 
-        <a href="/cart"
-           class="shop-button">
+                0
 
-            CART
+            </span>
 
         </a>
 
@@ -860,49 +1372,63 @@
 </nav>
 
 
-
-<!-- ==========================================
+<!-- =========================================================
      BREADCRUMB
-========================================== -->
+========================================================= -->
 
-<div class="breadcrumb">
+<div class="breadcrumb-wrapper">
 
-    <a href="/">
-        Home
-    </a>
+    <div class="breadcrumb">
 
-    &nbsp; / &nbsp;
+        <a th:href="@{/}">
+            Home
+        </a>
 
-    <a href="/products">
-        Shop
-    </a>
+        <span class="breadcrumb-separator">
+            /
+        </span>
 
-    &nbsp; / &nbsp;
+        <a th:href="@{/products}">
+            Shop
+        </a>
 
-    <span th:text="${product.category}">
-        Category
-    </span>
+        <span class="breadcrumb-separator">
+            /
+        </span>
 
-    &nbsp; / &nbsp;
+        <span th:text="${product.category}">
+            Category
+        </span>
 
-    <span th:text="${product.name}">
-        Product
-    </span>
+        <span class="breadcrumb-separator">
+            /
+        </span>
+
+        <span class="breadcrumb-current"
+              th:text="${product.name}">
+
+            Product
+
+        </span>
+
+    </div>
 
 </div>
 
 
-
-<!-- ==========================================
+<!-- =========================================================
      PRODUCT
-========================================== -->
+========================================================= -->
 
 <main class="product-container">
 
 
-    <!-- IMAGE -->
+    <!-- =====================================================
+         IMAGE
+    ====================================================== -->
 
     <section class="image-section">
+
 
         <div class="image-box">
 
@@ -915,11 +1441,35 @@
 
 
             <img
+                th:if="${product.imageUrl != null
+                        && !product.imageUrl.isEmpty()}"
+
                 th:src="${product.imageUrl}"
+
                 th:alt="${product.name}"
 
-                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=90';"
+                onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=90';"
             >
+
+
+            <img
+                th:unless="${product.imageUrl != null
+                            && !product.imageUrl.isEmpty()}"
+
+                th:src="@{/images/product-placeholder.jpg}"
+
+                alt="Furniture"
+            >
+
+
+            <div class="image-overlay"></div>
+
+
+            <div class="image-bottom-label">
+
+                FurnitureStore Collection
+
+            </div>
 
         </div>
 
@@ -931,7 +1481,7 @@
             </span>
 
             <span>
-                FurnitureStore
+                Carefully selected for modern living
             </span>
 
         </div>
@@ -939,13 +1489,12 @@
     </section>
 
 
-
-    <!-- INFORMATION -->
+    <!-- =====================================================
+         PRODUCT INFORMATION
+    ====================================================== -->
 
     <section class="product-info">
 
-
-        <!-- CATEGORY -->
 
         <div class="category"
              th:text="${product.category}">
@@ -954,8 +1503,6 @@
 
         </div>
 
-
-        <!-- NAME -->
 
         <h1 class="product-title"
             th:text="${product.name}">
@@ -970,15 +1517,11 @@
         <div class="rating">
 
             <div class="stars">
-
                 ★★★★★
-
             </div>
 
             <div class="rating-text">
-
-                4.9 · 128 reviews
-
+                4.9 · Customer favourite
             </div>
 
         </div>
@@ -992,8 +1535,8 @@
                 ₹
             </span>
 
-            <span th:text="${product.price}">
-                0
+            <span th:text="${#numbers.formatDecimal(product.price, 1, 2)}">
+                0.00
             </span>
 
         </div>
@@ -1010,31 +1553,48 @@
         </p>
 
 
-
         <!-- STOCK -->
 
         <div class="availability">
 
 
-            <span
-                class="in-stock"
-                th:if="${product.stock > 0}">
-
-                ✓ IN STOCK
-
-            </span>
+            <div class="availability-left">
 
 
-            <span
-                class="out-stock"
-                th:if="${product.stock <= 0}">
-
-                ✕ OUT OF STOCK
-
-            </span>
+                <span
+                    th:if="${product.stock > 0}"
+                    class="availability-dot">
+                </span>
 
 
-            <span class="stock-number">
+                <span
+                    th:if="${product.stock <= 0}"
+                    class="availability-dot out">
+                </span>
+
+
+                <span
+                    th:if="${product.stock > 0}"
+                    class="in-stock">
+
+                    IN STOCK
+
+                </span>
+
+
+                <span
+                    th:if="${product.stock <= 0}"
+                    class="out-stock">
+
+                    OUT OF STOCK
+
+                </span>
+
+            </div>
+
+
+            <div class="stock-number"
+                 th:if="${product.stock > 0}">
 
                 <span th:text="${product.stock}">
                     0
@@ -1042,25 +1602,32 @@
 
                 units available
 
-            </span>
+            </div>
+
+
+            <div class="stock-number"
+                 th:if="${product.stock <= 0}">
+
+                Currently unavailable
+
+            </div>
 
         </div>
 
 
-
-        <!-- PURCHASE -->
+        <!-- =================================================
+             PURCHASE AREA
+        ================================================== -->
 
         <div class="purchase-area">
 
 
             <div class="quantity-label">
 
-                QUANTITY
+                Quantity
 
             </div>
 
-
-            <!-- QUANTITY -->
 
             <div class="quantity-box">
 
@@ -1077,9 +1644,13 @@
                 <input
                     type="number"
                     id="quantity"
+
                     value="1"
+
                     min="1"
+
                     th:max="${product.stock}"
+
                     oninput="validateQuantity()"
                 >
 
@@ -1092,12 +1663,12 @@
 
                 </button>
 
-
             </div>
 
 
-
-            <!-- REAL ADD TO CART -->
+            <!-- =================================================
+                 CART FORM
+            ================================================== -->
 
             <form
                 th:action="@{/cart/add}"
@@ -1123,10 +1694,15 @@
                 <div class="action-row">
 
 
+                    <!-- ADD TO CART -->
+
                     <button
                         type="submit"
+
                         class="add-cart"
+
                         th:if="${product.stock > 0}"
+
                         onclick="setCartQuantity()">
 
                         ADD TO CART
@@ -1135,22 +1711,32 @@
                     </button>
 
 
+                    <!-- SOLD OUT -->
+
                     <button
                         type="button"
-                        class="add-cart"
+
+                        class="add-cart disabled-cart"
+
                         disabled
-                        th:if="${product.stock <= 0}"
-                        style="opacity:0.45;cursor:not-allowed;">
+
+                        th:if="${product.stock <= 0}">
 
                         OUT OF STOCK
 
                     </button>
 
 
+                    <!-- WISHLIST -->
+
                     <button
                         type="button"
-                        class="wishlist"
-                        onclick="toggleWishlist(this)">
+
+                        class="wishlist-button"
+
+                        onclick="submitWishlist()"
+
+                        title="Add to Wishlist">
 
                         ♡
 
@@ -1160,11 +1746,31 @@
 
             </form>
 
+
+            <!-- =================================================
+                 REAL WISHLIST FORM
+            ================================================== -->
+
+            <form
+                th:action="@{/wishlist/add}"
+                method="post"
+                id="wishlistForm"
+                style="display:none;">
+
+                <input
+                    type="hidden"
+                    name="productId"
+                    th:value="${product.id}"
+                >
+
+            </form>
+
         </div>
 
 
-
-        <!-- BENEFITS -->
+        <!-- =================================================
+             BENEFITS
+        ================================================== -->
 
         <div class="benefits">
 
@@ -1172,11 +1778,8 @@
             <div class="benefit">
 
                 <div class="benefit-icon">
-
                     🚚
-
                 </div>
-
 
                 <div class="benefit-text">
 
@@ -1185,7 +1788,7 @@
                     </strong>
 
                     <span>
-                        Complimentary delivery on orders above ₹999
+                        Complimentary delivery on selected orders
                     </span>
 
                 </div>
@@ -1193,15 +1796,11 @@
             </div>
 
 
-
             <div class="benefit">
 
                 <div class="benefit-icon">
-
                     ↩
-
                 </div>
-
 
                 <div class="benefit-text">
 
@@ -1218,15 +1817,11 @@
             </div>
 
 
-
             <div class="benefit">
 
                 <div class="benefit-icon">
-
                     ✓
-
                 </div>
-
 
                 <div class="benefit-text">
 
@@ -1235,7 +1830,7 @@
                     </strong>
 
                     <span>
-                        Safe and secure shopping experience
+                        Safe and secure checkout experience
                     </span>
 
                 </div>
@@ -1245,18 +1840,17 @@
 
         </div>
 
-
     </section>
 
 </main>
 
 
-
-<!-- ==========================================
-     DETAILS
-========================================== -->
+<!-- =========================================================
+     PRODUCT STORY
+========================================================= -->
 
 <section class="details-section">
+
 
     <div class="details-inner">
 
@@ -1283,17 +1877,79 @@
 
         </p>
 
+
+        <!-- INFO CARDS -->
+
+        <div class="info-strip">
+
+
+            <div class="info-card">
+
+                <div class="info-card-icon">
+                    ✦
+                </div>
+
+                <strong>
+                    Premium Selection
+                </strong>
+
+                <span>
+                    Furniture selected for quality,
+                    comfort and timeless style.
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-card-icon">
+                    ♡
+                </div>
+
+                <strong>
+                    Made for Living
+                </strong>
+
+                <span>
+                    Designed to bring comfort and
+                    character to everyday spaces.
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-card-icon">
+                    ✓
+                </div>
+
+                <strong>
+                    Trusted Shopping
+                </strong>
+
+                <span>
+                    A simple, secure and reliable
+                    furniture shopping experience.
+                </span>
+
+            </div>
+
+
+        </div>
+
     </div>
 
 </section>
 
 
-
-<!-- ==========================================
+<!-- =========================================================
      FOOTER
-========================================== -->
+========================================================= -->
 
 <footer>
+
 
     <div class="footer-logo">
 
@@ -1302,23 +1958,52 @@
     </div>
 
 
-    <p>
+    <p class="footer-description">
 
-        Beautiful furniture for modern living.
-        © 2026 FurnitureStore.
+        Thoughtfully designed furniture for beautiful,
+        comfortable and modern living spaces.
 
     </p>
+
+
+    <div class="footer-line"></div>
+
+
+    <div class="copyright">
+
+        © 2026
+        <span>FurnitureStore</span>.
+        All rights reserved.
+
+    </div>
 
 </footer>
 
 
-
-<!-- ==========================================
+<!-- =========================================================
      JAVASCRIPT
-========================================== -->
+========================================================= -->
 
 <script>
 
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    function toggleMenu() {
+
+        const nav =
+            document.getElementById("mobileNav");
+
+        nav.classList.toggle("active");
+
+    }
+
+
+    /* =====================================================
+       QUANTITY + BUTTON
+    ===================================================== */
 
     function increaseQuantity() {
 
@@ -1334,12 +2019,14 @@
 
         if (!max || value < max) {
 
-            input.value = value + 1;
+            input.value =
+                value + 1;
 
         }
 
-    }
+        validateQuantity();
 
+    }
 
 
     function decreaseQuantity() {
@@ -1353,12 +2040,14 @@
 
         if (value > 1) {
 
-            input.value = value - 1;
+            input.value =
+                value - 1;
 
         }
 
-    }
+        validateQuantity();
 
+    }
 
 
     function validateQuantity() {
@@ -1387,10 +2076,10 @@
         }
 
 
-        input.value = value;
+        input.value =
+            value;
 
     }
-
 
 
     function setCartQuantity() {
@@ -1408,21 +2097,89 @@
     }
 
 
+    /* =====================================================
+       WISHLIST
+    ===================================================== */
 
-    function toggleWishlist(button) {
+    function submitWishlist() {
 
-        if (button.innerHTML.includes("♡")) {
+        const form =
+            document.getElementById("wishlistForm");
 
-            button.innerHTML = "♥";
+        if (form) {
 
-        } else {
-
-            button.innerHTML = "♡";
+            form.submit();
 
         }
 
     }
 
+
+    /* =====================================================
+       PREVENT DOUBLE CART SUBMIT
+    ===================================================== */
+
+    const cartForm =
+        document.getElementById("cartForm");
+
+
+    if (cartForm) {
+
+        cartForm.addEventListener(
+            "submit",
+            function() {
+
+                setCartQuantity();
+
+                const button =
+                    cartForm.querySelector(
+                        ".add-cart:not([disabled])"
+                    );
+
+                if (button) {
+
+                    button.disabled = true;
+
+                    button.innerHTML =
+                        "ADDING...";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MOBILE NAV CLOSE
+    ===================================================== */
+
+    document
+        .querySelectorAll(".nav-links a")
+        .forEach(function(link) {
+
+            link.addEventListener(
+                "click",
+                function() {
+
+                    const nav =
+                        document.getElementById(
+                            "mobileNav"
+                        );
+
+                    if (nav) {
+
+                        nav.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        });
 
 </script>
 

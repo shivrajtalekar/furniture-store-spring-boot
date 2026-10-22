@@ -9,9 +9,26 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Products | FurnitureStore</title>
+    <title>Shop Furniture | FurnitureStore</title>
+
+    <meta name="description"
+          content="Explore premium furniture at FurnitureStore. Discover sofas, chairs, dining furniture and more.">
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
 
     <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
 
         * {
             margin: 0;
@@ -19,10 +36,68 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --dark: #171717;
+            --dark-soft: #252525;
+            --gold: #b88746;
+            --gold-light: #d4aa72;
+            --cream: #f7f3ec;
+            --cream-dark: #eee7dc;
+            --white: #ffffff;
+            --text: #202020;
+            --muted: #747474;
+            --border: #e8e3dc;
+            --green: #138a5b;
+            --orange: #c86b20;
+            --red: #c53030;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f7f7f5;
-            color: #1f2937;
+            font-family: "DM Sans", Arial, sans-serif;
+            background: #faf9f7;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* =====================================================
+           ANNOUNCEMENT BAR
+        ===================================================== */
+
+        .announcement {
+            background: var(--dark);
+            color: #f5f5f5;
+            min-height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 8px 20px;
+
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+
+            text-align: center;
+        }
+
+        .announcement span {
+            color: var(--gold-light);
         }
 
         /* =====================================================
@@ -30,114 +105,265 @@
         ===================================================== */
 
         .navbar {
-            height: 74px;
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
+            height: 78px;
+
+            background: rgba(255, 255, 255, .96);
+            border-bottom: 1px solid var(--border);
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 0 6%;
+            padding: 0 5.5%;
 
             position: sticky;
             top: 0;
+
             z-index: 1000;
+
+            backdrop-filter: blur(14px);
         }
 
         .logo {
             text-decoration: none;
+
+            font-family: "Playfair Display", serif;
+
             font-size: 25px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #111827;
+            font-weight: 700;
+
+            letter-spacing: -.8px;
+
+            color: var(--dark);
+
+            white-space: nowrap;
         }
 
         .logo span {
-            color: #b88746;
+            color: var(--gold);
         }
 
-        .nav-links {
+        .nav-center {
             display: flex;
             align-items: center;
-            gap: 26px;
+            gap: 30px;
         }
 
-        .nav-links a {
+        .nav-center a {
             text-decoration: none;
-            color: #4b5563;
-            font-size: 14px;
+
+            color: #555;
+
+            font-size: 13px;
             font-weight: 600;
+
+            position: relative;
+
+            transition: .25s ease;
+        }
+
+        .nav-center a::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: -8px;
+
+            width: 0;
+            height: 1px;
+
+            background: var(--gold);
+
+            transition: .25s ease;
+        }
+
+        .nav-center a:hover {
+            color: var(--dark);
+        }
+
+        .nav-center a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            text-decoration: none;
+
+            color: #333;
+
+            font-size: 17px;
+
             transition: .2s;
         }
 
-        .nav-links a:hover {
-            color: #b88746;
+        .nav-icon:hover {
+            background: var(--cream);
+            color: var(--gold);
         }
 
-        .wishlist-link {
-            color: #dc2626 !important;
+        .wishlist-nav {
+            color: #bd3b3b;
         }
 
-        .cart-link {
-            background: #111827;
-            color: #ffffff !important;
-            padding: 11px 17px;
-            border-radius: 8px;
+        .cart-nav {
+            background: var(--dark);
+            color: white;
+
+            width: auto;
+
+            border-radius: 22px;
+
+            padding: 0 17px;
+
+            gap: 7px;
+
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .cart-link:hover {
-            background: #000000;
+        .cart-nav:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .cart-count {
+            min-width: 18px;
+            height: 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--gold);
+
+            color: white;
+
+            font-size: 10px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+
+            border: none;
+            background: transparent;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            color: var(--dark);
         }
 
         /* =====================================================
-           HERO
+           PAGE HERO
         ===================================================== */
 
-        .hero {
-            padding: 75px 6% 65px;
-            text-align: center;
+        .page-hero {
+            min-height: 330px;
 
             background:
                 linear-gradient(
                     135deg,
-                    #f8f4ed,
-                    #ffffff
+                    rgba(247,243,236,.98),
+                    rgba(255,255,255,.98)
                 );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 70px 20px;
         }
 
-        .hero-label {
-            color: #b88746;
-            font-size: 12px;
+        .hero-inner {
+            max-width: 760px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            color: var(--gold);
+
+            font-size: 11px;
             font-weight: 800;
-            letter-spacing: 2.5px;
+
+            letter-spacing: 2.4px;
+
             text-transform: uppercase;
-            margin-bottom: 14px;
+
+            margin-bottom: 16px;
         }
 
-        .hero h1 {
-            font-size: 48px;
-            line-height: 1.1;
-            color: #111827;
-            margin-bottom: 17px;
+        .eyebrow::before,
+        .eyebrow::after {
+            content: "";
+
+            width: 28px;
+            height: 1px;
+
+            background: var(--gold);
         }
 
-        .hero p {
-            max-width: 680px;
+        .page-hero h1 {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.08;
+
+            color: var(--dark);
+
+            margin-bottom: 18px;
+        }
+
+        .page-hero h1 span {
+            color: var(--gold);
+        }
+
+        .page-hero p {
+            max-width: 650px;
+
             margin: auto;
-            color: #6b7280;
-            line-height: 1.7;
+
+            color: var(--muted);
+
             font-size: 15px;
+
+            line-height: 1.8;
         }
 
         /* =====================================================
-           MAIN
+           MAIN CONTAINER
         ===================================================== */
 
         .container {
-            width: 88%;
-            max-width: 1350px;
-            margin: 45px auto 80px;
+            width: 90%;
+            max-width: 1380px;
+
+            margin: 0 auto;
+
+            padding: 52px 0 90px;
         }
 
         /* =====================================================
@@ -146,159 +372,284 @@
 
         .alert {
             padding: 14px 18px;
-            border-radius: 10px;
+
+            border-radius: 12px;
+
             margin-bottom: 22px;
-            font-size: 14px;
+
+            font-size: 13px;
             font-weight: 600;
         }
 
         .alert-success {
             background: #ecfdf5;
-            color: #047857;
-            border: 1px solid #a7f3d0;
+            color: #08754e;
+            border: 1px solid #b7ead4;
         }
 
         .alert-error {
-            background: #fef2f2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
+            background: #fff1f1;
+            color: #b42323;
+            border: 1px solid #f3c5c5;
         }
 
         /* =====================================================
-           TOOLBAR
-        ===================================================== */
-
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            gap: 15px;
-        }
-
-        .results {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        .results strong {
-            color: #111827;
-        }
-
-        /* =====================================================
-           FILTER PANEL
+           FILTER BOX
         ===================================================== */
 
         .filter-panel {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
+            background: var(--white);
 
-            padding: 24px;
+            border: 1px solid var(--border);
 
-            margin-bottom: 35px;
+            border-radius: 20px;
+
+            padding: 27px;
+
+            margin-bottom: 38px;
 
             box-shadow:
-                0 8px 30px rgba(0, 0, 0, .04);
+                0 12px 40px rgba(34, 29, 24, .045);
         }
 
-        .filter-title {
+        .filter-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 23px;
+
+            gap: 20px;
+        }
+
+        .filter-heading-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .filter-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 11px;
+
+            background: var(--cream);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--gold);
+
             font-size: 18px;
-            font-weight: 800;
-            color: #111827;
-            margin-bottom: 20px;
+        }
+
+        .filter-heading h2 {
+            font-size: 17px;
+            font-weight: 700;
+
+            color: var(--dark);
+        }
+
+        .filter-heading p {
+            color: #999;
+
+            font-size: 11px;
+
+            margin-top: 2px;
         }
 
         .filter-form {
             display: grid;
-            grid-template-columns:
-                2fr 1fr 1fr auto;
 
-            gap: 13px;
+            grid-template-columns:
+                minmax(240px, 2fr)
+                minmax(160px, 1fr)
+                minmax(160px, 1fr)
+                auto;
+
+            gap: 12px;
+
             align-items: end;
         }
 
         .field {
             display: flex;
             flex-direction: column;
+
             gap: 7px;
         }
 
         .field label {
-            font-size: 12px;
+            color: #555;
+
+            font-size: 11px;
             font-weight: 700;
-            color: #4b5563;
+
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .search-symbol {
+            position: absolute;
+
+            left: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #999;
+
+            font-size: 15px;
+
+            pointer-events: none;
         }
 
         .field input,
         .field select {
             width: 100%;
-            height: 45px;
+            height: 48px;
 
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+            border: 1px solid #ddd8d0;
 
-            padding: 0 13px;
+            border-radius: 10px;
 
-            font-size: 14px;
-            background: #ffffff;
-            color: #111827;
+            padding: 0 14px;
 
             outline: none;
-        }
 
-        .field input:focus,
-        .field select:focus {
-            border-color: #b88746;
-            box-shadow:
-                0 0 0 3px rgba(184, 135, 70, .10);
-        }
+            background: #fff;
 
-        .filter-btn {
-            height: 45px;
-            border: none;
-
-            padding: 0 22px;
-
-            border-radius: 8px;
-
-            background: #111827;
-            color: #ffffff;
+            color: var(--dark);
 
             font-size: 13px;
-            font-weight: 700;
-
-            cursor: pointer;
 
             transition: .2s;
         }
 
-        .filter-btn:hover {
-            background: #000000;
+        .field input.search-input {
+            padding-left: 40px;
         }
 
-        .clear-btn {
-            height: 45px;
+        .field input::placeholder {
+            color: #aaa;
+        }
 
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--gold);
+
+            box-shadow:
+                0 0 0 3px rgba(184,135,70,.10);
+        }
+
+        .filter-buttons {
             display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn,
+        .clear-btn {
+            height: 48px;
+
+            border-radius: 10px;
+
+            padding: 0 20px;
+
+            display: inline-flex;
+
             align-items: center;
             justify-content: center;
 
-            padding: 0 18px;
-
-            border-radius: 8px;
-
-            background: #f3f4f6;
-            color: #374151;
+            font-size: 12px;
+            font-weight: 700;
 
             text-decoration: none;
 
-            font-size: 13px;
-            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .filter-btn {
+            border: none;
+
+            background: var(--dark);
+            color: white;
+
+            cursor: pointer;
+
+            transition: .25s;
+        }
+
+        .filter-btn:hover {
+            background: var(--gold);
+
+            transform: translateY(-1px);
+        }
+
+        .clear-btn {
+            background: #f5f3ef;
+            color: #555;
+
+            border: 1px solid transparent;
         }
 
         .clear-btn:hover {
-            background: #e5e7eb;
+            background: var(--cream-dark);
+            color: var(--dark);
+        }
+
+        /* =====================================================
+           RESULTS HEADER
+        ===================================================== */
+
+        .results-toolbar {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 23px;
+
+            gap: 20px;
+        }
+
+        .results-text {
+            color: #888;
+
+            font-size: 13px;
+        }
+
+        .results-text strong {
+            color: var(--dark);
+            font-weight: 800;
+        }
+
+        .collection-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: #888;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .collection-label::before {
+            content: "";
+
+            width: 25px;
+            height: 1px;
+
+            background: var(--gold);
         }
 
         /* =====================================================
@@ -319,40 +670,65 @@
         ===================================================== */
 
         .product-card {
-            background: #ffffff;
+            background: var(--white);
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
 
-            border-radius: 16px;
+            border-radius: 18px;
 
             overflow: hidden;
 
-            transition:
-                transform .25s ease,
-                box-shadow .25s ease;
-
             position: relative;
+
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                border-color .3s ease;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-7px);
+
+            border-color: #ddd2c2;
 
             box-shadow:
-                0 18px 45px rgba(0, 0, 0, .09);
+                0 22px 55px rgba(39, 31, 22, .11);
         }
 
         /* =====================================================
-           IMAGE
+           PRODUCT IMAGE
         ===================================================== */
 
         .image-wrapper {
-            height: 285px;
-
-            background: #f1f2f3;
+            height: 300px;
 
             position: relative;
 
             overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f2f0ec,
+                    #e8e5df
+                );
+        }
+
+        .image-wrapper::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,.10),
+                    transparent 30%
+                );
+
+            pointer-events: none;
         }
 
         .image-wrapper img {
@@ -361,12 +737,14 @@
 
             object-fit: cover;
 
-            transition: transform .35s ease;
+            display: block;
+
+            transition:
+                transform .55s cubic-bezier(.2,.7,.2,1);
         }
 
-        .product-card:hover
-        .image-wrapper img {
-            transform: scale(1.045);
+        .product-card:hover .image-wrapper img {
+            transform: scale(1.06);
         }
 
         /* =====================================================
@@ -376,74 +754,126 @@
         .stock-badge {
             position: absolute;
 
-            top: 14px;
             left: 14px;
+            top: 14px;
 
-            padding: 7px 10px;
+            z-index: 5;
+
+            padding: 7px 11px;
 
             border-radius: 20px;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
 
-            backdrop-filter: blur(8px);
+            letter-spacing: .2px;
+
+            backdrop-filter: blur(12px);
         }
 
         .available {
-            background: rgba(236, 253, 245, .95);
-            color: #047857;
+            background: rgba(237, 253, 246, .94);
+            color: var(--green);
         }
 
         .low-stock {
-            background: rgba(255, 247, 237, .95);
-            color: #c2410c;
+            background: rgba(255, 247, 234, .95);
+            color: var(--orange);
         }
 
         .sold-out {
-            background: rgba(254, 242, 242, .95);
-            color: #b91c1c;
+            background: rgba(255, 239, 239, .95);
+            color: var(--red);
         }
 
         /* =====================================================
-           WISHLIST BUTTON
+           WISHLIST
         ===================================================== */
 
         .wishlist-form {
             position: absolute;
+
             right: 14px;
             top: 14px;
-            z-index: 5;
+
+            z-index: 10;
         }
 
         .wishlist-btn {
             width: 40px;
             height: 40px;
 
-            border: none;
+            border: 1px solid rgba(255,255,255,.7);
 
             border-radius: 50%;
 
-            background: rgba(255, 255, 255, .95);
+            background: rgba(255,255,255,.94);
 
-            color: #dc2626;
-
-            font-size: 19px;
+            color: #b63838;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
+            font-size: 17px;
+
             cursor: pointer;
 
             box-shadow:
-                0 5px 18px rgba(0, 0, 0, .10);
+                0 7px 20px rgba(0,0,0,.12);
 
-            transition: .2s;
+            transition: .25s;
         }
 
         .wishlist-btn:hover {
-            transform: scale(1.08);
-            background: #ffffff;
+            background: #fff;
+
+            color: #e02525;
+
+            transform: scale(1.1);
+        }
+
+        /* =====================================================
+           QUICK VIEW LABEL
+        ===================================================== */
+
+        .image-overlay {
+            position: absolute;
+
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            padding: 20px;
+
+            z-index: 4;
+
+            opacity: 0;
+            transform: translateY(8px);
+
+            transition: .3s;
+
+            pointer-events: none;
+        }
+
+        .product-card:hover .image-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-overlay span {
+            display: inline-block;
+
+            background: rgba(255,255,255,.92);
+
+            color: var(--dark);
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+            font-weight: 700;
         }
 
         /* =====================================================
@@ -455,39 +885,46 @@
         }
 
         .category {
-            color: #b88746;
+            color: var(--gold);
 
-            font-size: 11px;
+            font-size: 10px;
 
             font-weight: 800;
 
-            letter-spacing: 1.3px;
+            letter-spacing: 1.5px;
 
             text-transform: uppercase;
+
+            margin-bottom: 7px;
         }
 
         .product-name {
-            margin-top: 8px;
+            color: var(--dark);
 
-            color: #111827;
+            font-family: "Playfair Display", serif;
 
-            font-size: 18px;
+            font-size: 20px;
 
-            line-height: 1.35;
+            font-weight: 600;
+
+            line-height: 1.3;
+
+            min-height: 52px;
         }
 
         .product-description {
-            margin-top: 9px;
+            color: var(--muted);
 
-            color: #6b7280;
+            font-size: 12px;
 
-            font-size: 13px;
+            line-height: 1.65;
 
-            line-height: 1.55;
+            margin-top: 8px;
 
             min-height: 40px;
 
             display: -webkit-box;
+
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
 
@@ -504,32 +941,53 @@
             align-items: center;
             justify-content: space-between;
 
+            gap: 10px;
+
             margin-top: 17px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #f0ece6;
         }
 
         .price {
-            color: #111827;
+            color: var(--dark);
 
             font-size: 21px;
 
             font-weight: 800;
+
+            letter-spacing: -.4px;
+        }
+
+        .price-symbol {
+            color: var(--gold);
+
+            font-size: 14px;
+
+            margin-right: 1px;
         }
 
         .stock-text {
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .6px;
         }
 
         .stock-green {
-            color: #059669;
+            color: var(--green);
         }
 
         .stock-orange {
-            color: #ea580c;
+            color: var(--orange);
         }
 
         .stock-red {
-            color: #dc2626;
+            color: var(--red);
         }
 
         /* =====================================================
@@ -537,59 +995,69 @@
         ===================================================== */
 
         .actions {
-            display: flex;
+            display: grid;
 
-            gap: 9px;
+            grid-template-columns: 1fr 1.15fr;
 
-            margin-top: 18px;
+            gap: 8px;
+
+            margin-top: 17px;
         }
 
         .action-btn {
-            flex: 1;
-
             min-height: 43px;
 
-            border-radius: 8px;
+            border-radius: 9px;
 
             border: none;
 
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+
+            font-size: 11px;
 
             font-weight: 700;
 
             cursor: pointer;
 
-            text-decoration: none;
+            transition: .25s;
 
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            transition: .2s;
+            white-space: nowrap;
         }
 
         .details-btn {
-            background: #f3f4f6;
-            color: #374151;
+            background: #f4f1ec;
+
+            color: #4f4a43;
         }
 
         .details-btn:hover {
-            background: #e5e7eb;
+            background: var(--cream-dark);
+
+            color: var(--dark);
         }
 
         .cart-btn {
-            background: #111827;
-            color: #ffffff;
+            background: var(--dark);
+
+            color: white;
         }
 
         .cart-btn:hover {
-            background: #000000;
+            background: var(--gold);
+
+            transform: translateY(-1px);
         }
 
         .disabled-btn {
-            background: #f3f4f6;
-            color: #9ca3af;
+            grid-column: 1 / -1;
+
+            background: #f1f1f1;
+
+            color: #aaa;
 
             cursor: not-allowed;
         }
@@ -599,68 +1067,83 @@
         ===================================================== */
 
         .empty-state {
-            background: #ffffff;
+            background: white;
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
 
-            border-radius: 18px;
+            border-radius: 20px;
 
-            padding: 80px 25px;
+            padding: 85px 25px;
 
             text-align: center;
         }
 
         .empty-icon {
-            width: 82px;
-            height: 82px;
+            width: 76px;
+            height: 76px;
 
             margin: auto;
 
             border-radius: 50%;
 
-            background: #f3f4f6;
+            background: var(--cream);
+
+            color: var(--gold);
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 35px;
+            font-size: 30px;
         }
 
         .empty-state h2 {
+            font-family: "Playfair Display", serif;
+
+            font-size: 30px;
+
             margin-top: 22px;
 
-            font-size: 26px;
-
-            color: #111827;
+            color: var(--dark);
         }
 
         .empty-state p {
-            max-width: 530px;
+            max-width: 560px;
 
-            margin: 12px auto 25px;
+            margin: 11px auto 26px;
 
-            color: #6b7280;
+            color: var(--muted);
 
-            line-height: 1.7;
+            font-size: 13px;
 
-            font-size: 14px;
+            line-height: 1.8;
         }
 
         .empty-button {
-            display: inline-block;
+            display: inline-flex;
 
-            text-decoration: none;
+            align-items: center;
+            justify-content: center;
 
-            background: #111827;
-            color: #ffffff;
-
-            padding: 13px 24px;
+            padding: 13px 23px;
 
             border-radius: 9px;
 
-            font-size: 13px;
+            background: var(--dark);
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
             font-weight: 700;
+
+            transition: .25s;
+        }
+
+        .empty-button:hover {
+            background: var(--gold);
         }
 
         /* =====================================================
@@ -671,12 +1154,11 @@
             display: flex;
 
             justify-content: center;
-
             align-items: center;
 
-            gap: 7px;
+            gap: 6px;
 
-            margin-top: 45px;
+            margin-top: 48px;
 
             flex-wrap: wrap;
         }
@@ -690,36 +1172,52 @@
             align-items: center;
             justify-content: center;
 
-            padding: 0 12px;
+            padding: 0 11px;
 
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
 
-            background: #ffffff;
+            background: white;
 
-            color: #374151;
+            color: #555;
 
             text-decoration: none;
 
-            border-radius: 8px;
+            border-radius: 9px;
 
-            font-size: 13px;
+            font-size: 12px;
 
             font-weight: 700;
+
+            transition: .2s;
         }
 
         .page-btn:hover {
-            border-color: #b88746;
-            color: #b88746;
+            border-color: var(--gold);
+
+            color: var(--gold);
+
+            background: #fffdf9;
         }
 
         .page-active {
-            background: #111827;
-            color: #ffffff;
-            border-color: #111827;
+            background: var(--dark);
+
+            color: white;
+
+            border-color: var(--dark);
+        }
+
+        .page-active:hover {
+            background: var(--gold);
+
+            color: white;
+
+            border-color: var(--gold);
         }
 
         .page-disabled {
-            opacity: .45;
+            opacity: .35;
+
             pointer-events: none;
         }
 
@@ -728,27 +1226,68 @@
         ===================================================== */
 
         footer {
-            background: #111827;
+            background: var(--dark);
 
-            color: #9ca3af;
+            color: #a5a5a5;
+
+            padding: 52px 6% 30px;
 
             text-align: center;
-
-            padding: 32px 20px;
-
-            font-size: 13px;
         }
 
-        footer span {
-            color: #b88746;
-            font-weight: 700;
+        .footer-brand {
+            font-family: "Playfair Display", serif;
+
+            color: white;
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .footer-brand span {
+            color: var(--gold);
+        }
+
+        .footer-text {
+            max-width: 500px;
+
+            margin: auto;
+
+            color: #888;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        .footer-line {
+            width: 100%;
+
+            max-width: 800px;
+
+            height: 1px;
+
+            background: #333;
+
+            margin: 30px auto 20px;
+        }
+
+        .copyright {
+            color: #777;
+
+            font-size: 11px;
+        }
+
+        .copyright span {
+            color: var(--gold);
         }
 
         /* =====================================================
            RESPONSIVE
         ===================================================== */
 
-        @media(max-width: 1150px) {
+        @media (max-width: 1200px) {
 
             .products-grid {
                 grid-template-columns:
@@ -757,34 +1296,31 @@
 
             .filter-form {
                 grid-template-columns:
-                    1fr 1fr;
+                    1.5fr 1fr 1fr;
+            }
+
+            .filter-buttons {
+                grid-column: 1 / -1;
+            }
+
+            .filter-btn,
+            .clear-btn {
+                flex: 1;
             }
         }
 
-        @media(max-width: 800px) {
+        @media (max-width: 950px) {
+
+            .nav-center {
+                gap: 18px;
+            }
+
+            .nav-center a {
+                font-size: 12px;
+            }
 
             .navbar {
-                padding: 0 20px;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
-            .nav-links a:not(.cart-link) {
-                display: none;
-            }
-
-            .hero {
-                padding: 55px 20px;
-            }
-
-            .hero h1 {
-                font-size: 37px;
-            }
-
-            .container {
-                width: 92%;
+                padding: 0 4%;
             }
 
             .products-grid {
@@ -793,27 +1329,164 @@
             }
         }
 
-        @media(max-width: 550px) {
+        @media (max-width: 760px) {
 
-            .products-grid {
-                grid-template-columns: 1fr;
+            .navbar {
+                height: 70px;
+            }
+
+            .nav-center {
+                display: none;
+
+                position: absolute;
+
+                left: 0;
+                right: 0;
+
+                top: 70px;
+
+                background: white;
+
+                border-bottom: 1px solid var(--border);
+
+                padding: 18px 20px;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 0;
+
+                box-shadow:
+                    0 15px 30px rgba(0,0,0,.08);
+            }
+
+            .nav-center.active {
+                display: flex;
+            }
+
+            .nav-center a {
+                padding: 13px 5px;
+
+                border-bottom: 1px solid #f1eee9;
+            }
+
+            .nav-center a::after {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-actions {
+                margin-left: auto;
+
+                margin-right: 7px;
+            }
+
+            .nav-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .cart-nav {
+                padding: 0 12px;
+            }
+
+            .page-hero {
+                min-height: 300px;
+
+                padding: 60px 20px;
+            }
+
+            .container {
+                width: 92%;
+
+                padding-top: 38px;
             }
 
             .filter-form {
                 grid-template-columns: 1fr;
             }
 
-            .toolbar {
+            .filter-buttons {
+                grid-column: auto;
+            }
+
+            .results-toolbar {
                 align-items: flex-start;
+
                 flex-direction: column;
+
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 560px) {
+
+            .announcement {
+                font-size: 9px;
+
+                letter-spacing: .8px;
+            }
+
+            .navbar {
+                padding: 0 16px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .nav-actions {
+                gap: 2px;
+            }
+
+            .wishlist-nav {
+                display: none;
+            }
+
+            .page-hero h1 {
+                font-size: 38px;
+            }
+
+            .page-hero p {
+                font-size: 13px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+
+                gap: 18px;
             }
 
             .image-wrapper {
-                height: 310px;
+                height: 320px;
             }
 
-            .hero h1 {
-                font-size: 32px;
+            .product-name {
+                min-height: auto;
+            }
+
+            .product-description {
+                min-height: auto;
+            }
+
+            .filter-panel {
+                padding: 20px;
+            }
+
+            .filter-heading {
+                align-items: flex-start;
+            }
+
+            .collection-label {
+                display: none;
+            }
+
+            .empty-state {
+                padding: 65px 20px;
             }
         }
 
@@ -821,7 +1494,20 @@
 
 </head>
 
+
 <body>
+
+
+<!-- =========================================================
+     ANNOUNCEMENT
+========================================================= -->
+
+<div class="announcement">
+
+    Free delivery on selected orders
+    <span>&nbsp; • &nbsp; Premium furniture for modern living</span>
+
+</div>
 
 
 <!-- =========================================================
@@ -829,6 +1515,7 @@
 ========================================================= -->
 
 <nav class="navbar">
+
 
     <a th:href="@{/}"
        class="logo">
@@ -838,31 +1525,71 @@
     </a>
 
 
-    <div class="nav-links">
+    <!-- MOBILE MENU -->
+
+    <button type="button"
+            class="mobile-menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open menu">
+
+        ☰
+
+    </button>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="nav-center"
+         id="mobileNav">
 
         <a th:href="@{/}">
             Home
         </a>
 
         <a th:href="@{/products}">
-            Products
+            Shop
         </a>
 
-        <a th:href="@{/wishlist}"
-           class="wishlist-link">
-
-            ♥ Wishlist
-
+        <a th:href="@{/wishlist}">
+            Wishlist
         </a>
 
         <a th:href="@{/orders}">
             My Orders
         </a>
 
-        <a th:href="@{/cart}"
-           class="cart-link">
+    </div>
 
-            🛒 Cart
+
+    <!-- NAV ACTIONS -->
+
+    <div class="nav-actions">
+
+        <a th:href="@{/wishlist}"
+           class="nav-icon wishlist-nav"
+           title="Wishlist">
+
+            ♡
+
+        </a>
+
+
+        <a th:href="@{/cart}"
+           class="nav-icon cart-nav"
+           title="Shopping Cart">
+
+            🛒
+
+            <span>
+                Cart
+            </span>
+
+            <span class="cart-count"
+                  th:text="${session.cart != null ? #lists.size(session.cart.items) : 0}">
+
+                0
+
+            </span>
 
         </a>
 
@@ -872,24 +1599,28 @@
 
 
 <!-- =========================================================
-     HERO
+     PAGE HERO
 ========================================================= -->
 
-<section class="hero">
+<section class="page-hero">
 
-    <div class="hero-label">
-        Premium Collection
+    <div class="hero-inner">
+
+        <div class="eyebrow">
+            The Collection
+        </div>
+
+        <h1>
+            Find pieces that make
+            <span>home yours.</span>
+        </h1>
+
+        <p>
+            Discover thoughtfully selected furniture designed
+            for comfort, character and timeless everyday living.
+        </p>
+
     </div>
-
-    <h1>
-        Discover Your Perfect Furniture
-    </h1>
-
-    <p>
-        Explore our curated collection of elegant,
-        comfortable and timeless furniture designed
-        to transform your home.
-    </p>
 
 </section>
 
@@ -902,7 +1633,7 @@
 
 
     <!-- =====================================================
-         SUCCESS MESSAGE
+         ALERTS
     ====================================================== -->
 
     <div th:if="${successMessage}"
@@ -913,10 +1644,6 @@
 
     </div>
 
-
-    <!-- =====================================================
-         ERROR MESSAGE
-    ====================================================== -->
 
     <div th:if="${errorMessage}"
          class="alert alert-error"
@@ -933,8 +1660,29 @@
 
     <section class="filter-panel">
 
-        <div class="filter-title">
-            Find Your Furniture
+
+        <div class="filter-heading">
+
+            <div class="filter-heading-left">
+
+                <div class="filter-icon">
+                    ⌕
+                </div>
+
+                <div>
+
+                    <h2>
+                        Find Your Furniture
+                    </h2>
+
+                    <p>
+                        Search, filter and sort our collection
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -948,15 +1696,24 @@
             <div class="field">
 
                 <label for="keyword">
-                    Search
+                    Search Products
                 </label>
 
-                <input
-                    type="text"
-                    id="keyword"
-                    name="keyword"
-                    th:value="${keyword}"
-                    placeholder="Search furniture, sofa, chair...">
+                <div class="input-wrap">
+
+                    <span class="search-symbol">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="keyword"
+                        name="keyword"
+                        class="search-input"
+                        th:value="${keyword}"
+                        placeholder="Search sofa, chair, dining table...">
+
+                </div>
 
             </div>
 
@@ -996,7 +1753,7 @@
             <div class="field">
 
                 <label for="sort">
-                    Sort By
+                    Sort Collection
                 </label>
 
                 <select id="sort"
@@ -1005,7 +1762,7 @@
                     <option value="latest"
                             th:selected="${selectedSort == 'latest'}">
 
-                        Latest
+                        Latest Arrivals
 
                     </option>
 
@@ -1051,16 +1808,12 @@
 
             <!-- BUTTONS -->
 
-            <div style="
-                display:flex;
-                gap:8px;
-                align-items:end;
-            ">
+            <div class="filter-buttons">
 
                 <button type="submit"
                         class="filter-btn">
 
-                    Search
+                    Search Collection
 
                 </button>
 
@@ -1082,9 +1835,10 @@
          RESULTS TOOLBAR
     ====================================================== -->
 
-    <div class="toolbar">
+    <div class="results-toolbar">
 
-        <div class="results">
+
+        <div class="results-text">
 
             Showing
 
@@ -1092,7 +1846,14 @@
                 0
             </strong>
 
-            products
+            products in our collection
+
+        </div>
+
+
+        <div class="collection-label">
+
+            Curated Furniture
 
         </div>
 
@@ -1112,19 +1873,20 @@
 
 
             <!-- =================================================
-                 PRODUCT IMAGE
+                 IMAGE
             ================================================== -->
 
             <div class="image-wrapper">
 
 
-                <!-- PRODUCT IMAGE -->
+                <!-- IMAGE -->
 
                 <img
                     th:if="${product.imageUrl != null
                             && !product.imageUrl.isEmpty()}"
                     th:src="${product.imageUrl}"
-                    th:alt="${product.name}">
+                    th:alt="${product.name}"
+                    loading="lazy">
 
 
                 <!-- PLACEHOLDER -->
@@ -1133,7 +1895,8 @@
                     th:unless="${product.imageUrl != null
                                 && !product.imageUrl.isEmpty()}"
                     th:src="@{/images/product-placeholder.jpg}"
-                    alt="Furniture">
+                    alt="Furniture"
+                    loading="lazy">
 
 
                 <!-- =================================================
@@ -1153,9 +1916,11 @@
                      class="stock-badge low-stock">
 
                     Only
+
                     <span th:text="${product.stock}">
                         0
                     </span>
+
                     left
 
                 </div>
@@ -1187,17 +1952,30 @@
                         class="wishlist-btn"
                         title="Add to Wishlist">
 
-                        ♥
-                        
+                        ♡
+
                     </button>
 
                 </form>
+
+
+                <!-- =================================================
+                     IMAGE HOVER LABEL
+                ================================================== -->
+
+                <div class="image-overlay">
+
+                    <span>
+                        View product details
+                    </span>
+
+                </div>
 
             </div>
 
 
             <!-- =================================================
-                 PRODUCT INFO
+                 PRODUCT INFORMATION
             ================================================== -->
 
             <div class="product-info">
@@ -1234,13 +2012,18 @@
                 </p>
 
 
-                <!-- PRICE + STOCK -->
+                <!-- PRICE -->
 
                 <div class="price-row">
 
+
                     <div class="price">
 
-                        ₹<span
+                        <span class="price-symbol">
+                            ₹
+                        </span>
+
+                        <span
                             th:text="${#numbers.formatDecimal(product.price, 1, 2)}">
 
                             0.00
@@ -1280,7 +2063,7 @@
 
 
                 <!-- =================================================
-                     ACTION BUTTONS
+                     ACTIONS
                 ================================================== -->
 
                 <div class="actions">
@@ -1296,12 +2079,12 @@
                     </a>
 
 
-                    <!-- ADD TO CART -->
+                    <!-- CART -->
 
                     <form th:if="${product.stock > 0}"
                           th:action="@{/cart/add}"
                           method="post"
-                          style="flex:1;">
+                          style="width:100%;">
 
                         <input type="hidden"
                                name="productId"
@@ -1316,14 +2099,14 @@
                             class="action-btn cart-btn"
                             style="width:100%;">
 
-                            🛒 Add
+                            🛒 Add to Cart
 
                         </button>
 
                     </form>
 
 
-                    <!-- OUT OF STOCK -->
+                    <!-- SOLD OUT -->
 
                     <button
                         th:if="${product.stock <= 0}"
@@ -1350,24 +2133,30 @@
     <div th:if="${products == null || products.isEmpty()}"
          class="empty-state">
 
+
         <div class="empty-icon">
-            🔍
+
+            ⌕
+
         </div>
 
+
         <h2>
-            No Products Found
+            No Furniture Found
         </h2>
 
+
         <p>
-            We couldn't find any furniture matching your
-            search or filter. Try another keyword or
-            browse our complete collection.
+            We couldn't find anything matching your current
+            search or category. Try a different keyword,
+            change the category or explore the full collection.
         </p>
+
 
         <a th:href="@{/products}"
            class="empty-button">
 
-            View All Products
+            Explore All Products
 
         </a>
 
@@ -1391,10 +2180,13 @@
                     page=${currentPage - 1},
                     size=${pageSize}
                 )}"
+
            th:classappend="${currentPage == 0
                             ? ' page-disabled'
                             : ''}"
-           class="page-btn">
+
+           class="page-btn"
+           title="Previous page">
 
             ←
 
@@ -1440,7 +2232,8 @@
                             ? ' page-disabled'
                             : ''}"
 
-           class="page-btn">
+           class="page-btn"
+           title="Next page">
 
             →
 
@@ -1457,12 +2250,98 @@
 
 <footer>
 
-    © 2026
-    <span>FurnitureStore</span>.
+    <div class="footer-brand">
 
-    Premium furniture for modern living.
+        Furniture<span>Store</span>
+
+    </div>
+
+
+    <p class="footer-text">
+
+        Thoughtfully designed furniture for beautiful,
+        comfortable and modern living spaces.
+
+    </p>
+
+
+    <div class="footer-line"></div>
+
+
+    <div class="copyright">
+
+        © 2026
+        <span>FurnitureStore</span>.
+        All rights reserved.
+
+    </div>
 
 </footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    function toggleMenu() {
+
+        const nav =
+            document.getElementById("mobileNav");
+
+        nav.classList.toggle("active");
+
+    }
+
+
+    /*
+       Close mobile menu after clicking a link
+    */
+
+    document.querySelectorAll(".nav-center a")
+        .forEach(function(link) {
+
+            link.addEventListener("click", function() {
+
+                const nav =
+                    document.getElementById("mobileNav");
+
+                nav.classList.remove("active");
+
+            });
+
+        });
+
+
+    /*
+       Prevent accidental double-click
+       on Add to Cart buttons.
+    */
+
+    document.querySelectorAll(
+        'form[action$="/cart/add"]'
+    ).forEach(function(form) {
+
+        form.addEventListener("submit", function() {
+
+            const button =
+                form.querySelector("button");
+
+            if (button) {
+
+                button.disabled = true;
+
+                button.innerHTML =
+                    "Adding...";
+
+            }
+
+        });
+
+    });
+
+</script>
 
 
 </body>

@@ -2,44 +2,64 @@ package com.furniture.store.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
+
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
+import org.springframework.security.config.http.SessionCreationPolicy;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
+
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.furniture.store.service.AdminDetailsService;
 import com.furniture.store.service.CustomerDetailsService;
 
+
 @Configuration
 public class SecurityConfig {
 
+
     private final AdminDetailsService adminDetailsService;
+
     private final CustomerDetailsService customerDetailsService;
+
 
     public SecurityConfig(
             AdminDetailsService adminDetailsService,
             CustomerDetailsService customerDetailsService) {
 
-        this.adminDetailsService = adminDetailsService;
-        this.customerDetailsService = customerDetailsService;
+        this.adminDetailsService =
+                adminDetailsService;
+
+        this.customerDetailsService =
+                customerDetailsService;
     }
 
-    // =========================================================
-    // PASSWORD ENCODER
-    // =========================================================
+
+    /* =====================================================
+       PASSWORD ENCODER
+    ===================================================== */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
-    // =========================================================
-    // ADMIN AUTHENTICATION PROVIDER
-    // =========================================================
+
+    /* =====================================================
+       ADMIN AUTHENTICATION PROVIDER
+    ===================================================== */
 
     @Bean
     public AuthenticationProvider adminAuthenticationProvider(
@@ -50,14 +70,17 @@ public class SecurityConfig {
                         adminDetailsService
                 );
 
-        provider.setPasswordEncoder(passwordEncoder);
+        provider.setPasswordEncoder(
+                passwordEncoder
+        );
 
         return provider;
     }
 
-    // =========================================================
-    // CUSTOMER AUTHENTICATION PROVIDER
-    // =========================================================
+
+    /* =====================================================
+       CUSTOMER AUTHENTICATION PROVIDER
+    ===================================================== */
 
     @Bean
     public AuthenticationProvider customerAuthenticationProvider(
@@ -68,49 +91,167 @@ public class SecurityConfig {
                         customerDetailsService
                 );
 
-        provider.setPasswordEncoder(passwordEncoder);
+        provider.setPasswordEncoder(
+                passwordEncoder
+        );
 
         return provider;
     }
 
-    // =========================================================
-    // AUTHENTICATION MANAGER
-    // =========================================================
+
+    /* =====================================================
+       ADMIN SECURITY
+    ===================================================== */
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationProvider adminAuthenticationProvider,
-            AuthenticationProvider customerAuthenticationProvider) {
-
-        return new ProviderManager(
-                adminAuthenticationProvider,
-                customerAuthenticationProvider
-        );
-    }
-
-    // =========================================================
-    // SECURITY FILTER CHAIN
-    // =========================================================
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(
+    @Order(1)
+    public SecurityFilterChain adminSecurityFilterChain(
             HttpSecurity http,
-            AuthenticationManager authenticationManager)
+            AuthenticationProvider adminAuthenticationProvider)
             throws Exception {
+
+
+        AuthenticationManager adminAuthenticationManager =
+                new ProviderManager(
+                        adminAuthenticationProvider
+                );
+
+
+        CookieCsrfTokenRepository csrfRepository =
+                CookieCsrfTokenRepository.withHttpOnlyFalse();
+
 
         http
 
-            .authenticationManager(authenticationManager)
+            .securityMatcher("/admin/**")
 
-            // =================================================
-            // AUTHORIZATION
-            // =================================================
+
+            .authenticationManager(
+                    adminAuthenticationManager
+            )
+
 
             .authorizeHttpRequests(auth -> auth
 
-                // ---------------------------------------------
-                // PUBLIC PAGES
-                // ---------------------------------------------
+                .requestMatchers(
+                        "/admin/login"
+                ).permitAll()
+
+                .anyRequest()
+                        .hasRole("ADMIN")
+            )
+
+
+            .formLogin(form -> form
+
+                .loginPage(
+                        "/admin/login"
+                )
+
+                .loginProcessingUrl(
+                        "/admin/login"
+                )
+
+                .usernameParameter(
+                        "username"
+                )
+
+                .passwordParameter(
+                        "password"
+                )
+
+                .successHandler(
+                    (request, response, authentication) -> {
+
+                        response.sendRedirect(
+                                "/admin/dashboard"
+                        );
+                    }
+                )
+
+                .failureUrl(
+                        "/admin/login?error=true"
+                )
+
+                .permitAll()
+            )
+
+
+            .logout(logout -> logout
+
+                .logoutUrl(
+                        "/admin/logout"
+                )
+
+                .logoutSuccessUrl(
+                        "/admin/login?logout=true"
+                )
+
+                .invalidateHttpSession(
+                        true
+                )
+
+                .clearAuthentication(
+                        true
+                )
+
+                .deleteCookies(
+                        "JSESSIONID"
+                )
+
+                .permitAll()
+            )
+
+
+            .csrf(csrf -> csrf
+
+                .csrfTokenRepository(
+                        csrfRepository
+                )
+
+                .ignoringRequestMatchers(
+                        "/admin/login"
+                )
+            );
+
+
+        return http.build();
+    }
+
+
+    /* =====================================================
+       CUSTOMER SECURITY
+    ===================================================== */
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain customerSecurityFilterChain(
+            HttpSecurity http,
+            AuthenticationProvider customerAuthenticationProvider)
+            throws Exception {
+
+
+        AuthenticationManager customerAuthenticationManager =
+                new ProviderManager(
+                        customerAuthenticationProvider
+                );
+
+
+        CookieCsrfTokenRepository csrfRepository =
+                CookieCsrfTokenRepository.withHttpOnlyFalse();
+
+
+        http
+
+            .authenticationManager(
+                    customerAuthenticationManager
+            )
+
+
+            .authorizeHttpRequests(auth -> auth
+
+
+                /* PUBLIC PAGES */
 
                 .requestMatchers(
                         "/",
@@ -121,9 +262,8 @@ public class SecurityConfig {
                         "/signup"
                 ).permitAll()
 
-                // ---------------------------------------------
-                // STATIC RESOURCES
-                // ---------------------------------------------
+
+                /* STATIC RESOURCES */
 
                 .requestMatchers(
                         "/css/**",
@@ -133,103 +273,74 @@ public class SecurityConfig {
                         "/favicon.ico"
                 ).permitAll()
 
-                // ---------------------------------------------
-                // CART
-                // ---------------------------------------------
+
+                /* CART */
 
                 .requestMatchers(
                         "/cart",
                         "/cart/**"
                 ).permitAll()
 
-                // ---------------------------------------------
-                // ADMIN LOGIN
-                // ---------------------------------------------
 
-                .requestMatchers(
-                        "/admin/login"
-                ).permitAll()
-
-                // ---------------------------------------------
-                // ADMIN AREA
-                // ---------------------------------------------
-
-                .requestMatchers(
-                        "/admin/**"
-                ).hasRole("ADMIN")
-
-                // ---------------------------------------------
-                // CUSTOMER ORDERS
-                // ---------------------------------------------
+                /* CUSTOMER ORDERS */
 
                 .requestMatchers(
                         "/orders/**"
                 ).hasRole("CUSTOMER")
 
-                // ---------------------------------------------
-                // CUSTOMER WISHLIST
-                // ---------------------------------------------
+
+                /* WISHLIST */
 
                 .requestMatchers(
                         "/wishlist/**"
                 ).hasRole("CUSTOMER")
 
-                // ---------------------------------------------
-                // CUSTOMER CHECKOUT
-                // ---------------------------------------------
+
+                /* CHECKOUT */
 
                 .requestMatchers(
                         "/checkout",
                         "/checkout/**"
                 ).hasRole("CUSTOMER")
 
-                .requestMatchers(
-        "/payment/**"
-             ).hasRole("CUSTOMER")
 
-                // ---------------------------------------------
-                // OTHER PUBLIC REQUESTS
-                // ---------------------------------------------
+                /* PAYMENT */
+
+                .requestMatchers(
+                        "/payment/**"
+                ).hasRole("CUSTOMER")
+
+
+                /* EVERYTHING ELSE */
 
                 .anyRequest().permitAll()
             )
 
-            // =================================================
-            // CUSTOMER + ADMIN LOGIN
-            // =================================================
 
             .formLogin(form -> form
 
-                .loginPage("/login")
+                .loginPage(
+                        "/login"
+                )
 
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl(
+                        "/login"
+                )
+
+                .usernameParameter(
+                        "username"
+                )
+
+                .passwordParameter(
+                        "password"
+                )
 
                 .successHandler(
                     (request, response, authentication) -> {
 
-                        boolean isAdmin =
-                                authentication
-                                    .getAuthorities()
-                                    .stream()
-                                    .anyMatch(
-                                        authority ->
-                                            authority
-                                                .getAuthority()
-                                                .equals("ROLE_ADMIN")
-                                    );
-
-                        if (isAdmin) {
-
-                            response.sendRedirect(
-                                    "/admin/dashboard"
-                            );
-
-                        } else {
-
-                            response.sendRedirect(
-                                    "/"
-                            );
-                        }
+                        response.sendRedirect(
+                                "/"
+                        );
                     }
                 )
 
@@ -240,21 +351,24 @@ public class SecurityConfig {
                 .permitAll()
             )
 
-            // =================================================
-            // LOGOUT
-            // =================================================
 
             .logout(logout -> logout
 
-                .logoutUrl("/logout")
+                .logoutUrl(
+                        "/logout"
+                )
 
                 .logoutSuccessUrl(
                         "/login?logout=true"
                 )
 
-                .invalidateHttpSession(true)
+                .invalidateHttpSession(
+                        true
+                )
 
-                .clearAuthentication(true)
+                .clearAuthentication(
+                        true
+                )
 
                 .deleteCookies(
                         "JSESSIONID"
@@ -263,25 +377,19 @@ public class SecurityConfig {
                 .permitAll()
             )
 
-            // =================================================
-            // CSRF
-            // =================================================
 
             .csrf(csrf -> csrf
 
-                /*
-                 * Existing cart/checkout POST forms are kept
-                 * compatible with the current project.
-                 *
-                 * We will harden CSRF handling during the
-                 * final security pass.
-                 */
+                .csrfTokenRepository(
+                        csrfRepository
+                )
 
                 .ignoringRequestMatchers(
                         "/cart/**",
                         "/checkout/**"
                 )
             );
+
 
         return http.build();
     }

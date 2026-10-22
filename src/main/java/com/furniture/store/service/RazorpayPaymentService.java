@@ -19,7 +19,7 @@ public class RazorpayPaymentService {
     /**
      * Creates a Razorpay order.
      *
-     * @param amount amount in INR (for example 999.00)
+     * @param amount amount in INR
      * @return Razorpay order
      */
     public Order createRazorpayOrder(double amount) throws Exception {
@@ -61,8 +61,8 @@ public class RazorpayPaymentService {
     }
 
     /**
-     * Returns Razorpay Test/Live Key ID.
-     * Secret is never exposed to the frontend.
+     * Returns Razorpay Key ID.
+     * Secret is never exposed to frontend.
      */
     public String getKeyId() {
         return keyId;

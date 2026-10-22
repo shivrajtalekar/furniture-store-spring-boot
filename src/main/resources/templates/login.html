@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Login | FurnitureStore</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #172033;
+            --accent: #b7793f;
+            --background: #f6f4f0;
+            --text: #242424;
+            --muted: #777777;
+            --border: #e5e1da;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .navbar {
+            height: 78px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 27px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        .nav-link {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .page {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 55px 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 460px;
+            background: var(--white);
+            padding: 44px;
+            border-radius: 18px;
+            box-shadow: 0 18px 55px rgba(23, 32, 51, 0.07);
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .alert {
+            padding: 13px 15px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .alert-error {
+            background: #fff0f0;
+            color: #a52727;
+            border: 1px solid #ffd5d5;
+        }
+
+        .alert-success {
+            background: #edf9f0;
+            color: #216e39;
+            border: 1px solid #c9ecd2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 9px;
+        }
+
+        input {
+            width: 100%;
+            height: 49px;
+            padding: 0 15px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(183, 121, 63, 0.12);
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 51px;
+            border: none;
+            border-radius: 9px;
+            background: var(--primary);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #263651;
+            transform: translateY(-1px);
+        }
+
+        .register-text {
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 25px;
+        }
+
+        .register-text a {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        footer {
+            padding: 22px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        footer span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 520px) {
+            .navbar {
+                height: 68px;
+                padding: 0 5%;
+            }
+
+            .brand {
+                font-size: 23px;
+            }
+
+            .login-card {
+                padding: 30px 23px;
+            }
+
+            h1 {
+                font-size: 31px;
+            }
+
+            .page {
+                padding: 35px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a th:href="@{/}" class="brand">
+        Furniture<span>Store.</span>
+    </a>
+
+    <a th:href="@{/products}" class="nav-link">
+        Browse Products
+    </a>
+</header>
+
+<main class="page">
+
+    <section class="login-card">
+
+        <p class="eyebrow">Welcome Back</p>
+
+        <h1>Sign in to your account</h1>
+
+        <p class="subtitle">
+            Sign in to continue shopping, manage your orders
+            and discover furniture made for your home.
+        </p>
+
+        <div class="alert alert-error"
+             th:if="${param.error}">
+            Invalid email/username or password.
+            Please try again.
+        </div>
+
+        <div class="alert alert-success"
+             th:if="${param.logout}">
+            You have been logged out successfully.
+        </div>
+
+        <div class="alert alert-success"
+             th:if="${successMessage}"
+             th:text="${successMessage}">
+        </div>
+
+        <div class="alert alert-error"
+             th:if="${errorMessage}"
+             th:text="${errorMessage}">
+        </div>
+
+        <form th:action="@{/login}" method="post">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <div class="form-group">
+                <label for="username">Email Address</label>
+
+                <input type="text"
+                       id="username"
+                       name="username"
+                       placeholder="Enter your registered email"
+                       autocomplete="username"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Sign In
+            </button>
+
+        </form>
+
+        <p class="register-text">
+            Don't have an account?
+            <a th:href="@{/register}">Create an account</a>
+        </p>
+
+        <a th:href="@{/}" class="back-link">
+            ← Back to FurnitureStore
+        </a>
+
+    </section>
+
+</main>
+
+<footer>
+    <span>FurnitureStore</span> · Thoughtful furniture for better living.
+</footer>
+
+</body>
+</html>

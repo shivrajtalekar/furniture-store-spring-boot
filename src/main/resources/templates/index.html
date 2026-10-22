@@ -4,15 +4,30 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FurnitureStore | Premium Furniture for Modern Living</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description"
+          content="FurnitureStore - Premium furniture for modern living. Discover sofas, bedroom furniture, dining furniture and more.">
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
+    <meta name="theme-color"
+          content="#171411">
+
+    <title>
+        FurnitureStore | Premium Furniture for Modern Living
+    </title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap"
           rel="stylesheet">
+
 
     <style>
 
@@ -21,9 +36,11 @@
         ========================================================= */
 
         :root {
+
             --ink: #171411;
             --ink-soft: #29231f;
             --espresso: #34251d;
+
             --accent: #a66d48;
             --accent-dark: #855238;
             --accent-light: #c79874;
@@ -33,15 +50,24 @@
             --cream-3: #e5dbd1;
 
             --white: #ffffff;
+
             --text: #28221e;
             --muted: #776e67;
             --muted-light: #a09891;
 
-            --border: rgba(35, 27, 22, 0.10);
+            --success: #5c8162;
+            --danger: #a25c55;
 
-            --shadow-sm: 0 8px 25px rgba(35, 25, 19, .06);
-            --shadow-md: 0 20px 55px rgba(35, 25, 19, .12);
-            --shadow-lg: 0 30px 80px rgba(35, 25, 19, .18);
+            --border: rgba(35,27,22,.10);
+
+            --shadow-sm:
+                0 8px 25px rgba(35,25,19,.06);
+
+            --shadow-md:
+                0 20px 55px rgba(35,25,19,.12);
+
+            --shadow-lg:
+                0 30px 80px rgba(35,25,19,.18);
         }
 
 
@@ -73,8 +99,8 @@
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
         }
 
         button,
@@ -82,25 +108,31 @@
             font-family: inherit;
         }
 
+        button {
+            cursor: pointer;
+        }
+
 
         /* =========================================================
-           ANNOUNCEMENT BAR
+           ANNOUNCEMENT
         ========================================================= */
 
         .announcement {
             min-height: 36px;
-            background: var(--ink);
-            color: #eee5dc;
+
+            padding: 8px 20px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            padding: 8px 20px;
+            background: var(--ink);
+            color: #eee5dc;
 
             font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1.8px;
+            font-weight: 700;
+
+            letter-spacing: 1.7px;
             text-transform: uppercase;
 
             text-align: center;
@@ -117,9 +149,8 @@
 
         .navbar {
             height: 82px;
-            padding: 0 6.5%;
 
-            background: rgba(255,255,255,.94);
+            padding: 0 6.5%;
 
             display: flex;
             align-items: center;
@@ -129,7 +160,9 @@
             top: 0;
             z-index: 9999;
 
-            border-bottom: 1px solid rgba(0,0,0,.06);
+            background: rgba(255,255,255,.96);
+
+            border-bottom: 1px solid var(--border);
 
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -137,10 +170,19 @@
 
         .logo {
             font-family: "Playfair Display", serif;
+
             font-size: 29px;
             font-weight: 700;
+
             letter-spacing: -1px;
+
             white-space: nowrap;
+
+            transition: .25s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-1px);
         }
 
         .logo span {
@@ -150,15 +192,16 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 31px;
+            gap: 30px;
         }
 
         .nav-links a {
             position: relative;
 
+            color: #403934;
+
             font-size: 12px;
             font-weight: 600;
-            color: #403934;
 
             transition: .25s ease;
         }
@@ -189,18 +232,22 @@
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 7px;
         }
 
         .nav-icon {
-            width: 38px;
-            height: 38px;
-
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
 
             display: flex;
             align-items: center;
             justify-content: center;
+
+            position: relative;
+
+            border-radius: 50%;
+
+            color: #332c27;
 
             font-size: 18px;
 
@@ -210,7 +257,12 @@
         .nav-icon:hover {
             background: var(--cream);
             color: var(--accent);
+
             transform: translateY(-2px);
+        }
+
+        .account-icon {
+            border: 1px solid var(--border);
         }
 
         .cart-icon {
@@ -220,17 +272,20 @@
         .cart-count {
             position: absolute;
 
-            right: 0;
-            top: -2px;
+            right: -1px;
+            top: -1px;
 
-            width: 17px;
+            min-width: 17px;
             height: 17px;
 
-            border-radius: 50%;
+            padding: 0 4px;
 
             display: flex;
             align-items: center;
             justify-content: center;
+
+            border: 2px solid white;
+            border-radius: 50%;
 
             background: var(--accent);
             color: white;
@@ -240,15 +295,18 @@
         }
 
         .shop-btn {
-            background: var(--ink);
-            color: white !important;
+            margin-left: 5px;
 
-            padding: 11px 20px;
+            padding: 12px 21px;
 
             border-radius: 4px;
 
+            background: var(--ink);
+            color: white !important;
+
             font-size: 10px;
             font-weight: 800;
+
             letter-spacing: 1px;
 
             transition: .25s ease;
@@ -257,6 +315,72 @@
         .shop-btn:hover {
             background: var(--accent);
             transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(166,109,72,.20);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+
+            width: 40px;
+            height: 40px;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+            border-radius: 50%;
+
+            background: white;
+            color: var(--ink);
+
+            font-size: 18px;
+        }
+
+        .mobile-menu {
+            display: none;
+
+            position: fixed;
+
+            top: 82px;
+            left: 0;
+            right: 0;
+
+            z-index: 9998;
+
+            padding: 20px 6% 25px;
+
+            background: rgba(255,255,255,.98);
+
+            border-bottom: 1px solid var(--border);
+
+            box-shadow: var(--shadow-md);
+
+            backdrop-filter: blur(18px);
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--accent);
         }
 
 
@@ -267,10 +391,10 @@
         .hero {
             min-height: 690px;
 
-            position: relative;
-
             display: flex;
             align-items: center;
+
+            position: relative;
 
             padding: 90px 7%;
 
@@ -315,6 +439,7 @@
         }
 
         @keyframes heroReveal {
+
             from {
                 opacity: 0;
                 transform: translateY(25px);
@@ -337,6 +462,7 @@
 
             font-size: 10px;
             font-weight: 800;
+
             letter-spacing: 2.8px;
             text-transform: uppercase;
         }
@@ -351,40 +477,39 @@
         }
 
         .hero h1 {
-            font-family: "Playfair Display", serif;
-
-            font-size: clamp(54px, 7vw, 88px);
-
-            line-height: .98;
-
-            font-weight: 600;
-
-            letter-spacing: -3.5px;
+            margin-bottom: 27px;
 
             color: var(--ink);
 
-            margin-bottom: 27px;
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(54px,7vw,88px);
+            font-weight: 600;
+
+            line-height: .98;
+
+            letter-spacing: -3.5px;
         }
 
         .hero h1 span {
             display: block;
 
+            margin-left: 48px;
+
             color: var(--accent);
 
             font-style: italic;
-
-            margin-left: 48px;
         }
 
         .hero-description {
             max-width: 500px;
 
+            margin-bottom: 35px;
+
             color: #665d56;
 
             font-size: 15px;
             line-height: 1.9;
-
-            margin-bottom: 35px;
         }
 
         .hero-buttons {
@@ -406,6 +531,7 @@
 
             font-size: 10px;
             font-weight: 800;
+
             letter-spacing: 1px;
 
             transition: .3s ease;
@@ -420,16 +546,18 @@
 
         .btn-primary:hover {
             background: var(--accent);
+
             transform: translateY(-3px);
+
             box-shadow: 0 15px 35px rgba(166,109,72,.25);
         }
 
         .btn-secondary {
             border: 1px solid #4b4038;
 
-            color: var(--ink);
-
             background: rgba(255,255,255,.35);
+
+            color: var(--ink);
         }
 
         .btn-secondary:hover {
@@ -440,16 +568,16 @@
 
 
         /* =========================================================
-           TRUST STRIP
+           TRUST
         ========================================================= */
 
         .trust {
-            background: white;
-
             padding: 24px 7%;
 
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4,1fr);
+
+            background: white;
 
             border-bottom: 1px solid var(--border);
         }
@@ -472,17 +600,19 @@
             width: 42px;
             height: 42px;
 
-            border-radius: 50%;
-
-            background: var(--cream);
+            flex-shrink: 0;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 17px;
+            border-radius: 50%;
+
+            background: var(--cream);
 
             color: var(--accent);
+
+            font-size: 17px;
         }
 
         .trust-item strong {
@@ -526,40 +656,37 @@
             font-weight: 800;
 
             letter-spacing: 2.8px;
-
             text-transform: uppercase;
         }
 
         .section-title {
+            color: var(--ink);
+
             font-family: "Playfair Display", serif;
 
-            font-size: clamp(34px, 4vw, 47px);
+            font-size: clamp(34px,4vw,47px);
+            font-weight: 600;
 
             line-height: 1.08;
-
-            font-weight: 600;
 
             letter-spacing: -1.4px;
         }
 
         .view-all {
+            padding-bottom: 5px;
+
+            border-bottom: 1px solid var(--accent);
+
             color: var(--accent);
 
             font-size: 10px;
             font-weight: 800;
 
             letter-spacing: .8px;
-
-            border-bottom: 1px solid var(--accent);
-
-            padding-bottom: 5px;
-
-            transition: .2s;
         }
 
         .view-all:hover {
             color: var(--accent-dark);
-            border-color: var(--accent-dark);
         }
 
 
@@ -569,8 +696,7 @@
 
         .categories {
             display: grid;
-
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4,1fr);
 
             gap: 17px;
         }
@@ -606,29 +732,19 @@
             position: absolute;
             inset: 0;
 
-            background: linear-gradient(
-                to top,
-                rgba(20,15,12,.82),
-                rgba(20,15,12,.03) 65%
-            );
-
-            transition: .3s;
-        }
-
-        .category-card:hover::after {
-            background: linear-gradient(
-                to top,
-                rgba(20,15,12,.9),
-                rgba(20,15,12,.08) 70%
-            );
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(20,15,12,.82),
+                    rgba(20,15,12,.03) 65%
+                );
         }
 
         .category-overlay {
             position: absolute;
+            inset: 0;
 
             z-index: 2;
-
-            inset: 0;
 
             padding: 27px;
 
@@ -637,9 +753,9 @@
         }
 
         .category-overlay h3 {
-            font-family: "Playfair Display", serif;
-
             color: white;
+
+            font-family: "Playfair Display",serif;
 
             font-size: 27px;
             font-weight: 500;
@@ -670,7 +786,7 @@
         .product-grid {
             display: grid;
 
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4,1fr);
 
             gap: 23px;
         }
@@ -694,9 +810,9 @@
 
             overflow: hidden;
 
-            background: #eee8e1;
-
             border-radius: 4px;
+
+            background: #eee8e1;
         }
 
         .product-image img {
@@ -714,15 +830,14 @@
 
         .product-badge {
             position: absolute;
-
-            z-index: 3;
-
             left: 13px;
             top: 13px;
 
-            background: white;
+            z-index: 3;
 
             padding: 7px 10px;
+
+            background: white;
 
             color: var(--ink);
 
@@ -735,34 +850,32 @@
         }
 
         .wishlist {
-            position: absolute;
-
-            z-index: 4;
-
-            right: 13px;
-            top: 13px;
-
             width: 38px;
             height: 38px;
 
-            border-radius: 50%;
+            position: absolute;
+            right: 13px;
+            top: 13px;
 
-            background: rgba(255,255,255,.95);
+            z-index: 4;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 18px;
+            border-radius: 50%;
 
-            cursor: pointer;
+            background: rgba(255,255,255,.95);
+
+            color: var(--ink);
+
+            font-size: 18px;
 
             transition: .25s;
         }
 
         .wishlist:hover {
             color: var(--accent);
-
             transform: scale(1.1);
         }
 
@@ -784,7 +897,9 @@
         .product-name {
             margin: 6px 0;
 
-            font-family: "Playfair Display", serif;
+            color: var(--ink);
+
+            font-family: "Playfair Display",serif;
 
             font-size: 20px;
             font-weight: 600;
@@ -805,9 +920,10 @@
 
         .product-footer {
             display: flex;
-
             align-items: center;
             justify-content: space-between;
+
+            gap: 10px;
 
             margin-top: 15px;
         }
@@ -820,7 +936,7 @@
         }
 
         .stock {
-            color: #5c8162;
+            color: var(--success);
 
             font-size: 8px;
             font-weight: 800;
@@ -829,7 +945,7 @@
         }
 
         .stock.out {
-            color: #a25c55;
+            color: var(--danger);
         }
 
         .product-button {
@@ -858,6 +974,32 @@
             background: var(--accent);
         }
 
+        .empty-products {
+            margin-top: 20px;
+
+            padding: 75px 20px;
+
+            border: 1px dashed var(--cream-3);
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .empty-products h3 {
+            margin-bottom: 8px;
+
+            color: var(--ink);
+
+            font-family: "Playfair Display",serif;
+
+            font-size: 25px;
+        }
+
+        .empty-products p {
+            font-size: 11px;
+        }
+
 
         /* =========================================================
            FEATURE BANNER
@@ -868,10 +1010,10 @@
 
             margin: 0 7% 100px;
 
+            padding: 70px;
+
             display: flex;
             align-items: center;
-
-            padding: 70px;
 
             position: relative;
 
@@ -910,10 +1052,9 @@
         .feature-banner-content h2 {
             margin: 13px 0 18px;
 
-            font-family: "Playfair Display", serif;
+            font-family: "Playfair Display",serif;
 
-            font-size: clamp(38px, 5vw, 57px);
-
+            font-size: clamp(38px,5vw,57px);
             font-weight: 500;
 
             line-height: 1.05;
@@ -939,7 +1080,6 @@
 
         .why {
             background: var(--ink);
-
             color: white;
         }
 
@@ -954,7 +1094,7 @@
         .features {
             display: grid;
 
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4,1fr);
 
             gap: 1px;
 
@@ -981,7 +1121,6 @@
             color: #8f725e;
 
             font-size: 9px;
-
             letter-spacing: 2px;
         }
 
@@ -996,7 +1135,9 @@
         .feature h3 {
             margin-bottom: 10px;
 
-            font-family: "Playfair Display", serif;
+            color: white;
+
+            font-family: "Playfair Display",serif;
 
             font-size: 21px;
             font-weight: 500;
@@ -1032,10 +1173,6 @@
             border-radius: 4px;
         }
 
-        .inspiration-card.small {
-            height: 500px;
-        }
-
         .inspiration-card img {
             width: 100%;
             height: 100%;
@@ -1051,7 +1188,6 @@
 
         .inspiration-overlay {
             position: absolute;
-
             inset: 0;
 
             padding: 33px;
@@ -1059,10 +1195,11 @@
             display: flex;
             align-items: flex-end;
 
-            background: linear-gradient(
-                transparent 42%,
-                rgba(0,0,0,.75)
-            );
+            background:
+                linear-gradient(
+                    transparent 42%,
+                    rgba(0,0,0,.75)
+                );
         }
 
         .inspiration-overlay h3 {
@@ -1070,7 +1207,7 @@
 
             color: white;
 
-            font-family: "Playfair Display", serif;
+            font-family: "Playfair Display",serif;
 
             font-size: 33px;
             font-weight: 500;
@@ -1083,8 +1220,6 @@
             font-weight: 800;
 
             letter-spacing: 1px;
-
-            transition: .2s;
         }
 
         .inspiration-overlay a:hover {
@@ -1103,7 +1238,7 @@
         .reviews {
             display: grid;
 
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3,1fr);
 
             gap: 18px;
         }
@@ -1120,7 +1255,6 @@
 
         .review:hover {
             transform: translateY(-5px);
-
             box-shadow: var(--shadow-sm);
         }
 
@@ -1141,10 +1275,9 @@
 
             color: #403731;
 
-            font-family: "Playfair Display", serif;
+            font-family: "Playfair Display",serif;
 
             font-size: 17px;
-
             line-height: 1.75;
         }
 
@@ -1187,9 +1320,11 @@
         .newsletter h2 {
             margin: 10px 0 9px;
 
-            font-family: "Playfair Display", serif;
+            color: var(--ink);
 
-            font-size: clamp(34px, 4vw, 47px);
+            font-family: "Playfair Display",serif;
+
+            font-size: clamp(34px,4vw,47px);
 
             line-height: 1.1;
         }
@@ -1221,10 +1356,10 @@
 
             min-width: 0;
 
+            padding: 17px;
+
             border: none;
             outline: none;
-
-            padding: 17px;
 
             color: var(--text);
 
@@ -1236,14 +1371,12 @@
         }
 
         .subscribe button {
-            border: none;
-
             padding: 0 26px;
+
+            border: none;
 
             background: var(--ink);
             color: white;
-
-            cursor: pointer;
 
             font-size: 9px;
             font-weight: 800;
@@ -1266,7 +1399,6 @@
             padding: 75px 7% 25px;
 
             background: #120e0b;
-
             color: white;
         }
 
@@ -1283,9 +1415,10 @@
         .footer-logo {
             margin-bottom: 16px;
 
-            font-family: "Playfair Display", serif;
+            font-family: "Playfair Display",serif;
 
             font-size: 29px;
+            font-weight: 700;
         }
 
         .footer-logo span {
@@ -1298,12 +1431,45 @@
             color: #817a74;
 
             font-size: 11px;
-
             line-height: 1.9;
+        }
+
+        .footer-socials {
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .footer-social {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+
+            color: #a49b94;
+
+            font-size: 12px;
+
+            transition: .25s;
+        }
+
+        .footer-social:hover {
+            border-color: var(--accent-light);
+            color: white;
+            transform: translateY(-2px);
         }
 
         footer h3 {
             margin-bottom: 19px;
+
+            color: white;
 
             font-size: 9px;
             font-weight: 800;
@@ -1327,8 +1493,14 @@
 
         footer a:hover {
             color: white;
-
             transform: translateX(3px);
+        }
+
+        .footer-contact {
+            color: #817a74;
+
+            font-size: 11px;
+            line-height: 1.8;
         }
 
         .copyright {
@@ -1343,35 +1515,6 @@
             font-size: 8px;
 
             letter-spacing: 1px;
-        }
-
-
-        /* =========================================================
-           EMPTY PRODUCTS
-        ========================================================= */
-
-        .empty-products {
-            margin-top: 20px;
-
-            padding: 75px 20px;
-
-            border: 1px dashed var(--cream-3);
-
-            text-align: center;
-
-            color: var(--muted);
-        }
-
-        .empty-products h3 {
-            margin-bottom: 8px;
-
-            font-family: "Playfair Display", serif;
-
-            font-size: 25px;
-        }
-
-        .empty-products p {
-            font-size: 11px;
         }
 
 
@@ -1398,7 +1541,7 @@
 
 
         /* =========================================================
-           RESPONSIVE - TABLET
+           TABLET
         ========================================================= */
 
         @media(max-width:1100px) {
@@ -1409,20 +1552,19 @@
 
             .categories,
             .product-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
             }
 
             .features {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
             }
 
             .trust {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
             }
 
             .trust-item {
                 min-height: 65px;
-
                 padding: 12px;
 
                 border-bottom: 1px solid var(--border);
@@ -1435,8 +1577,41 @@
 
 
         /* =========================================================
-           RESPONSIVE - MOBILE
+           MOBILE
         ========================================================= */
+
+        @media(max-width:800px) {
+
+            .navbar {
+                height: 70px;
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-actions {
+                gap: 2px;
+            }
+
+            .shop-btn {
+                display: none;
+            }
+
+            .mobile-menu {
+                top: 70px;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+        }
+
 
         @media(max-width:700px) {
 
@@ -1449,33 +1624,16 @@
                 letter-spacing: .9px;
             }
 
-            .navbar {
-                height: 68px;
-
-                padding: 0 5%;
-            }
-
-            .logo {
-                font-size: 24px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .nav-actions {
-                gap: 4px;
-            }
-
             .nav-icon {
-                width: 34px;
-                height: 34px;
+                width: 35px;
+                height: 35px;
 
-                font-size: 17px;
+                font-size: 16px;
             }
 
-            .shop-btn {
-                display: none;
+            .mobile-menu-btn {
+                width: 35px;
+                height: 35px;
             }
 
 
@@ -1501,7 +1659,6 @@
 
             .hero h1 {
                 font-size: 52px;
-
                 letter-spacing: -2px;
             }
 
@@ -1511,13 +1668,11 @@
 
             .hero-description {
                 font-size: 13px;
-
                 line-height: 1.8;
             }
 
             .hero-buttons {
                 flex-direction: column;
-
                 align-items: stretch;
             }
 
@@ -1530,13 +1685,11 @@
 
             .trust {
                 grid-template-columns: 1fr;
-
                 padding: 8px 6%;
             }
 
             .trust-item {
                 justify-content: flex-start;
-
                 border-right: none;
             }
 
@@ -1549,7 +1702,6 @@
 
             .section-header {
                 display: block;
-
                 margin-bottom: 30px;
             }
 
@@ -1559,12 +1711,11 @@
 
             .view-all {
                 display: inline-block;
-
                 margin-top: 15px;
             }
 
 
-            /* CATEGORIES */
+            /* GRID */
 
             .categories,
             .product-grid,
@@ -1573,6 +1724,9 @@
             .inspiration-grid {
                 grid-template-columns: 1fr;
             }
+
+
+            /* CATEGORY */
 
             .category-card {
                 height: 320px;
@@ -1607,15 +1761,13 @@
 
             .feature {
                 min-height: auto;
-
                 padding: 32px 25px;
             }
 
 
             /* INSPIRATION */
 
-            .inspiration-card,
-            .inspiration-card.small {
+            .inspiration-card {
                 height: 370px;
             }
 
@@ -1656,7 +1808,6 @@
             .subscribe input,
             .subscribe button {
                 width: 100%;
-
                 min-height: 50px;
             }
 
@@ -1680,10 +1831,24 @@
 
 
         /* =========================================================
-           VERY SMALL DEVICES
+           SMALL MOBILE
         ========================================================= */
 
         @media(max-width:400px) {
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            .mobile-menu-btn {
+                width: 32px;
+                height: 32px;
+            }
 
             .hero h1 {
                 font-size: 45px;
@@ -1713,9 +1878,13 @@
 <div class="announcement">
 
     Free shipping on orders above ₹999
+
     &nbsp; • &nbsp;
+
     <span>Easy returns</span>
+
     &nbsp; • &nbsp;
+
     Premium furniture for modern living
 
 </div>
@@ -1783,9 +1952,19 @@
 
             🛒
 
-            <span class="cart-count">
+            <span class="cart-count"
+                  th:text="${session.cart != null ? session.cart.items.size() : 0}">
                 0
             </span>
+
+        </a>
+
+
+        <a href="/login"
+           class="nav-icon account-icon"
+           title="My Account">
+
+            ◉
 
         </a>
 
@@ -1797,9 +1976,64 @@
 
         </a>
 
+
+        <button type="button"
+                class="mobile-menu-btn"
+                onclick="toggleMobileMenu()"
+                aria-label="Open navigation menu">
+
+            ☰
+
+        </button>
+
     </div>
 
 </nav>
+
+
+<!-- =========================================================
+     MOBILE MENU
+========================================================= -->
+
+<div class="mobile-menu"
+     id="mobileMenu">
+
+    <a href="/">
+        Home
+    </a>
+
+    <a href="/products">
+        Shop
+    </a>
+
+    <a href="#categories"
+       onclick="closeMobileMenu()">
+        Collections
+    </a>
+
+    <a href="#inspiration"
+       onclick="closeMobileMenu()">
+        Inspiration
+    </a>
+
+    <a href="#about"
+       onclick="closeMobileMenu()">
+        Our Story
+    </a>
+
+    <a href="/wishlist">
+        Wishlist
+    </a>
+
+    <a href="/cart">
+        Shopping Cart
+    </a>
+
+    <a href="/login">
+        My Account
+    </a>
+
+</div>
 
 
 <!-- =========================================================
@@ -1814,7 +2048,6 @@
             New Collection 2026
         </div>
 
-
         <h1>
 
             Spaces made
@@ -1825,7 +2058,6 @@
 
         </h1>
 
-
         <p class="hero-description">
 
             Discover furniture designed around the way
@@ -1835,7 +2067,6 @@
 
         </p>
 
-
         <div class="hero-buttons">
 
             <a href="/products"
@@ -1843,9 +2074,8 @@
 
                 SHOP THE COLLECTION
                 &nbsp; →
-                
-            </a>
 
+            </a>
 
             <a href="#categories"
                class="btn btn-secondary">
@@ -1866,7 +2096,6 @@
 ========================================================= -->
 
 <section class="trust">
-
 
     <div class="trust-item">
 
@@ -1961,7 +2190,6 @@
 <section class="section"
          id="categories">
 
-
     <div class="section-header">
 
         <div>
@@ -1976,7 +2204,6 @@
 
         </div>
 
-
         <a href="/products"
            class="view-all">
 
@@ -1988,7 +2215,6 @@
 
 
     <div class="categories">
-
 
         <a href="/products"
            class="category-card">
@@ -2093,7 +2319,6 @@
 
         </a>
 
-
     </div>
 
 </section>
@@ -2104,7 +2329,6 @@
 ========================================================= -->
 
 <section class="section products-section">
-
 
     <div class="section-header">
 
@@ -2120,7 +2344,6 @@
 
         </div>
 
-
         <a href="/products"
            class="view-all">
 
@@ -2133,18 +2356,14 @@
 
     <div class="product-grid">
 
-
         <div class="product-card"
              th:each="product : ${products}">
 
-
             <div class="product-image">
-
 
                 <span class="product-badge">
                     FEATURED
                 </span>
-
 
                 <img
                     th:src="${product.imageUrl}"
@@ -2160,12 +2379,10 @@
 
                 </a>
 
-
             </div>
 
 
             <div class="product-info">
-
 
                 <div class="product-category"
                      th:text="${product.category}">
@@ -2194,7 +2411,6 @@
 
                 <div class="product-footer">
 
-
                     <div class="product-price">
 
                         ₹<span th:text="${product.price}">
@@ -2219,7 +2435,6 @@
 
                     </div>
 
-
                 </div>
 
 
@@ -2230,11 +2445,9 @@
 
                 </a>
 
-
             </div>
 
         </div>
-
 
     </div>
 
@@ -2253,7 +2466,6 @@
 
     </div>
 
-
 </section>
 
 
@@ -2263,22 +2475,16 @@
 
 <section class="feature-banner">
 
-
     <div class="feature-banner-content">
-
 
         <small>
             THE ART OF LIVING
         </small>
 
-
         <h2>
-
             Your home should
             tell your story.
-
         </h2>
-
 
         <p>
 
@@ -2288,7 +2494,6 @@
 
         </p>
 
-
         <a href="/products"
            class="btn btn-primary">
 
@@ -2296,7 +2501,6 @@
             &nbsp; →
 
         </a>
-
 
     </div>
 
@@ -2309,7 +2513,6 @@
 
 <section class="section why"
          id="about">
-
 
     <div class="section-header">
 
@@ -2329,7 +2532,6 @@
 
 
     <div class="features">
-
 
         <div class="feature">
 
@@ -2430,7 +2632,6 @@
 
         </div>
 
-
     </div>
 
 </section>
@@ -2442,7 +2643,6 @@
 
 <section class="section"
          id="inspiration">
-
 
     <div class="section-header">
 
@@ -2463,13 +2663,11 @@
 
     <div class="inspiration-grid">
 
-
         <div class="inspiration-card">
 
             <img
                 src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?auto=format&fit=crop&w=1400&q=90"
                 alt="Modern Living Room">
-
 
             <div class="inspiration-overlay">
 
@@ -2490,12 +2688,11 @@
         </div>
 
 
-        <div class="inspiration-card small">
+        <div class="inspiration-card">
 
             <img
                 src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=90"
                 alt="Warm Interior">
-
 
             <div class="inspiration-overlay">
 
@@ -2515,7 +2712,6 @@
 
         </div>
 
-
     </div>
 
 </section>
@@ -2526,7 +2722,6 @@
 ========================================================= -->
 
 <section class="section reviews-section">
-
 
     <div class="section-header">
 
@@ -2546,7 +2741,6 @@
 
 
     <div class="reviews">
-
 
         <div class="review">
 
@@ -2610,7 +2804,6 @@
 
         </div>
 
-
     </div>
 
 </section>
@@ -2622,17 +2815,14 @@
 
 <section class="newsletter">
 
-
     <div class="newsletter-label">
         STAY IN THE LOOP
     </div>
-
 
     <h2>
         A little inspiration,
         delivered.
     </h2>
-
 
     <p>
         New collections, styling ideas and exclusive offers.
@@ -2642,18 +2832,16 @@
     <form class="subscribe"
           onsubmit="return subscribeUser(event)">
 
-
         <input
             type="email"
             id="newsletterEmail"
             placeholder="Your email address"
+            autocomplete="email"
             required>
-
 
         <button type="submit">
             SUBSCRIBE
         </button>
-
 
     </form>
 
@@ -2666,9 +2854,10 @@
 
 <footer>
 
-
     <div class="footer-grid">
 
+
+        <!-- BRAND -->
 
         <div>
 
@@ -2684,8 +2873,33 @@
 
             </p>
 
+
+            <div class="footer-socials">
+
+                <a href="/"
+                   class="footer-social"
+                   title="Instagram">
+                    ◎
+                </a>
+
+                <a href="/"
+                   class="footer-social"
+                   title="Facebook">
+                    f
+                </a>
+
+                <a href="/"
+                   class="footer-social"
+                   title="Pinterest">
+                    P
+                </a>
+
+            </div>
+
         </div>
 
+
+        <!-- SHOP -->
 
         <div>
 
@@ -2712,31 +2926,39 @@
         </div>
 
 
+        <!-- ACCOUNT -->
+
         <div>
 
             <h3>
-                Company
+                Account
             </h3>
 
-            <a href="#about">
-                Our Story
+            <a href="/login">
+                Login
             </a>
 
-            <a href="/">
-                Contact
+            <a href="/register">
+                Create Account
             </a>
 
-            <a href="/">
-                Privacy Policy
+            <a href="/orders">
+                My Orders
+            </a>
+
+            <a href="/checkout">
+                Checkout
             </a>
 
         </div>
 
 
+        <!-- SUPPORT -->
+
         <div>
 
             <h3>
-                Help
+                Support
             </h3>
 
             <a href="/">
@@ -2751,8 +2973,14 @@
                 Returns
             </a>
 
-        </div>
+            <div class="footer-contact">
 
+                Mon – Sat<br>
+                9:00 AM – 7:00 PM
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -2764,7 +2992,6 @@
 
     </div>
 
-
 </footer>
 
 
@@ -2774,12 +3001,37 @@
 
 <script>
 
+    function toggleMobileMenu() {
+
+        const menu =
+            document.getElementById("mobileMenu");
+
+        if (menu) {
+            menu.classList.toggle("active");
+        }
+    }
+
+
+    function closeMobileMenu() {
+
+        const menu =
+            document.getElementById("mobileMenu");
+
+        if (menu) {
+            menu.classList.remove("active");
+        }
+    }
+
+
     function subscribeUser(event) {
 
         event.preventDefault();
 
         const email =
-            document.getElementById("newsletterEmail").value.trim();
+            document
+                .getElementById("newsletterEmail")
+                .value
+                .trim();
 
         if (!email) {
             return false;
@@ -2789,13 +3041,43 @@
             "Thank you for subscribing to FurnitureStore!"
         );
 
-        document.getElementById("newsletterEmail").value = "";
+        document
+            .getElementById("newsletterEmail")
+            .value = "";
 
         return false;
     }
+
+
+    /* Close mobile menu after clicking outside */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const menu =
+                document.getElementById("mobileMenu");
+
+            const button =
+                document.querySelector(".mobile-menu-btn");
+
+            if (!menu || !button) {
+                return;
+            }
+
+            if (
+                menu.classList.contains("active") &&
+                !menu.contains(event.target) &&
+                !button.contains(event.target)
+            ) {
+                menu.classList.remove("active");
+            }
+        }
+    );
 
 </script>
 
 
 </body>
+
 </html>
